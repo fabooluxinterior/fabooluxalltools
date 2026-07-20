@@ -111,7 +111,7 @@
             display: flex;
             gap: 20px;
             justify-content: center;
-            flex-wrap: nowrap; /* Ensures cards do not stack */
+            flex-wrap: nowrap; /* Ensures cards do not stack on desktop */
             width: 100%;
             margin-top: 20px;
         }
@@ -135,6 +135,19 @@
             border-color: rgba(232, 93, 34, 0.3);
             transform: translateY(-5px);
             box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(232, 93, 34, 0.05);
+        }
+
+        /* 📱 MOBILE RESPONSIVENESS - STACK CARDS */
+        @media (max-width: 900px) {
+            .cards-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .action-card {
+                width: 100%;
+                max-width: 500px;
+                flex: none;
+            }
         }
 
         .card-icon-box {
@@ -743,7 +756,7 @@
             document.getElementById('upload-page').style.display = 'none';
             
             if (currentTool === 'accessories') {
-                document.getElementById('preview-title').innerText = 'Extracted Accessories';
+                document.getElementById('preview-title').innerText = 'Kitchen Accessories List'; // Custom title requested
                 document.getElementById('preview-badge').innerText = 'Accessories Data';
             } else if (currentTool === 'materials') {
                 document.getElementById('preview-title').innerText = 'Extracted Materials';
@@ -774,9 +787,12 @@
                 });
 
                 for (const [room, items] of Object.entries(groupedData)) {
+                    // Force replace "ESTIMATE FOR MODULAR KITCHEN" with "KITCHEN ACCESSORIES LIST" as requested
+                    let displayRoom = room.replace(/ESTIMATE FOR MODULAR KITCHEN/gi, 'KITCHEN ACCESSORIES LIST');
+
                     let tableHTML = `
                         <div class="room-section fade-in">
-                            <h3 class="room-header">${room}</h3>
+                            <h3 class="room-header">${displayRoom}</h3>
                             <table class="acc-table">
                                 <thead>
                                     <tr>
@@ -873,7 +889,7 @@
                 }
             }
 
-            // --- SUMMARY RENDERING (MATCHING IMAGE EXACTLY) ---
+            // --- SUMMARY RENDERING ---
             else if (currentTool === 'summary') {
                 let tableHTML = `
                     <div class="room-section fade-in" style="background: #ffffff; padding: 25px; border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
