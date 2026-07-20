@@ -438,13 +438,22 @@
 
         /* 🖨️ LANDSCAPE PRINT THEME - STRICTLY LIGHT MODE FOR INK SAVING */
         @media print {
-            @page { size: landscape; margin: 8mm; }
+            @page { 
+                size: A4 landscape; /* Forces landscape orientation */
+                margin: 8mm; 
+            }
             body { 
                 background: #ffffff !important; padding: 0; margin: 0;
-                align-items: flex-start; color: #000 !important;
+                align-items: flex-start; color: #000000 !important;
             }
             body * { visibility: hidden; }
-            #preview-page, #preview-page * { visibility: visible; }
+            
+            /* Forces all preview elements, including dynamic inline styles, to render solid black */
+            #preview-page, #preview-page * { 
+                visibility: visible; 
+                color: #000000 !important; 
+            }
+            
             #preview-page {
                 position: absolute; left: 0; top: 0;
                 width: 100%; max-width: 100%;
@@ -458,22 +467,38 @@
                 break-inside: auto; page-break-inside: auto;
                 break-before: page !important; 
                 page-break-before: always !important;
-                border: 1px solid #cbd5e1 !important; 
+                border: 1px solid #000000 !important; /* Solid black border */
                 margin-bottom: 20px !important; 
-                border-radius: 12px !important; 
+                border-radius: 8px !important; 
                 background: #ffffff !important;
+            }
+
+            .room-header {
+                color: #000000 !important;
+                background-color: #ffffff !important;
+                border-bottom: 1px solid #000000 !important;
             }
             
             table { border-collapse: collapse; font-size: 9.5pt !important; width: 100%; }
             thead { display: table-header-group; }
             tbody { display: table-row-group; }
             
-            th, td { border: none !important; border-bottom: 1px solid #e2e8f0 !important; padding: 8px 10px !important; color: #000 !important;}
-            th { background-color: #ffffff !important; color: #475569 !important; font-weight: 700 !important; font-size: 9pt !important; }
+            /* Enforce black borders and text */
+            th, td { 
+                border: 1px solid #000000 !important; 
+                padding: 8px 10px !important; 
+                color: #000000 !important; 
+            }
+            th { 
+                background-color: #f1f5f9 !important; 
+                color: #000000 !important; 
+                font-weight: 700 !important; 
+                font-size: 9pt !important; 
+            }
             
-            /* Print fixes for summary table specifically to retain solid black borders on paper */
-            .summary-table th, .summary-table td { border: 1px solid #000 !important; color: #000 !important; }
-            .summary-table { background: #fff !important; }
+            /* Print fixes for summary table */
+            .summary-table th, .summary-table td { border: 1px solid #000000 !important; color: #000000 !important; }
+            .summary-table { background: #ffffff !important; }
         }
     </style>
 </head>
