@@ -14,7 +14,7 @@
             --bg-color: #0b0c10;
             --card-bg: #141519;
             --card-border: #26272c;
-            --brand-orange: #e85d22; /* Exact Logo Orange */
+            --brand-orange: #e85d22;
             --orange-glow: rgba(232, 93, 34, 0.15);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
@@ -51,7 +51,6 @@
             100% { opacity: 0.6; }
         }
 
-        /* 🏠 TOP NAVIGATION */
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -86,10 +85,7 @@
             font-family: inherit;
         }
 
-        .tab-btn:hover {
-            border-color: #888;
-        }
-
+        .tab-btn:hover { border-color: #888; }
         .tab-btn.active {
             background: #ffffff;
             color: #000000;
@@ -106,12 +102,11 @@
             animation: fadeIn 0.5s ease forwards;
         }
 
-        /* 🎴 CARDS CONTAINER */
         .cards-container {
             display: flex;
             gap: 20px;
             justify-content: center;
-            flex-wrap: nowrap; /* Ensures cards do not stack on desktop */
+            flex-wrap: nowrap;
             width: 100%;
             margin-top: 20px;
         }
@@ -121,7 +116,7 @@
             border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 35px 25px;
-            flex: 1; /* Allows cards to evenly share the row width */
+            flex: 1;
             max-width: 100%; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
@@ -137,7 +132,6 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(232, 93, 34, 0.05);
         }
 
-        /* 📱 MOBILE RESPONSIVENESS - STACK CARDS */
         @media (max-width: 900px) {
             .cards-container {
                 flex-direction: column;
@@ -243,17 +237,9 @@
             transition: 0.2s;
         }
 
-        .get-started-btn:hover {
-            background: #e2e8f0;
-        }
+        .get-started-btn:hover { background: #e2e8f0; }
+        .get-started-btn svg { width: 18px; height: 18px; stroke: #000000; }
 
-        .get-started-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: #000000;
-        }
-
-        /* 📤 UPLOAD & PREVIEW CONTAINER STYLES (DARK THEME) */
         .container {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -306,13 +292,10 @@
             align-items: center;
             gap: 8px;
         }
-        .action-button:hover { 
-            background: #e2e8f0; 
-        }
+        .action-button:hover { background: #e2e8f0; }
 
         #upload-page, #preview-page { display: none; }
         
-        /* Upload Area styling */
         .upload-area {
             border: 2px dashed #444;
             padding: 50px 20px;
@@ -368,7 +351,6 @@
         #status { font-size: 15px; font-weight: 500; }
         .loading-text { animation: pulse 1.5s infinite; color: var(--brand-orange) !important;}
 
-        /* Web Table Styling (Dark Mode) */
         .tables-wrapper {
             max-height: 70vh;
             overflow-y: auto;
@@ -436,67 +418,139 @@
             gap: 8px;
         }
 
-        /* 🖨️ LANDSCAPE PRINT THEME - STRICTLY LIGHT MODE FOR INK SAVING */
+        /* 🚨 MODALS & FORMS (REPORT ISSUE & ADMIN) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .report-modal-content, .admin-modal-content {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            padding: 35px; border-radius: 20px; width: 90%; max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease forwards;
+        }
+        .admin-modal-content {
+            max-width: 550px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .admin-modal-content::-webkit-scrollbar { width: 6px; }
+        .admin-modal-content::-webkit-scrollbar-track { background: transparent; }
+        .admin-modal-content::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+        .report-modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px;
+        }
+        .report-modal-header h3 {
+            margin: 0; font-size: 22px; color: var(--danger);
+        }
+        .report-modal-header .header-actions {
+            display: flex; align-items: center; gap: 15px;
+        }
+        
+        .admin-link-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid #444;
+            color: #fff; padding: 6px 12px; border-radius: 6px;
+            font-size: 12px; cursor: pointer; transition: 0.2s;
+            font-family: inherit; font-weight: 500;
+        }
+        .admin-link-btn:hover { background: rgba(255,255,255,0.2); border-color: #666; }
+
+        .close-modal-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 28px; cursor: pointer; line-height: 1; transition: 0.2s;
+        }
+        .close-modal-btn:hover { color: #fff; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label {
+            display: block; font-size: 13px; color: var(--text-muted);
+            margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .report-input {
+            width: 100%; padding: 12px 15px; border-radius: 10px;
+            background: #0d0e11; border: 1px solid #333; color: #fff;
+            font-family: inherit; font-size: 14px; box-sizing: border-box;
+        }
+        
+        select.report-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
+        }
+        
+        .report-input:focus { outline: none; border-color: var(--danger); }
+        .admin-input:focus { outline: none; border-color: var(--brand-orange); }
+        
+        .report-textarea { resize: vertical; min-height: 100px; }
+        
+        .media-upload-window {
+            width: 100%; padding: 30px 10px; background: #0d0e11; 
+            border: 2px dashed #444; border-radius: 12px; color: #94a3b8;
+            cursor: pointer; text-align: center; transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .media-upload-window:hover {
+            border-color: var(--brand-orange);
+            background: rgba(232, 93, 34, 0.05);
+            color: #fff;
+        }
+        .media-upload-window svg {
+            margin-bottom: 10px; stroke: var(--brand-orange);
+        }
+
+        .submit-btn {
+            color: #fff; border: none;
+            width: 100%; padding: 14px; border-radius: 12px;
+            font-family: inherit; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; margin-top: 10px;
+        }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover:not(:disabled) { background: #dc2626; }
+        .btn-primary { background: var(--brand-orange); }
+        .btn-primary:hover:not(:disabled) { background: #c2410c; }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Admin Dashboard Lists */
+        .admin-section {
+            background: #0d0e11; border: 1px solid #222;
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .admin-section h4 { margin: 0 0 15px 0; color: #fff; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 10px;}
+        .admin-list { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto;}
+        .admin-list li {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #16171b; padding: 10px 15px; border-radius: 8px; margin-bottom: 8px;
+            font-size: 14px; border: 1px solid #2a2b30;
+        }
+        .delete-btn {
+            background: transparent; border: none; color: var(--danger);
+            cursor: pointer; font-size: 12px; font-weight: 600; text-transform: uppercase;
+        }
+        .delete-btn:hover { text-decoration: underline; }
+        .add-flex { display: flex; gap: 10px; }
+        .add-flex input { flex: 1; margin-bottom: 0; }
+        .add-flex button { width: auto; padding: 10px 20px; margin-top: 0; border-radius: 10px; }
+
         @media print {
-            @page { 
-                size: A4 landscape; /* Forces landscape orientation */
-                margin: 8mm; 
-            }
-            body { 
-                background: #ffffff !important; padding: 0; margin: 0;
-                align-items: flex-start; color: #000000 !important;
-            }
+            @page { size: A4 landscape; margin: 8mm; }
+            body { background: #ffffff !important; padding: 0; margin: 0; align-items: flex-start; color: #000000 !important; }
             body * { visibility: hidden; }
-            
-            /* Forces all preview elements, including dynamic inline styles, to render solid black */
-            #preview-page, #preview-page * { 
-                visibility: visible; 
-                color: #000000 !important; 
-            }
-            
-            #preview-page {
-                position: absolute; left: 0; top: 0;
-                width: 100%; max-width: 100%;
-                box-shadow: none; padding: 0; margin: 0;
-                background: #ffffff !important; border: none !important;
-            }
+            #preview-page, #preview-page * { visibility: visible; color: #000000 !important; }
+            #preview-page { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; background: #ffffff !important; border: none !important; }
             .no-print, .tables-wrapper::-webkit-scrollbar { display: none !important; }
             .tables-wrapper { max-height: none; overflow: visible; padding: 0; margin: 0;}
-            
-            .room-section {
-                break-inside: auto; page-break-inside: auto;
-                break-before: page !important; 
-                page-break-before: always !important;
-                border: 1px solid #000000 !important; /* Solid black border */
-                margin-bottom: 20px !important; 
-                border-radius: 8px !important; 
-                background: #ffffff !important;
-            }
-
-            .room-header {
-                color: #000000 !important;
-                background-color: #ffffff !important;
-                border-bottom: 1px solid #000000 !important;
-            }
-            
+            .room-section { break-inside: auto; page-break-inside: auto; break-before: page !important; page-break-before: always !important; border: 1px solid #000000 !important; margin-bottom: 20px !important; border-radius: 8px !important; background: #ffffff !important; }
+            .room-header { color: #000000 !important; background-color: #ffffff !important; border-bottom: 1px solid #000000 !important; }
             table { border-collapse: collapse; font-size: 9.5pt !important; width: 100%; }
             thead { display: table-header-group; }
             tbody { display: table-row-group; }
-            
-            /* Enforce black borders and text */
-            th, td { 
-                border: 1px solid #000000 !important; 
-                padding: 8px 10px !important; 
-                color: #000000 !important; 
-            }
-            th { 
-                background-color: #f1f5f9 !important; 
-                color: #000000 !important; 
-                font-weight: 700 !important; 
-                font-size: 9pt !important; 
-            }
-            
-            /* Print fixes for summary table */
+            th, td { border: 1px solid #000000 !important; padding: 8px 10px !important; color: #000000 !important; }
+            th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: 700 !important; font-size: 9pt !important; }
             .summary-table th, .summary-table td { border: 1px solid #000000 !important; color: #000000 !important; }
             .summary-table { background: #ffffff !important; }
         }
@@ -510,16 +564,15 @@
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('designers')">For Designers</button>
             <button class="tab-btn" onclick="switchTab('rsm')">For RSM</button>
+            <button class="tab-btn" style="border-color: var(--danger); color: var(--danger);" onclick="openReportModal()">Report Issue</button>
         </div>
     </header>
 
     <!-- 🏠 HOME PAGE -->
     <div id="home-page">
-
-        <!-- Designers Cards Layout -->
+        <!-- Designers Cards -->
         <div class="cards-container" id="designers-cards">
-            
-            <!-- Tool 01: Extract Accessories -->
+            <!-- Tool 01 -->
             <div class="action-card">
                 <div class="card-icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -532,25 +585,20 @@
                 <div class="tool-label">Tool 01</div>
                 <h3>Extract Accessories</h3>
                 <div class="card-divider"></div>
-                
                 <ul class="custom-list">
                     <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
                     <li><span class="num">2</span> Upload the downloaded file.</li>
                     <li><span class="num">3</span> Check all rooms and accessories.</li>
                     <li><span class="num">4</span> Cross-check the count and quantity.</li>
                 </ul>
-                
                 <div style="flex-grow: 1;"></div>
                 <button class="get-started-btn" onclick="selectTool('accessories')">
                     Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </button>
             </div>
             
-            <!-- Tool 02: Extract Materials -->
+            <!-- Tool 02 -->
             <div class="action-card">
                 <div class="card-icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -562,24 +610,19 @@
                 <div class="tool-label">Tool 02</div>
                 <h3>Extract Materials</h3>
                 <div class="card-divider"></div>
-                
                 <ul class="custom-list">
                     <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
                     <li><span class="num">2</span> Upload the file.</li>
                     <li><span class="num">3</span> Check all rooms and finishes.</li>
                 </ul>
-                
                 <div style="flex-grow: 1;"></div>
                 <button class="get-started-btn" onclick="selectTool('materials')">
                     Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </button>
             </div>
 
-            <!-- Tool 03: Get Summary -->
+            <!-- Tool 03 -->
             <div class="action-card">
                 <div class="card-icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -592,26 +635,20 @@
                 <div class="tool-label">Tool 03</div>
                 <h3>Get Summary</h3>
                 <div class="card-divider"></div>
-                
                 <ul class="custom-list">
                     <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
                     <li><span class="num">2</span> Upload the file to generate the summary.</li>
                     <li><span class="num">3</span> Review the overall project summary and metrics.</li>
                 </ul>
-                
                 <div style="flex-grow: 1;"></div>
                 <button class="get-started-btn" onclick="selectTool('summary')">
                     Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </button>
             </div>
-
         </div>
 
-        <!-- RSM Cards Layout -->
+        <!-- RSM Cards -->
         <div class="cards-container" id="rsm-cards" style="display: none;">
             <div class="action-card" style="max-width: 400px; flex: none;">
                 <div class="card-icon-box">
@@ -626,19 +663,14 @@
                 <div class="tool-label">Tool 01</div>
                 <h3>Client Requirements</h3>
                 <div class="card-divider"></div>
-                
                 <ul class="custom-list">
                     <li><span class="num">1</span> Fill in the client details properly.</li>
                     <li><span class="num">2</span> Select requirements from available options.</li>
                     <li><span class="num">3</span> Submit to the dashboard.</li>
                 </ul>
-
                 <button class="get-started-btn" onclick="window.location.href='https://fabooluxinterior.github.io/requirement-collector/'">
                     Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </button>
             </div>
         </div>
@@ -659,12 +691,10 @@
                 <input type="file" accept=".xlsx, .xls" onchange="handleFileUpload(event)">
             </label>
         </div>
-
         <div id="status-container">
             <div class="spinner" id="spinner"></div>
             <div id="status"></div>
         </div>
-        
         <button class="back-btn" onclick="showHomePage()">← Return to Dashboard</button>
     </div>
 
@@ -682,18 +712,113 @@
                 </button>
             </div>
         </div>
-        
         <div class="tables-wrapper" id="tables-container"></div>
-
         <div class="no-print" style="margin-top: 20px;">
             <button class="back-btn" onclick="showHomePage()">← Process Another File</button>
         </div>
     </div>
 
+    <!-- 🚨 1. REPORT ISSUE MODAL -->
+    <div id="report-issue-modal" class="modal-overlay" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3 style="color: var(--danger)">Report Issue</h3>
+                <div class="header-actions">
+                    <button class="admin-link-btn" onclick="openAdminLogin()">Admin</button>
+                    <button class="close-modal-btn" onclick="closeReportModal()">×</button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Designer Name</label>
+                <select id="report-designer-name" class="report-input">
+                    <option value="">Select Designer</option>
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label>Issue Description</label>
+                <textarea id="report-description" class="report-input report-textarea" placeholder="Describe the issue you are facing..."></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Upload Media (Optional)</label>
+                <div class="media-upload-window" onclick="document.getElementById('report-media-file').click()">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <br>
+                    <span id="upload-file-name" style="font-weight: 500;">Click to browse and upload file</span>
+                </div>
+                <input type="file" id="report-media-file" style="display:none;" accept="image/*,video/*,application/pdf" onchange="updateFileName(this)">
+            </div>
+            
+            <button class="submit-btn btn-danger submit-report-btn" onclick="submitReport()">Submit Report</button>
+        </div>
+    </div>
+
+    <!-- 🔐 2. ADMIN LOGIN MODAL -->
+    <div id="admin-login-modal" class="modal-overlay" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3 style="color: var(--brand-orange)">Admin Login</h3>
+                <button class="close-modal-btn" onclick="closeAdminLogin()">×</button>
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="admin-login-email" class="report-input admin-input" placeholder="admin@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="admin-login-pass" class="report-input admin-input" placeholder="••••••••">
+            </div>
+            <button class="submit-btn btn-primary" onclick="handleAdminLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- 🛠️ 3. ADMIN DASHBOARD MODAL -->
+    <div id="admin-panel-modal" class="modal-overlay" style="display: none;">
+        <div class="admin-modal-content">
+            <div class="report-modal-header">
+                <h3 style="color: var(--brand-orange)">Admin Dashboard</h3>
+                <button class="close-modal-btn" onclick="closeAdminPanel()">×</button>
+            </div>
+            
+            <!-- Manage Designers -->
+            <div class="admin-section">
+                <h4>Manage Designers</h4>
+                <ul class="admin-list" id="admin-designer-list">
+                    <!-- Populated by JS -->
+                </ul>
+                <div class="add-flex">
+                    <input type="text" id="new-designer-name" class="report-input admin-input" placeholder="New Designer Name">
+                    <button class="submit-btn btn-primary" onclick="addDesigner()">Add</button>
+                </div>
+            </div>
+
+            <!-- Manage Admins -->
+            <div class="admin-section">
+                <h4>Manage Admins</h4>
+                <ul class="admin-list" id="admin-users-list">
+                    <!-- Populated by JS -->
+                </ul>
+                <div class="add-flex">
+                    <input type="email" id="new-admin-email" class="report-input admin-input" placeholder="Email">
+                    <input type="password" id="new-admin-pass" class="report-input admin-input" placeholder="Password">
+                </div>
+                <button class="submit-btn btn-primary" onclick="addAdmin()" style="margin-top: 10px;">Add New Admin</button>
+            </div>
+            
+            <div id="admin-sync-btn" style="text-align:center; color: var(--text-muted); font-size: 13px; margin-top: 15px;">
+                Connected to Google Sheets
+            </div>
+        </div>
+    </div>
+
+
     <script>
         // ✅ TAB SWITCH LOGIC
         function switchTab(tab) {
-            const tabs = document.querySelectorAll('.tab-btn');
+            const tabs = document.querySelectorAll('.tab-btn:not([onclick="openReportModal()"])');
             if(tab === 'designers') {
                 document.getElementById('designers-cards').style.display = 'flex';
                 document.getElementById('rsm-cards').style.display = 'none';
@@ -714,11 +839,13 @@
             summary: 'https://script.google.com/macros/s/AKfycbxD9p1Sli-T0Qlj_i5387AgWi1Of9e2Abgv_CtkginxvqK-HBDT6AbgAY8MpcsCJ5BhOg/exec' 
         };
 
+        // 🔥 UPDATED URL HERE 
+        const REPORT_API_URL = 'https://script.google.com/macros/s/AKfycbwiiZHO5GBzzhYjy97Ku2XpshxtcwrEVUjDu_5ZR2123SFgClGdfWkRS15VrDA-gMf8/exec';
+
         let currentTool = 'accessories'; 
 
         function selectTool(toolName) {
             currentTool = toolName;
-            
             if(toolName === 'accessories') {
                 document.getElementById('upload-badge').innerText = 'Accessories';
                 document.getElementById('upload-title').innerText = 'Extract Accessories';
@@ -729,7 +856,6 @@
                 document.getElementById('upload-badge').innerText = 'Summary';
                 document.getElementById('upload-title').innerText = 'Get Project Summary';
             }
-
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('preview-page').style.display = 'none';
             document.getElementById('upload-page').style.display = 'block';
@@ -756,20 +882,15 @@
             if (imgData.includes('=IMAGE("')) {
                 const match = imgData.match(/=IMAGE\("([^"]+)"/i);
                 if (match && match[1]) url = match[1];
-            } else if (imgData.startsWith('http')) {
-                url = imgData;
-            }
+            } else if (imgData.startsWith('http')) { url = imgData; }
 
             if (url) {
                 if (url.includes('drive.google.com')) {
                     const idMatch = url.match(/id=([a-zA-Z0-9-_]+)/);
-                    if (idMatch && idMatch[1]) {
-                        url = `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
-                    } else {
+                    if (idMatch && idMatch[1]) url = `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+                    else {
                         const dMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-                        if (dMatch && dMatch[1]) {
-                            url = `https://lh3.googleusercontent.com/d/${dMatch[1]}`;
-                        }
+                        if (dMatch && dMatch[1]) url = `https://lh3.googleusercontent.com/d/${dMatch[1]}`;
                     }
                 }
                 return `<img src="${url}" class="item-img" onerror="this.style.display='none'">`;
@@ -781,7 +902,7 @@
             document.getElementById('upload-page').style.display = 'none';
             
             if (currentTool === 'accessories') {
-                document.getElementById('preview-title').innerText = 'Kitchen Accessories List'; // Custom title requested
+                document.getElementById('preview-title').innerText = 'Kitchen Accessories List'; 
                 document.getElementById('preview-badge').innerText = 'Accessories Data';
             } else if (currentTool === 'materials') {
                 document.getElementById('preview-title').innerText = 'Extracted Materials';
@@ -802,7 +923,6 @@
                 return;
             }
 
-            // --- ACCESSORIES RENDERING ---
             if (currentTool === 'accessories') {
                 dataRows.forEach(row => {
                     if (!row || (!row[0] && !row[1] && !row[2])) return; 
@@ -810,191 +930,63 @@
                     if (!groupedData[roomName]) groupedData[roomName] = [];
                     groupedData[roomName].push(row);
                 });
-
                 for (const [room, items] of Object.entries(groupedData)) {
-                    // Force replace "ESTIMATE FOR MODULAR KITCHEN" with "KITCHEN ACCESSORIES LIST" as requested
                     let displayRoom = room.replace(/ESTIMATE FOR MODULAR KITCHEN/gi, 'KITCHEN ACCESSORIES LIST');
-
-                    let tableHTML = `
-                        <div class="room-section fade-in">
-                            <h3 class="room-header">${displayRoom}</h3>
-                            <table class="acc-table">
-                                <thead>
-                                    <tr>
-                                        <th>Item Name</th>
-                                        <th>Specification</th>
-                                        <th style="text-align:center;">Qty</th>
-                                        <th style="text-align:center;">Image</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    `;
-
+                    let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${displayRoom}</h3><table class="acc-table"><thead><tr><th>Item Name</th><th>Specification</th><th style="text-align:center;">Qty</th><th style="text-align:center;">Image</th></tr></thead><tbody>`;
                     items.forEach(row => {
                         let imgTag = parseImage(row[4]) || '<span style="color:#475569; font-size:12px;">No Image</span>';
-                        tableHTML += `
-                            <tr>
-                                <td style="color:#fff;"><strong>${row[1] || ''}</strong></td>
-                                <td class="spec-text">${row[2] || ''}</td>
-                                <td style="text-align:center; font-weight:600; color:#fff;">${row[3] || ''}</td>
-                                <td class="image-cell"><div class="image-wrapper">${imgTag}</div></td>
-                            </tr>
-                        `;
+                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[1] || ''}</strong></td><td class="spec-text">${row[2] || ''}</td><td style="text-align:center; font-weight:600; color:#fff;">${row[3] || ''}</td><td class="image-cell"><div class="image-wrapper">${imgTag}</div></td></tr>`;
                     });
-
                     container.innerHTML += tableHTML + `</tbody></table></div>`;
                 }
-            } 
-            
-            // --- MATERIALS RENDERING ---
-            else if (currentTool === 'materials') {
+            } else if (currentTool === 'materials') {
                 let currentRoom = 'General Area';
                 dataRows.forEach(row => {
                     if (!row) return;
-                    
-                    let col0 = String(row[0] || '').trim();
-                    let col1 = String(row[1] || '').trim();
-                    let col2 = String(row[2] || '').trim();
-                    let col3 = String(row[3] || '').trim();
-
-                    if (col0 && !col1 && !col2 && !col3 && col0 !== "Product") {
-                        currentRoom = col0;
-                    } 
-                    else if (col0 === "Product" || (!col0 && !col1 && !col2 && !col3)) {
-                        return;
-                    } 
-                    else {
-                        if (!groupedData[currentRoom]) groupedData[currentRoom] = [];
-                        groupedData[currentRoom].push(row);
-                    }
+                    let col0 = String(row[0] || '').trim(), col1 = String(row[1] || '').trim(), col2 = String(row[2] || '').trim(), col3 = String(row[3] || '').trim();
+                    if (col0 && !col1 && !col2 && !col3 && col0 !== "Product") currentRoom = col0;
+                    else if (col0 === "Product" || (!col0 && !col1 && !col2 && !col3)) return;
+                    else { if (!groupedData[currentRoom]) groupedData[currentRoom] = []; groupedData[currentRoom].push(row); }
                 });
-
                 for (const [room, items] of Object.entries(groupedData)) {
-                    let tableHTML = `
-                        <div class="room-section fade-in">
-                            <h3 class="room-header">${room}</h3>
-                            <table class="mat-table">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Carcass Mat</th>
-                                        <th>Shutter Mat</th>
-                                        <th>Carcass Finish</th>
-                                        <th>Shutter Finish</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    `;
-
+                    let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${room}</h3><table class="mat-table"><thead><tr><th>Product</th><th>Carcass Mat</th><th>Shutter Mat</th><th>Carcass Finish</th><th>Shutter Finish</th></tr></thead><tbody>`;
                     items.forEach(row => {
-                        let parsedCarcassImg = parseImage(row[4]);
-                        let parsedShutterImg = parseImage(row[6]);
-                        
-                        let cFinHtml = `<div class="finish-cell-content">
-                                            <span class="spec-text">${row[3] || '-'}</span>
-                                            <div class="image-wrapper">${parsedCarcassImg}</div>
-                                        </div>`;
-                        let sFinHtml = `<div class="finish-cell-content">
-                                            <span class="spec-text">${row[5] || '-'}</span>
-                                            <div class="image-wrapper">${parsedShutterImg}</div>
-                                        </div>`;
-
-                        tableHTML += `
-                            <tr>
-                                <td style="color:#fff;"><strong>${row[0] || ''}</strong></td>
-                                <td style="color:#cbd5e1;">${row[1] || '-'}</td>
-                                <td style="color:#cbd5e1;">${row[2] || '-'}</td>
-                                <td>${cFinHtml}</td>
-                                <td>${sFinHtml}</td>
-                            </tr>
-                        `;
+                        let cFinHtml = `<div class="finish-cell-content"><span class="spec-text">${row[3] || '-'}</span><div class="image-wrapper">${parseImage(row[4])}</div></div>`;
+                        let sFinHtml = `<div class="finish-cell-content"><span class="spec-text">${row[5] || '-'}</span><div class="image-wrapper">${parseImage(row[6])}</div></div>`;
+                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[0] || ''}</strong></td><td style="color:#cbd5e1;">${row[1] || '-'}</td><td style="color:#cbd5e1;">${row[2] || '-'}</td><td>${cFinHtml}</td><td>${sFinHtml}</td></tr>`;
                     });
-
                     container.innerHTML += tableHTML + `</tbody></table></div>`;
                 }
-            }
-
-            // --- SUMMARY RENDERING ---
-            else if (currentTool === 'summary') {
-                let tableHTML = `
-                    <div class="room-section fade-in" style="background: #ffffff; padding: 25px; border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
-                        <table class="summary-table" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; color: #000000;">
-                            <tbody>
-                `;
-
+            } else if (currentTool === 'summary') {
+                let tableHTML = `<div class="room-section fade-in" style="background: #ffffff; padding: 25px; border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6);"><table class="summary-table" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; color: #000000;"><tbody>`;
                 dataRows.forEach((row, index) => {
                     if (!row || row.length === 0) return;
-                    
                     tableHTML += `<tr>`;
-                    
-                    if (index === 0) {
-                        // Title: FABOOLUX INTERIORS
-                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
-                    } 
+                    if (index === 0) tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
                     else if (index === 1) {
-                        // Customer Details & Date
-                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
-                        tableHTML += `<td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td>`;
-                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th>`;
-                        tableHTML += `<td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
-                        // Inject Logo natively
-                        tableHTML += `<td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; vertical-align: middle; background: #ffffff; width: 160px;">
-                                        <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 140px; height: auto;">
-                                      </td>`;
-                    } 
-                    else if (index === 2) {
-                        // Project ID & Expire Date
-                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
-                        tableHTML += `<td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td>`;
-                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th>`;
-                        tableHTML += `<td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
-                        // Col 5 is hidden due to rowspan in index 1
-                    } 
-                    else if (index === 3) {
-                        // Total Summary Banner
-                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
-                    } 
-                    else if (index === 4) {
-                        // Column Headers
-                        row.forEach(cell => {
-                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`;
-                        });
-                    } 
+                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td><td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; vertical-align: middle; background: #ffffff; width: 160px;"><img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 140px; height: auto;"></td>`;
+                    } else if (index === 2) {
+                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
+                    } else if (index === 3) tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
+                    else if (index === 4) row.forEach(cell => { tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`; });
                     else {
-                        // Data and Footer Rows
-                        let cell0 = String(row[0]).trim();
-                        let isFooter = (cell0.toLowerCase().includes('selling price') || 
-                                        cell0.toLowerCase().includes('discount') || 
-                                        cell0.toLowerCase().includes('grand total'));
-
+                        let isFooter = (String(row[0]).toLowerCase().includes('selling price') || String(row[0]).toLowerCase().includes('discount') || String(row[0]).toLowerCase().includes('grand total'));
                         if (isFooter) {
-                            // Merge first 4 columns for bottom summaries and apply light orange highlight
-                            let highlightColor = "#fff5eb"; // Soft, light orange highlight matching brand
-                            
-                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: ${highlightColor}; color: #000000;">${row[0]}</th>`;
-                            
-                            // Format number values 
-                            let val = parseFloat(row[4]);
-                            val = isNaN(val) ? row[4] : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: ${highlightColor}; color: #000000;">${val}</th>`;
+                            let val = parseFloat(row[4]); val = isNaN(val) ? row[4] : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${row[0]}</th><th style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${val}</th>`;
                         } else {
-                            // Standard Room Row
                             tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
                             for(let i=1; i<5; i++) {
-                                let val = parseFloat(row[i]);
-                                val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                let val = parseFloat(row[i]); val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                                 tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff;">${val}</td>`;
                             }
                         }
                     }
-                    
                     tableHTML += `</tr>`;
                 });
-
                 tableHTML += `</tbody></table></div>`;
                 container.innerHTML += tableHTML;
             }
-
             document.getElementById('preview-page').style.display = 'block';
         }
 
@@ -1002,83 +994,213 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            const statusEl = document.getElementById('status');
-            const spinner = document.getElementById('spinner');
-            
-            spinner.style.display = 'block';
-            statusEl.innerText = 'Uploading...';
-            statusEl.className = 'loading-text'; 
+            const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
+            spinner.style.display = 'block'; statusEl.innerText = 'Uploading...'; statusEl.className = 'loading-text'; 
 
             const reader = new FileReader();
-            
-            reader.onerror = function() {
-                spinner.style.display = 'none';
-                statusEl.className = '';
-                statusEl.style.color = 'var(--danger)';
-                statusEl.innerText = '❌ Failed to read the Excel file from your computer.';
-            };
-
-            reader.onload = function(e) {
-                statusEl.innerText = 'Extracting and processing data...';
-                const base64Data = e.target.result.split(',')[1];
-                sendToGoogleScript(base64Data, file.name);
-            };
+            reader.onerror = function() { spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Failed to read the Excel file from your computer.'; };
+            reader.onload = function(e) { statusEl.innerText = 'Extracting and processing data...'; const base64Data = e.target.result.split(',')[1]; sendToGoogleScript(base64Data, file.name); };
             reader.readAsDataURL(file);
         }
 
         function sendToGoogleScript(base64Data, fileName) {
-            const targetUrl = API_URLS[currentTool];
+            fetch(API_URLS[currentTool], { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fileName: fileName, base64Data: base64Data }) })
+            .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
+            .then(responseObj => {
+                const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
+                spinner.style.display = 'none'; statusEl.className = ''; 
+                if(responseObj.status === "error") { statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Server Error: ' + responseObj.message; } 
+                else { statusEl.style.color = 'var(--success)'; statusEl.innerText = '✅ ' + responseObj.message; if(responseObj.data) setTimeout(() => { showPreviewPage(responseObj.data); }, 600); }
+            })
+            .catch(error => {
+                document.getElementById('spinner').style.display = 'none'; const statusEl = document.getElementById('status'); statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ ${error.message}`;
+            });
+        }
 
-            if (!targetUrl || targetUrl.includes('YOUR_NEW_SUMMARY_WEB_APP_URL')) {
-                document.getElementById('spinner').style.display = 'none';
-                document.getElementById('status').className = '';
-                document.getElementById('status').style.color = 'var(--danger)';
-                document.getElementById('status').innerText = `❌ Error: Web App URL missing for ${currentTool}.`;
+
+        // ==========================================
+        // ✅ GOOGLE SHEET DATA FETCHING & SYNCING
+        // ==========================================
+        
+        let globalDesigners = [];
+        let globalAdmins = [];
+
+        // 1. Fetch data when page loads
+        function initStorage() {
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: "getData" })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    globalDesigners = data.designers;
+                    globalAdmins = data.admins;
+                    populateDesignerDropdown();
+                }
+            })
+            .catch(err => {
+                console.error("Failed to load data from sheet. Using safe defaults.", err);
+                globalDesigners = ['Anjana', 'Santosh Etan'];
+                globalAdmins = [{ email: 'designer7fab@gmail.com', pass: 'Faboolux@999' }];
+                populateDesignerDropdown();
+            });
+        }
+
+        // 2. Push data back to Google Sheet when Admins change things
+        function syncDataToSheet() {
+            const btn = document.getElementById('admin-sync-btn');
+            if(btn) { btn.innerText = "Syncing to Google Sheets..."; btn.style.color = "var(--brand-orange)"; }
+            
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: "updateData", designers: globalDesigners, admins: globalAdmins })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(btn) { btn.innerText = "✅ Saved to Google Sheets"; btn.style.color = "var(--success)"; }
+            })
+            .catch(err => {
+                if(btn) { btn.innerText = "❌ Sync Failed! Check connection."; btn.style.color = "var(--danger)"; }
+            });
+        }
+
+        function populateDesignerDropdown() {
+            const select = document.getElementById('report-designer-name');
+            select.innerHTML = '<option value="">Select Designer</option>';
+            globalDesigners.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                select.appendChild(opt);
+            });
+        }
+
+        // Run immediately
+        initStorage();
+
+
+        // ==========================================
+        // ✅ REPORT ISSUE & ADMIN LOGIC
+        // ==========================================
+
+        function openReportModal() { document.getElementById('report-issue-modal').style.display = 'flex'; }
+        function closeReportModal() { document.getElementById('report-issue-modal').style.display = 'none'; }
+
+        function updateFileName(input) {
+            const fileNameDisplay = document.getElementById('upload-file-name');
+            if(input.files && input.files.length > 0) {
+                fileNameDisplay.innerText = "Selected: " + input.files[0].name;
+                fileNameDisplay.style.color = "var(--success)";
+            } else {
+                fileNameDisplay.innerText = "Click to browse and upload file";
+                fileNameDisplay.style.color = "var(--text-muted)";
+            }
+        }
+
+        function submitReport() {
+            const name = document.getElementById('report-designer-name').value;
+            const desc = document.getElementById('report-description').value;
+            const fileInput = document.getElementById('report-media-file');
+            const submitBtn = document.querySelector('.submit-report-btn');
+            
+            if(!name || !desc) {
+                alert("Please select your Designer Name and enter an Issue Description.");
                 return;
             }
 
-            const payload = { fileName: fileName, base64Data: base64Data };
+            submitBtn.innerText = 'Submitting...'; submitBtn.disabled = true;
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { sendReportToScript(name, desc, e.target.result.split(',')[1], file.type, file.name); };
+                reader.readAsDataURL(file);
+            } else { sendReportToScript(name, desc, null, null, null); }
+        }
 
-            fetch(targetUrl, {
+        function sendReportToScript(name, desc, base64Data, mimeType, fileName) {
+            fetch(REPORT_API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                body: JSON.stringify(payload)
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ name: name, description: desc, mediaBase64: base64Data, mimeType: mimeType, fileName: fileName })
             })
-            .then(async response => {
-                const text = await response.text();
-                try {
-                    return JSON.parse(text);
-                } catch(err) {
-                    console.error("Server Response Error:", text);
-                    throw new Error("Invalid response from Google. Make sure the script is deployed to 'Anyone'.");
-                }
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') alert("Report submitted successfully! Thank you.");
+                else alert("Error: " + data.message);
+                resetReportForm();
             })
-            .then(responseObj => {
-                const statusEl = document.getElementById('status');
-                const spinner = document.getElementById('spinner');
-                spinner.style.display = 'none';
-                statusEl.className = ''; 
-                
-                if(responseObj.status === "error") {
-                    statusEl.style.color = 'var(--danger)';
-                    statusEl.innerText = '❌ Server Error: ' + responseObj.message;
-                } else {
-                    statusEl.style.color = 'var(--success)';
-                    statusEl.innerText = '✅ ' + responseObj.message;
-                    
-                    if(responseObj.data) {
-                        setTimeout(() => { showPreviewPage(responseObj.data); }, 600);
-                    }
-                }
-            })
-            .catch(error => {
-                document.getElementById('spinner').style.display = 'none';
-                const statusEl = document.getElementById('status');
-                statusEl.className = '';
-                statusEl.style.color = 'var(--danger)';
-                statusEl.innerText = `❌ ${error.message}`;
-                console.error(error);
+            .catch(err => { alert("Error submitting report."); resetReportForm(); });
+        }
+
+        function resetReportForm() {
+            document.getElementById('report-designer-name').value = '';
+            document.getElementById('report-description').value = '';
+            const fileInput = document.getElementById('report-media-file');
+            fileInput.value = ''; updateFileName(fileInput); 
+            const submitBtn = document.querySelector('.submit-report-btn');
+            submitBtn.innerText = 'Submit Report'; submitBtn.disabled = false;
+            closeReportModal();
+        }
+
+        function openAdminLogin() { closeReportModal(); document.getElementById('admin-login-modal').style.display = 'flex'; }
+        function closeAdminLogin() { document.getElementById('admin-login-modal').style.display = 'none'; }
+
+        function handleAdminLogin() {
+            const email = document.getElementById('admin-login-email').value;
+            const pass = document.getElementById('admin-login-pass').value;
+            const isValid = globalAdmins.some(a => a.email === email && a.pass === pass);
+            
+            if (isValid) {
+                document.getElementById('admin-login-email').value = ''; document.getElementById('admin-login-pass').value = '';
+                closeAdminLogin(); openAdminPanel();
+            } else { alert("Invalid Admin Email or Password."); }
+        }
+
+        function openAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'flex'; renderAdminPanel(); }
+        function closeAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'none'; }
+
+        function renderAdminPanel() {
+            const dList = document.getElementById('admin-designer-list'); dList.innerHTML = '';
+            globalDesigners.forEach((d, index) => {
+                dList.innerHTML += `<li>${d} <button class="delete-btn" onclick="removeDesigner(${index})">Remove</button></li>`;
             });
+            const aList = document.getElementById('admin-users-list'); aList.innerHTML = '';
+            globalAdmins.forEach((a, index) => {
+                let removeBtn = index === 0 ? `<span style="color:#666; font-size:11px;">Primary (Locked)</span>` : `<button class="delete-btn" onclick="removeAdmin(${index})">Remove</button>`;
+                aList.innerHTML += `<li>${a.email} ${removeBtn}</li>`;
+            });
+        }
+
+        function addDesigner() {
+            const nameInput = document.getElementById('new-designer-name'); const newName = nameInput.value.trim();
+            if(!newName) return;
+            globalDesigners.push(newName);
+            nameInput.value = '';
+            populateDesignerDropdown(); renderAdminPanel(); syncDataToSheet();
+        }
+        
+        function removeDesigner(index) {
+            globalDesigners.splice(index, 1);
+            populateDesignerDropdown(); renderAdminPanel(); syncDataToSheet();
+        }
+
+        function addAdmin() {
+            const emailInput = document.getElementById('new-admin-email'), passInput = document.getElementById('new-admin-pass');
+            const email = emailInput.value.trim(), pass = passInput.value.trim();
+            if(!email || !pass) { alert("Provide both email and password."); return; }
+            globalAdmins.push({ email: email, pass: pass });
+            emailInput.value = ''; passInput.value = '';
+            renderAdminPanel(); syncDataToSheet();
+        }
+        
+        function removeAdmin(index) {
+            if(index === 0) return; 
+            globalAdmins.splice(index, 1);
+            renderAdminPanel(); syncDataToSheet();
         }
     </script>
 </body>
