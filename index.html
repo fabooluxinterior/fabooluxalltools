@@ -588,13 +588,41 @@
         .add-flex input { flex: 1; margin-bottom: 0; }
         .add-flex button { width: auto; padding: 10px 20px; margin-top: 0; border-radius: 10px; }
 
+        /* 🔽 FIXED GLOSSY FOOTER TEXT 🔽 */
+        .glossy-footer-text {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            /* Glossy smooth transition effect */
+            background: linear-gradient(110deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.1) 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+            opacity: 0.3; /* Minimum opacity */
+            z-index: 1000;
+            pointer-events: none; /* Allows clicking through it */
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
         @media print {
             @page { size: A4 landscape; margin: 8mm; }
             body { background: #ffffff !important; padding: 0; margin: 0; align-items: flex-start; color: #000000 !important; }
             body * { visibility: hidden; }
             #preview-page, #preview-page * { visibility: visible; color: #000000 !important; }
             #preview-page { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; background: #ffffff !important; border: none !important; }
-            .no-print, .tables-wrapper::-webkit-scrollbar { display: none !important; }
+            .no-print, .tables-wrapper::-webkit-scrollbar, .glossy-footer-text { display: none !important; }
             .tables-wrapper { max-height: none; overflow: visible; padding: 0; margin: 0;}
             .room-section { break-inside: auto; page-break-inside: auto; break-before: page !important; page-break-before: always !important; border: 1px solid #000000 !important; margin-bottom: 20px !important; border-radius: 8px !important; background: #ffffff !important; }
             .room-header { color: #000000 !important; background-color: #ffffff !important; border-bottom: 1px solid #000000 !important; }
@@ -881,6 +909,8 @@
         </div>
     </div>
 
+    <!-- 🌟 GLOSSY FOOTER TEXT -->
+    <div class="glossy-footer-text">All Tools Connected to Google Sheets</div>
 
     <script>
         // ✅ TAB SWITCH LOGIC
