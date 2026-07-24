@@ -322,6 +322,58 @@
         }
         .file-label:hover { background: #e2e8f0; }
 
+        /* 🔽 INFO ACCORDION STYLES 🔽 */
+        .info-accordion {
+            background: #1a1b20;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-align: left;
+            overflow: hidden;
+        }
+        .info-accordion details {
+            border-bottom: 1px solid var(--border);
+        }
+        .info-accordion details:last-child {
+            border-bottom: none;
+        }
+        .info-accordion summary {
+            padding: 16px 20px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none; /* Hide default arrow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .info-accordion summary:hover {
+            background: #222329;
+        }
+        .info-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        .info-accordion summary::after {
+            content: '+';
+            color: var(--brand-orange);
+            font-size: 20px;
+            font-weight: 400;
+        }
+        .info-accordion details[open] summary::after {
+            content: '−';
+        }
+        .info-accordion .info-content {
+            padding: 15px 20px;
+            color: var(--text-muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+            background: #141519;
+            border-top: 1px dashed #333;
+        }
+
         .back-btn {
             background: transparent;
             color: var(--text-muted);
@@ -347,7 +399,7 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        #status-container { margin-top: 25px; min-height: 40px; }
+        #status-container { margin-top: 20px; min-height: 40px; }
         #status { font-size: 15px; font-weight: 500; }
         .loading-text { animation: pulse 1.5s infinite; color: var(--brand-orange) !important;}
 
@@ -691,6 +743,21 @@
                 <input type="file" accept=".xlsx, .xls" onchange="handleFileUpload(event)">
             </label>
         </div>
+
+        <!-- 🔽 DYNAMIC MATERIALS INFORMATION ACCORDION 🔽 -->
+        <div id="materials-info-container" style="display: none;">
+            <div class="info-accordion">
+                <details>
+                    <summary>Showing Multiple Panels</summary>
+                    <div class="info-content">If a room has two end panels with different finishes, they will be displayed as separate panels.</div>
+                </details>
+                <details>
+                    <summary>Showing Error on Carcass Finish</summary>
+                    <div class="info-content">End panel carcass finishes are automatically inherited from the cabinet carcass in the same room. For example, if you select Light brown cambric for the cabinet, the end panel's carcass will automatically match that finish.</div>
+                </details>
+            </div>
+        </div>
+
         <div id="status-container">
             <div class="spinner" id="spinner"></div>
             <div id="status"></div>
@@ -839,23 +906,28 @@
             summary: 'https://script.google.com/macros/s/AKfycbxD9p1Sli-T0Qlj_i5387AgWi1Of9e2Abgv_CtkginxvqK-HBDT6AbgAY8MpcsCJ5BhOg/exec' 
         };
 
-        // 🔥 UPDATED URL HERE 
         const REPORT_API_URL = 'https://script.google.com/macros/s/AKfycbwiiZHO5GBzzhYjy97Ku2XpshxtcwrEVUjDu_5ZR2123SFgClGdfWkRS15VrDA-gMf8/exec';
 
         let currentTool = 'accessories'; 
 
         function selectTool(toolName) {
             currentTool = toolName;
+            
+            // Adjust title, badges, and toggle the info box visibility for materials tool only
             if(toolName === 'accessories') {
                 document.getElementById('upload-badge').innerText = 'Accessories';
                 document.getElementById('upload-title').innerText = 'Extract Accessories';
+                document.getElementById('materials-info-container').style.display = 'none';
             } else if (toolName === 'materials') {
                 document.getElementById('upload-badge').innerText = 'Materials';
                 document.getElementById('upload-title').innerText = 'Extract Materials';
+                document.getElementById('materials-info-container').style.display = 'block';
             } else if (toolName === 'summary') {
                 document.getElementById('upload-badge').innerText = 'Summary';
                 document.getElementById('upload-title').innerText = 'Get Project Summary';
+                document.getElementById('materials-info-container').style.display = 'none';
             }
+            
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('preview-page').style.display = 'none';
             document.getElementById('upload-page').style.display = 'block';
@@ -962,23 +1034,40 @@
                 dataRows.forEach((row, index) => {
                     if (!row || row.length === 0) return;
                     tableHTML += `<tr>`;
-                    if (index === 0) tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
-                    else if (index === 1) {
+                    if (index === 0) {
+                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
+                    } else if (index === 1) {
                         tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td><td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; vertical-align: middle; background: #ffffff; width: 160px;"><img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 140px; height: auto;"></td>`;
                     } else if (index === 2) {
                         tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
-                    } else if (index === 3) tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
-                    else if (index === 4) row.forEach(cell => { tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`; });
-                    else {
+                    } else if (index === 3) {
+                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
+                    } else if (index === 4) {
+                        if (row[0] === "Category") {
+                            // Column Headers (Colspan 4 for Category, Colspan 1 for Amount)
+                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[0]}</th>`;
+                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[4]}</th>`;
+                        } else {
+                            row.forEach(cell => { tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`; });
+                        }
+                    } else {
                         let isFooter = (String(row[0]).toLowerCase().includes('selling price') || String(row[0]).toLowerCase().includes('discount') || String(row[0]).toLowerCase().includes('grand total'));
                         if (isFooter) {
                             let val = parseFloat(row[4]); val = isNaN(val) ? row[4] : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                             tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${row[0]}</th><th style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${val}</th>`;
                         } else {
-                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
-                            for(let i=1; i<5; i++) {
-                                let val = parseFloat(row[i]); val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                                tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff;">${val}</td>`;
+                            let isKitchenData = (dataRows[4] && dataRows[4][0] === "Category");
+                            if (isKitchenData) {
+                                // Data Rows: Colspan 4, Left Align! 
+                                tableHTML += `<td colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: left; background: #ffffff; font-weight: bold; color: #000000;">${row[0]}</td>`;
+                                let val = parseFloat(row[4]); val = isNaN(val) ? (row[4] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff; color: #000000;">${val}</td>`;
+                            } else {
+                                tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
+                                for(let i=1; i<5; i++) {
+                                    let val = parseFloat(row[i]); val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                    tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff;">${val}</td>`;
+                                }
                             }
                         }
                     }
@@ -1025,7 +1114,6 @@
         let globalDesigners = [];
         let globalAdmins = [];
 
-        // 1. Fetch data when page loads
         function initStorage() {
             fetch(REPORT_API_URL, {
                 method: 'POST',
@@ -1048,7 +1136,6 @@
             });
         }
 
-        // 2. Push data back to Google Sheet when Admins change things
         function syncDataToSheet() {
             const btn = document.getElementById('admin-sync-btn');
             if(btn) { btn.innerText = "Syncing to Google Sheets..."; btn.style.color = "var(--brand-orange)"; }
