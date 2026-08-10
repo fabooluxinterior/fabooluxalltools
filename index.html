@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faboolux Production Tool</title>
     
+    <!-- Include html2pdf.js for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <!-- Import Modern Premium Font -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -258,11 +261,11 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             text-align: center;
             width: 100%;
-            max-width: 500px;
+            max-width: 650px;
             animation: fadeIn 0.5s ease forwards;
             position: relative;
             overflow: hidden;
-            margin-top: 50px;
+            margin-top: 30px;
         }
         
         .preview-container {
@@ -304,7 +307,7 @@
         }
         .action-button:hover { background: #e2e8f0; }
 
-        #upload-page, #preview-page { display: none; }
+        #upload-page, #preview-page, #checklist-page { display: none; }
         
         .upload-area {
             border: 2px dashed #444;
@@ -331,6 +334,184 @@
             transition: all 0.2s;
         }
         .file-label:hover { background: #e2e8f0; }
+
+        /* Checklist Specific Styles */
+        .input-group { margin-bottom: 20px; text-align: left; max-width: 550px; margin-left: auto; margin-right: auto; }
+        .input-group label {
+            display: block; font-size: 13px; color: var(--text-muted);
+            margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .report-input {
+            width: 100%; padding: 12px 15px; border-radius: 10px;
+            background: #0d0e11; border: 1px solid #333; color: #fff;
+            font-family: inherit; font-size: 14px; box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .report-input:focus { outline: none; border-color: var(--brand-orange); }
+
+        .submit-btn {
+            color: #fff; border: none;
+            width: 100%; padding: 14px; border-radius: 12px;
+            font-family: inherit; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; margin-top: 10px;
+        }
+        .btn-primary { background: var(--brand-orange); max-width: 550px;}
+        .btn-primary:hover:not(:disabled) { background: #c2410c; }
+        
+        .action-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .btn-corrected {
+            background: var(--brand-orange);
+            color: white;
+            flex: 1;
+            max-width: 250px;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: inherit; font-size: 16px; font-weight: 600;
+            border: none; cursor: pointer; transition: 0.2s;
+        }
+        .btn-corrected:hover { background: #c2410c; }
+
+        .btn-not-required {
+            background: transparent;
+            color: var(--danger);
+            flex: 1;
+            max-width: 250px;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: inherit; font-size: 16px; font-weight: 600;
+            border: 2px solid var(--danger); cursor: pointer; transition: 0.2s;
+        }
+        .btn-not-required:hover { background: rgba(239, 68, 68, 0.1); }
+
+        .back-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: color 0.2s;
+            padding: 10px;
+        }
+        .back-btn:hover:not(:disabled) { color: #ffffff; }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .text-section { 
+            text-align: center; 
+            max-width: 550px;
+            margin-bottom: 20px;
+        }
+        .text-section h2 { 
+            font-size: 24px; 
+            line-height: 1.4; 
+            color: #ffffff;
+        }
+
+        .animation-section {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90px;
+        }
+
+        .clipboard-svg {
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 10px 15px rgba(232, 93, 34, 0.15));
+        }
+
+        .cl-line {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawLine 2s ease infinite;
+        }
+        .cl-line-1 { animation-delay: 0s; }
+        .cl-line-2 { animation-delay: 0.4s; }
+        .cl-line-3 { animation-delay: 0.8s; }
+
+        .cl-check {
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+            animation: drawCheck 2s ease infinite;
+        }
+        .cl-check-1 { animation-delay: 0.2s; }
+        .cl-check-2 { animation-delay: 0.6s; }
+        .cl-check-3 { animation-delay: 1.0s; }
+
+        @keyframes drawLine {
+            0% { stroke-dashoffset: 60; opacity: 0; }
+            30% { opacity: 1; }
+            70% { stroke-dashoffset: 0; opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 0.4; }
+        }
+
+        @keyframes drawCheck {
+            0% { stroke-dashoffset: 20; opacity: 0; }
+            30% { opacity: 1; }
+            70% { stroke-dashoffset: 0; opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 0.4; }
+        }
+
+        .print-document {
+            background: #ffffff;
+            color: #000000;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px 40px; 
+            box-sizing: border-box;
+            margin: 0 auto 30px;
+            text-align: center; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-family: Arial, sans-serif;
+        }
+
+        .print-header {
+            font-size: 20px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            margin: 0 auto 12px auto; 
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e85d22;
+            display: inline-block; 
+        }
+
+        .project-details-box {
+            background: #f8fafc; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 6px; 
+            padding: 10px 15px; 
+            margin: 0 auto 15px auto; 
+            font-size: 13px; 
+            line-height: 1.6;
+            color: #0f172a;
+            max-width: 600px; 
+        }
+
+        .print-table {
+            width: 100%; 
+            table-layout: fixed; 
+            border-collapse: collapse; 
+            font-size: 12.5px;
+            text-align: left; 
+        }
 
         /* 🔽 INFO ACCORDION STYLES 🔽 */
         .info-accordion {
@@ -383,19 +564,6 @@
             background: #141519;
             border-top: 1px dashed #333;
         }
-
-        .back-btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: inherit;
-            margin-top: 15px;
-            transition: color 0.2s;
-        }
-        .back-btn:hover { color: #ffffff; }
 
         .spinner {
             display: none;
@@ -526,7 +694,6 @@
             font-size: 28px; cursor: pointer; line-height: 1; transition: 0.2s;
         }
         .close-modal-btn:hover { color: #fff; }
-        .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label {
             display: block; font-size: 13px; color: var(--text-muted);
             margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
@@ -565,17 +732,8 @@
             margin-bottom: 10px; stroke: var(--brand-orange);
         }
 
-        .submit-btn {
-            color: #fff; border: none;
-            width: 100%; padding: 14px; border-radius: 12px;
-            font-family: inherit; font-size: 15px; font-weight: 600;
-            cursor: pointer; transition: 0.2s; margin-top: 10px;
-        }
         .btn-danger { background: var(--danger); }
         .btn-danger:hover:not(:disabled) { background: #dc2626; }
-        .btn-primary { background: var(--brand-orange); }
-        .btn-primary:hover:not(:disabled) { background: #c2410c; }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         /* Admin Dashboard Lists */
         .admin-section {
@@ -608,22 +766,19 @@
             font-weight: 500;
             letter-spacing: 1px;
             text-transform: uppercase;
-            /* Glossy smooth transition effect */
             background: linear-gradient(110deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.1) 100%);
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
             animation: shine 3s linear infinite;
-            opacity: 0.3; /* Minimum opacity */
+            opacity: 0.3;
             z-index: 1000;
-            pointer-events: none; /* Allows clicking through it */
+            pointer-events: none;
         }
 
         @keyframes shine {
-            to {
-                background-position: 200% center;
-            }
+            to { background-position: 200% center; }
         }
 
         @media print {
@@ -650,7 +805,7 @@
 
     <!-- 🌟 TOP NAVIGATION -->
     <header class="top-nav">
-        <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo">
+        <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo">
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('designers')">For Designers</button>
             <button class="tab-btn" onclick="switchTab('rsm')">For RSM</button>
@@ -754,7 +909,7 @@
                     <li><span class="num">3</span> Perform final quality check before generation.</li>
                 </ul>
                 <div style="flex-grow: 1;"></div>
-                <button class="get-started-btn" onclick="openComingSoonModal()">
+                <button class="get-started-btn" onclick="selectTool('checklist')">
                     Open Checklist 
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </button>
@@ -827,7 +982,95 @@
         <button class="back-btn" onclick="showHomePage()">← Return to Dashboard</button>
     </div>
 
-    <!-- 📄 PREVIEW & PRINT PAGE -->
+    <!-- 📋 CHECKLIST WIZARD & PREVIEW PAGE -->
+    <div id="checklist-page" class="container" style="max-width: 750px;">
+        <!-- View 0: Details Intake Form -->
+        <div id="intro-view">
+            <div class="brand-badge">Setup</div>
+            <h2 style="margin-bottom: 25px;">Project Details</h2>
+            
+            <div class="input-group">
+                <label for="input-project">Project Name</label>
+                <input type="text" id="input-project" class="report-input" placeholder="e.g. 0772-ASIF" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="input-designer">Designer Name</label>
+                <input type="text" id="input-designer" class="report-input" placeholder="e.g. SRUTHIL" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="input-date">Date</label>
+                <input type="date" id="input-date" class="report-input" required>
+            </div>
+            
+            <button class="submit-btn btn-primary" onclick="startChecklist()" style="max-width: 550px; margin: 10px auto; display: block;">Start Checklist</button>
+            <button class="back-btn" style="margin-top: 15px;" onclick="showHomePage()">← Return to Dashboard</button>
+        </div>
+
+        <!-- View 1: Question Wizard -->
+        <div id="question-view" style="display: none;">
+            <div class="brand-badge" id="progress-text">Question 1 of 20</div>
+            
+            <div class="content-wrapper">
+                <div class="animation-section">
+                    <svg class="clipboard-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="25" width="60" height="70" rx="6" fill="#1e2028" stroke="#2a2b30" stroke-width="3"/>
+                        <rect x="38" y="18" width="24" height="12" rx="3" fill="#e85d22"/>
+                        <circle cx="50" cy="24" r="3" fill="#0b0c10"/>
+                        
+                        <rect x="28" y="42" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
+                        <path class="cl-check cl-check-1" d="M30 47L33 50L38 43" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line class="cl-line cl-line-1" x1="43" y1="47" x2="72" y2="47" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+
+                        <rect x="28" y="60" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
+                        <path class="cl-check cl-check-2" d="M30 65L33 68L38 61" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line class="cl-line cl-line-2" x1="43" y1="65" x2="68" y2="65" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+
+                        <rect x="28" y="78" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
+                        <path class="cl-check cl-check-3" d="M30 83L33 86L38 79" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line class="cl-line cl-line-3" x1="43" y1="83" x2="62" y2="83" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="text-section">
+                    <h2 id="question-text">Loading question...</h2>
+                </div>
+            </div>
+            
+            <div class="action-row">
+                <button class="btn-corrected" onclick="recordAnswer('Yes, Corrected')">Yes, Corrected</button>
+                <button class="btn-not-required" onclick="recordAnswer('Not Required')">Not Required</button>
+            </div>
+            
+            <button class="back-btn" id="back-btn" onclick="goBack()">← Back to Previous</button>
+        </div>
+
+        <!-- View 2: Summary / PDF Preview -->
+        <div id="summary-view" style="display: none; width: 100%;">
+            <div id="printable-area" class="print-document">
+                <h2 class="print-header">Faboolux Project checklist</h2>
+                
+                <div class="project-details-box">
+                    <div><strong>Project:</strong> <span id="out-project"></span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Designer:</strong> <span id="out-designer"></span></div>
+                    <div><strong>Date:</strong> <span id="out-date"></span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Report Time:</strong> <span id="out-time"></span></div>
+                </div>
+
+                <table class="print-table">
+                    <tbody id="summary-table-body">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="max-width: 400px; margin: 0 auto; text-align: center;">
+                <div id="pdf-status-text" style="color: var(--brand-orange); font-size: 14px; font-weight: 500; margin-bottom: 12px;">Generating PDF automatically...</div>
+                <button class="back-btn" style="margin-top: 5px;" onclick="resetChecklist()">← Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📄 PREVIEW & PRINT PAGE FOR OTHER TOOLS -->
     <div id="preview-page" class="container preview-container">
         <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <div style="text-align: left;">
@@ -847,23 +1090,6 @@
         </div>
     </div>
 
-    <!-- 🚧 0. COMING SOON MODAL -->
-    <div id="coming-soon-modal" class="modal-overlay" style="display: none;">
-        <div class="report-modal-content" style="text-align: center; padding: 40px 30px;">
-            <div style="margin-bottom: 20px;">
-                <div class="card-icon-box" style="margin: 0 auto; width: 70px; height: 70px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 32px; height: 32px;">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                </div>
-            </div>
-            <h3 style="color: #ffffff; font-size: 22px; margin-bottom: 10px;">Working Under Process</h3>
-            <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.5;">The Project Checklist feature is currently in development. It will be added soon in the full code release.</p>
-            <button class="submit-btn btn-primary" onclick="closeComingSoonModal()">Got it!</button>
-        </div>
-    </div>
-
     <!-- 🚨 1. REPORT ISSUE MODAL -->
     <div id="report-issue-modal" class="modal-overlay" style="display: none;">
         <div class="report-modal-content">
@@ -879,7 +1105,6 @@
                 <label>Designer Name</label>
                 <select id="report-designer-name" class="report-input">
                     <option value="">Select Designer</option>
-                    <!-- Populated by JS -->
                 </select>
             </div>
             
@@ -932,9 +1157,7 @@
             <!-- Manage Designers -->
             <div class="admin-section">
                 <h4>Manage Designers</h4>
-                <ul class="admin-list" id="admin-designer-list">
-                    <!-- Populated by JS -->
-                </ul>
+                <ul class="admin-list" id="admin-designer-list"></ul>
                 <div class="add-flex">
                     <input type="text" id="new-designer-name" class="report-input admin-input" placeholder="New Designer Name">
                     <button class="submit-btn btn-primary" onclick="addDesigner()">Add</button>
@@ -944,9 +1167,7 @@
             <!-- Manage Admins -->
             <div class="admin-section">
                 <h4>Manage Admins</h4>
-                <ul class="admin-list" id="admin-users-list">
-                    <!-- Populated by JS -->
-                </ul>
+                <ul class="admin-list" id="admin-users-list"></ul>
                 <div class="add-flex">
                     <input type="email" id="new-admin-email" class="report-input admin-input" placeholder="Email">
                     <input type="password" id="new-admin-pass" class="report-input admin-input" placeholder="Password">
@@ -994,7 +1215,19 @@
         function selectTool(toolName) {
             currentTool = toolName;
             
-            // Adjust title, badges, and toggle the info box visibility for materials tool only
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('preview-page').style.display = 'none';
+            document.getElementById('upload-page').style.display = 'none';
+            document.getElementById('checklist-page').style.display = 'none';
+
+            if(toolName === 'checklist') {
+                document.getElementById('checklist-page').style.display = 'block';
+                resetChecklistState();
+                return;
+            }
+
+            document.getElementById('upload-page').style.display = 'block';
+            
             if(toolName === 'accessories') {
                 document.getElementById('upload-badge').innerText = 'Accessories';
                 document.getElementById('upload-title').innerText = 'Extract Accessories';
@@ -1009,15 +1242,13 @@
                 document.getElementById('materials-info-container').style.display = 'none';
             }
             
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('preview-page').style.display = 'none';
-            document.getElementById('upload-page').style.display = 'block';
             resetStatus();
         }
 
         function showHomePage() {
             document.getElementById('upload-page').style.display = 'none';
             document.getElementById('preview-page').style.display = 'none';
+            document.getElementById('checklist-page').style.display = 'none';
             document.getElementById('home-page').style.display = 'flex';
         }
 
@@ -1088,7 +1319,7 @@
                     let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${displayRoom}</h3><table class="acc-table"><thead><tr><th>Item Name</th><th>Specification</th><th style="text-align:center;">Qty</th><th style="text-align:center;">Image</th></tr></thead><tbody>`;
                     items.forEach(row => {
                         let imgTag = parseImage(row[4]) || '<span style="color:#475569; font-size:12px;">No Image</span>';
-                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[1] || ''}</strong></td><td class="spec-text">${row[2] || ''}</td><td style="text-align:center; font-weight:600; color:#fff;">${row[3] || ''}</td><td class="image-cell"><div class="image-wrapper">${imgTag}</div></td></tr>`;
+                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[1] || ''}</strong></td><td class="spec-text">${row[2] || ''}</td><td style="text-align:center; font-weight:600; color:#fff;">${row[3] || ''}</td><td style="image-cell"><div class="image-wrapper">${imgTag}</div></td></tr>`;
                     });
                     container.innerHTML += tableHTML + `</tbody></table></div>`;
                 }
@@ -1125,7 +1356,6 @@
                         tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
                     } else if (index === 4) {
                         if (row[0] === "Category") {
-                            // Column Headers (Colspan 4 for Category, Colspan 1 for Amount)
                             tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[0]}</th>`;
                             tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[4]}</th>`;
                         } else {
@@ -1139,7 +1369,6 @@
                         } else {
                             let isKitchenData = (dataRows[4] && dataRows[4][0] === "Category");
                             if (isKitchenData) {
-                                // Data Rows: Colspan 4, Left Align! 
                                 tableHTML += `<td colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: left; background: #ffffff; font-weight: bold; color: #000000;">${row[0]}</td>`;
                                 let val = parseFloat(row[4]); val = isNaN(val) ? (row[4] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                                 tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff; color: #000000;">${val}</td>`;
@@ -1184,6 +1413,151 @@
             })
             .catch(error => {
                 document.getElementById('spinner').style.display = 'none'; const statusEl = document.getElementById('status'); statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ ${error.message}`;
+            });
+        }
+
+
+        // ==========================================
+        // ✅ CHECKLIST LOGIC & QUESTIONS
+        // ==========================================
+        const questions = [
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>SENSYS W90 Corner Hinges</mark> for blind corner units" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>TH-52 hinges</mark> for L corner units" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>16 Crank</mark> for inset shutters" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>9.5 Crank</mark> for half overlay shutters" },
+            { text: "Match <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Shutters and Drawers fascia</mark> properly" },
+            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Core materials</mark> properly (Eg:-12 For 12mm thickness, 16 for 16mm thickness)" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter finish laminats</mark> only for shutter or shutter finish panels" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish lamiantes</mark> only for carcass and carcass panels" },
+            { text: "Check <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter opening direction</mark>" },
+            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Grooved bottom panels for profile lights</mark> (Replace defualt bottom panel to grooved panel)" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>20MM Gap</mark> between shutter and inside shlef" },
+            { text: "Use proper shutters (<mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Lift up, Flap down, G profile-bottom top</mark>)" },
+            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Counter top support panel</mark> above the cabinets (Kitchen)" },
+            { text: "Don't match finishes with <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>OSL panels</mark>" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>80MM Gap</mark> between shutter and shelf in wardrobe with drawer unit" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>130MM Gap</mark> between sliding door and shlef (Aristo and Hettich)" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>BWP</mark> For all vanity units" },
+            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Drawer channels</mark> properly" },
+            { text: "Make <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition</mark> using <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition panels</mark>" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish</mark> for wardrobe internal drawer fascia" }
+        ];
+
+        let currentIndex = 0;
+        let answers = []; 
+        let projectDetails = {};
+
+        function resetChecklistState() {
+            currentIndex = 0;
+            answers = [];
+            document.getElementById('input-date').valueAsDate = new Date();
+            document.getElementById('intro-view').style.display = 'block';
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('summary-view').style.display = 'none';
+        }
+
+        function resetChecklist() {
+            resetChecklistState();
+        }
+
+        function startChecklist() {
+            const proj = document.getElementById('input-project').value.trim();
+            const des = document.getElementById('input-designer').value.trim();
+            const date = document.getElementById('input-date').value;
+
+            if(!proj || !des || !date) {
+                alert("Please fill in all project details before starting.");
+                return;
+            }
+
+            projectDetails = { project: proj, designer: des, date: date };
+            document.getElementById('intro-view').style.display = 'none';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            document.getElementById('question-text').innerHTML = questions[currentIndex].text;
+            document.getElementById('progress-text').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('back-btn').disabled = (currentIndex === 0);
+            document.getElementById('question-view').style.display = 'block';
+        }
+
+        function recordAnswer(answer) {
+            answers[currentIndex] = answer;
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showSummary();
+            }
+        }
+
+        function goBack() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function showSummary() {
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('summary-view').style.display = 'block';
+            
+            document.getElementById('out-project').innerText = projectDetails.project;
+            document.getElementById('out-designer').innerText = projectDetails.designer;
+            document.getElementById('out-date').innerText = projectDetails.date;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('out-time').innerText = timeString;
+
+            const summaryTable = document.getElementById('summary-table-body');
+            summaryTable.innerHTML = ''; 
+
+            questions.forEach((q, index) => {
+                const tr = document.createElement('tr');
+                const ans = answers[index];
+                
+                let iconHtml = '';
+                let tdStyle = 'padding: 6.5px 0; border-bottom: 1px solid #f1f5f9; vertical-align: top; line-height: 1.4;';
+                let textStyle = 'color: #0f172a;';
+
+                if (ans === 'Yes, Corrected') {
+                    iconHtml = `<td style="width: 30px; text-align: left; color: #10b981; font-size: 16px; font-weight: bold; ${tdStyle}">&#10003;</td>`;
+                } else if (ans === 'Not Required') {
+                    iconHtml = `<td style="width: 30px; text-align: left; color: #ef4444; font-size: 16px; font-weight: bold; ${tdStyle}">&#10007;</td>`;
+                    textStyle = 'color: #333; text-decoration: line-through; background-color: #fef08a; padding: 2px 4px; border-radius: 3px;';
+                }
+
+                let cleanText = q.text.replace(/<mark[^>]*>/g, '').replace(/<\/mark>/g, '');
+                tr.innerHTML = `${iconHtml}<td style="${tdStyle}"><span style="${textStyle}">${cleanText}</span></td>`;
+                summaryTable.appendChild(tr);
+            });
+
+            // Automatically trigger PDF download as soon as summary opens
+            setTimeout(() => {
+                triggerAutoDownloadPDF();
+            }, 400);
+        }
+
+        function triggerAutoDownloadPDF() {
+            const statusText = document.getElementById('pdf-status-text');
+            if(statusText) statusText.innerText = "Generating and downloading PDF automatically...";
+
+            const element = document.getElementById('printable-area');
+            const opt = {
+                margin:       [8, 10, 0, 10], 
+                filename:     `${projectDetails.project.replace(/\s+/g, '_')}_Checklist.pdf`,
+                image:        { type: 'jpeg', quality: 0.95 },
+                html2canvas:  { scale: 1.5, logging: false }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                if(statusText) statusText.innerText = "✅ PDF downloaded successfully!";
+            }).catch(err => {
+                console.error("PDF auto-download failed:", err);
+                if(statusText) statusText.innerText = "❌ Auto-download failed. Please check permissions.";
             });
         }
 
@@ -1246,16 +1620,12 @@
             });
         }
 
-        // Run immediately
         initStorage();
 
 
         // ==========================================
         // ✅ REPORT ISSUE & ADMIN LOGIC
         // ==========================================
-
-        function openComingSoonModal() { document.getElementById('coming-soon-modal').style.display = 'flex'; }
-        function closeComingSoonModal() { document.getElementById('coming-soon-modal').style.display = 'none'; }
 
         function openReportModal() { document.getElementById('report-issue-modal').style.display = 'flex'; }
         function closeReportModal() { document.getElementById('report-issue-modal').style.display = 'none'; }
