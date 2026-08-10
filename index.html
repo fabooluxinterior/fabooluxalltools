@@ -102,13 +102,20 @@
             animation: fadeIn 0.5s ease forwards;
         }
 
+        /* Set to 3 Columns using Grid */
         .cards-container {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Exactly 3 equal cards per row */
             gap: 20px;
-            justify-content: center;
-            flex-wrap: nowrap;
             width: 100%;
+            max-width: 1200px;
             margin-top: 20px;
+        }
+
+        /* Center the single RSM card specifically */
+        #rsm-cards {
+            display: flex;
+            justify-content: center;
         }
 
         .action-card {
@@ -116,8 +123,8 @@
             border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 35px 25px;
-            flex: 1;
-            max-width: 100%; 
+            width: 100%;
+            box-sizing: border-box;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
@@ -132,15 +139,18 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(232, 93, 34, 0.05);
         }
 
-        @media (max-width: 900px) {
+        /* Responsive Grid Adjustments */
+        @media (max-width: 1024px) {
             .cards-container {
-                flex-direction: column;
-                align-items: center;
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+                max-width: 800px;
             }
-            .action-card {
-                width: 100%;
-                max-width: 500px;
-                flex: none;
+        }
+
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr; /* 1 column on phones */
+                max-width: 450px;
             }
         }
 
@@ -726,11 +736,34 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </button>
             </div>
+            
+            <!-- Tool 04 -->
+            <div class="action-card">
+                <div class="card-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                    </svg>
+                </div>
+                <div class="tool-label">Tool 04</div>
+                <h3>Project Checklist</h3>
+                <div class="card-divider"></div>
+                <ul class="custom-list">
+                    <li><span class="num">1</span> Select the project requirements and milestones.</li>
+                    <li><span class="num">2</span> Validate design elements across all required phases.</li>
+                    <li><span class="num">3</span> Perform final quality check before generation.</li>
+                </ul>
+                <div style="flex-grow: 1;"></div>
+                <button class="get-started-btn" onclick="openComingSoonModal()">
+                    Open Checklist 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
         </div>
 
         <!-- RSM Cards -->
         <div class="cards-container" id="rsm-cards" style="display: none;">
-            <div class="action-card" style="max-width: 400px; flex: none;">
+            <div class="action-card" style="max-width: 500px; margin: 0 auto;">
                 <div class="card-icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -748,6 +781,7 @@
                     <li><span class="num">2</span> Select requirements from available options.</li>
                     <li><span class="num">3</span> Submit to the dashboard.</li>
                 </ul>
+                <div style="flex-grow: 1;"></div>
                 <button class="get-started-btn" onclick="window.location.href='https://fabooluxinterior.github.io/requirement-collector/'">
                     Get extracted details 
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
@@ -810,6 +844,23 @@
         <div class="tables-wrapper" id="tables-container"></div>
         <div class="no-print" style="margin-top: 20px;">
             <button class="back-btn" onclick="showHomePage()">← Process Another File</button>
+        </div>
+    </div>
+
+    <!-- 🚧 0. COMING SOON MODAL -->
+    <div id="coming-soon-modal" class="modal-overlay" style="display: none;">
+        <div class="report-modal-content" style="text-align: center; padding: 40px 30px;">
+            <div style="margin-bottom: 20px;">
+                <div class="card-icon-box" style="margin: 0 auto; width: 70px; height: 70px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 32px; height: 32px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <h3 style="color: #ffffff; font-size: 22px; margin-bottom: 10px;">Working Under Process</h3>
+            <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.5;">The Project Checklist feature is currently in development. It will be added soon in the full code release.</p>
+            <button class="submit-btn btn-primary" onclick="closeComingSoonModal()">Got it!</button>
         </div>
     </div>
 
@@ -917,7 +968,7 @@
         function switchTab(tab) {
             const tabs = document.querySelectorAll('.tab-btn:not([onclick="openReportModal()"])');
             if(tab === 'designers') {
-                document.getElementById('designers-cards').style.display = 'flex';
+                document.getElementById('designers-cards').style.display = 'grid';
                 document.getElementById('rsm-cards').style.display = 'none';
                 tabs[0].classList.add('active');
                 tabs[1].classList.remove('active');
@@ -1202,6 +1253,9 @@
         // ==========================================
         // ✅ REPORT ISSUE & ADMIN LOGIC
         // ==========================================
+
+        function openComingSoonModal() { document.getElementById('coming-soon-modal').style.display = 'flex'; }
+        function closeComingSoonModal() { document.getElementById('coming-soon-modal').style.display = 'none'; }
 
         function openReportModal() { document.getElementById('report-issue-modal').style.display = 'flex'; }
         function closeReportModal() { document.getElementById('report-issue-modal').style.display = 'none'; }
