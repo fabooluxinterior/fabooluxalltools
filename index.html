@@ -1,1751 +1,1748 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faboolux Production Tool</title>
-    
-    <!-- Favicon added here -->
-    <link rel="icon" type="image/webp" href="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp">
-    
-    <!-- Include html2pdf.js for client-side PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
-    <!-- Import Modern Premium Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* 🎨 PREMIUM DARK & BRAND ORANGE THEME */
-        :root {
-            --bg-color: #0b0c10;
-            --card-bg: #141519;
-            --card-border: #26272c;
-            --brand-orange: #e85d22;
-            --orange-glow: rgba(232, 93, 34, 0.15);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --primary: #e85d22;
-            --success: #10b981;
-            --danger: #ef4444;
-            --border: #2a2b30;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faboolux Production Tool</title>
+    
+    <!-- Include html2pdf.js for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Import Modern Premium Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 🎨 PREMIUM DARK & BRAND ORANGE THEME */
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #141519;
+            --card-border: #26272c;
+            --brand-orange: #e85d22;
+            --orange-glow: rgba(232, 93, 34, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --primary: #e85d22;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #2a2b30;
+        }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 10% 50%, rgba(232, 93, 34, 0.03), transparent 30%),
-                radial-gradient(circle at 90% 20%, rgba(232, 93, 34, 0.04), transparent 30%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0 20px 40px;
-            box-sizing: border-box;
-            color: var(--text-main);
-        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 50%, rgba(232, 93, 34, 0.03), transparent 30%),
+                radial-gradient(circle at 90% 20%, rgba(232, 93, 34, 0.04), transparent 30%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0 20px 40px;
+            box-sizing: border-box;
+            color: var(--text-main);
+        }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
 
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1400px;
-            padding: 30px 0;
-            margin-bottom: 20px;
-        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 30px 0;
+            margin-bottom: 20px;
+        }
 
-        .brand-logo {
-            height: 80px;
-            width: auto;
-            object-fit: contain;
-        }
+        .brand-logo {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+        }
 
-        .nav-tabs {
-            display: flex;
-            gap: 12px;
-        }
+        .nav-tabs {
+            display: flex;
+            gap: 12px;
+        }
 
-        .tab-btn {
-            background: transparent;
-            color: #ffffff;
-            border: 1px solid #444;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 500;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
+        .tab-btn {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #444;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
 
-        .tab-btn:hover { border-color: #888; }
-        .tab-btn.active {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            font-weight: 600;
-        }
+        .tab-btn:hover { border-color: #888; }
+        .tab-btn.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
 
-        #home-page {
-            width: 100%;
-            max-width: 1400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeIn 0.5s ease forwards;
-        }
+        #home-page {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease forwards;
+        }
 
-        /* Set to 3 Columns using Grid */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Exactly 3 equal cards per row */
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 20px;
-        }
+        /* Set to 3 Columns using Grid */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Exactly 3 equal cards per row */
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
 
-        /* Center the single RSM card specifically */
-        #rsm-cards {
-            display: flex;
-            justify-content: center;
-        }
+        /* Center the single RSM card specifically */
+        #rsm-cards {
+            display: flex;
+            justify-content: center;
+        }
 
-        .action-card {
-            background: linear-gradient(160deg, #16171b 0%, #0d0e11 100%);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 35px 25px;
-            width: 100%;
-            box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            position: relative;
-            transition: all 0.3s ease;
-        }
+        .action-card {
+            background: linear-gradient(160deg, #16171b 0%, #0d0e11 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 35px 25px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            position: relative;
+            transition: all 0.3s ease;
+        }
 
-        .action-card:hover {
-            border-color: rgba(232, 93, 34, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(232, 93, 34, 0.05);
-        }
+        .action-card:hover {
+            border-color: rgba(232, 93, 34, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(232, 93, 34, 0.05);
+        }
 
-        /* Responsive Grid Adjustments */
-        @media (max-width: 1024px) {
-            .cards-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
-                max-width: 800px;
-            }
-        }
+        /* Responsive Grid Adjustments */
+        @media (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+                max-width: 800px;
+            }
+        }
 
-        @media (max-width: 768px) {
-            .cards-container {
-                grid-template-columns: 1fr; /* 1 column on phones */
-                max-width: 450px;
-            }
-        }
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr; /* 1 column on phones */
+                max-width: 450px;
+            }
+        }
 
-        .card-icon-box {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #1c1a15, #0b0c10);
-            border: 1px solid rgba(232, 93, 34, 0.3);
-            border-radius: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-            box-shadow: inset 0 0 15px rgba(232, 93, 34, 0.1);
-        }
+        .card-icon-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1c1a15, #0b0c10);
+            border: 1px solid rgba(232, 93, 34, 0.3);
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 15px rgba(232, 93, 34, 0.1);
+        }
 
-        .card-icon-box svg {
-            stroke: var(--brand-orange);
-            width: 28px;
-            height: 28px;
-        }
+        .card-icon-box svg {
+            stroke: var(--brand-orange);
+            width: 28px;
+            height: 28px;
+        }
 
-        .tool-label {
-            color: var(--brand-orange);
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
+        .tool-label {
+            color: var(--brand-orange);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
 
-        .action-card h3 {
-            font-size: 24px;
-            color: #ffffff;
-            margin: 0 0 15px 0;
-            font-weight: 600;
-        }
+        .action-card h3 {
+            font-size: 24px;
+            color: #ffffff;
+            margin: 0 0 15px 0;
+            font-weight: 600;
+        }
 
-        .card-divider {
-            height: 2px;
-            width: 40px;
-            background: var(--brand-orange);
-            margin-bottom: 25px;
-        }
+        .card-divider {
+            height: 2px;
+            width: 40px;
+            background: var(--brand-orange);
+            margin-bottom: 25px;
+        }
 
-        .custom-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 30px 0;
-            flex-grow: 1;
-        }
+        .custom-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            flex-grow: 1;
+        }
 
-        .custom-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 15px;
-            color: #d1d5db;
-            font-size: 14px;
-            line-height: 1.5;
-        }
+        .custom-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: #d1d5db;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-        .custom-list .num {
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            background: #111;
-            border: 1px solid rgba(232, 93, 34, 0.3);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--brand-orange);
-            font-size: 10px;
-            font-weight: 700;
-            box-shadow: 0 0 10px rgba(232, 93, 34, 0.1);
-            margin-top: 2px;
-        }
+        .custom-list .num {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            background: #111;
+            border: 1px solid rgba(232, 93, 34, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--brand-orange);
+            font-size: 10px;
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(232, 93, 34, 0.1);
+            margin-top: 2px;
+        }
 
-        .get-started-btn {
-            background: #ffffff;
-            color: #000000;
-            font-weight: 600;
-            font-size: 15px;
-            font-family: inherit;
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            transition: 0.2s;
-        }
+        .get-started-btn {
+            background: #ffffff;
+            color: #000000;
+            font-weight: 600;
+            font-size: 15px;
+            font-family: inherit;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            transition: 0.2s;
+        }
 
-        .get-started-btn:hover { background: #e2e8f0; }
-        .get-started-btn svg { width: 18px; height: 18px; stroke: #000000; }
+        .get-started-btn:hover { background: #e2e8f0; }
+        .get-started-btn svg { width: 18px; height: 18px; stroke: #000000; }
 
-        .container {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            width: 100%;
-            max-width: 650px;
-            animation: fadeIn 0.5s ease forwards;
-            position: relative;
-            overflow: hidden;
-            margin-top: 30px;
-        }
-        
-        .preview-container {
-            max-width: 1200px;
-            padding: 40px;
-            margin-top: 20px;
-        }
+        .container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 650px;
+            animation: fadeIn 0.5s ease forwards;
+            position: relative;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .preview-container {
+            max-width: 1200px;
+            padding: 40px;
+            margin-top: 20px;
+        }
 
-        .brand-badge {
-            display: inline-block;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: var(--brand-orange);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+        .brand-badge {
+            display: inline-block;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: var(--brand-orange);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-        h2, h3 { margin-top: 0; color: #ffffff; font-weight: 600; }
+        h2, h3 { margin-top: 0; color: #ffffff; font-weight: 600; }
 
-        .action-button {
-            background: #ffffff;
-            color: #000000;
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: inherit;
-            border: none;
-            margin: 10px;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .action-button:hover { background: #e2e8f0; }
+        .action-button {
+            background: #ffffff;
+            color: #000000;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            margin: 10px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-button:hover { background: #e2e8f0; }
 
-        #upload-page, #preview-page, #checklist-page { display: none; }
-        
-        .upload-area {
-            border: 2px dashed #444;
-            padding: 50px 20px;
-            border-radius: 16px;
-            margin: 25px 0;
-            background: #0d0e11;
-            transition: all 0.3s ease;
-        }
-        .upload-area:hover { border-color: var(--brand-orange); }
-        
-        input[type="file"] { display: none; }
-        .file-label {
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
-        }
-        .file-label:hover { background: #e2e8f0; }
+        #upload-page, #preview-page, #checklist-page { display: none; }
+        
+        .upload-area {
+            border: 2px dashed #444;
+            padding: 50px 20px;
+            border-radius: 16px;
+            margin: 25px 0;
+            background: #0d0e11;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover { border-color: var(--brand-orange); }
+        
+        input[type="file"] { display: none; }
+        .file-label {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .file-label:hover { background: #e2e8f0; }
 
-        /* Checklist Specific Styles */
-        .input-group { margin-bottom: 20px; text-align: left; max-width: 550px; margin-left: auto; margin-right: auto; }
-        .input-group label {
-            display: block; font-size: 13px; color: var(--text-muted);
-            margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .report-input {
-            width: 100%; padding: 12px 15px; border-radius: 10px;
-            background: #0d0e11; border: 1px solid #333; color: #fff;
-            font-family: inherit; font-size: 14px; box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-        .report-input:focus { outline: none; border-color: var(--brand-orange); }
+        /* Checklist Specific Styles */
+        .input-group { margin-bottom: 20px; text-align: left; max-width: 550px; margin-left: auto; margin-right: auto; }
+        .input-group label {
+            display: block; font-size: 13px; color: var(--text-muted);
+            margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .report-input {
+            width: 100%; padding: 12px 15px; border-radius: 10px;
+            background: #0d0e11; border: 1px solid #333; color: #fff;
+            font-family: inherit; font-size: 14px; box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .report-input:focus { outline: none; border-color: var(--brand-orange); }
 
-        .submit-btn {
-            color: #fff; border: none;
-            width: 100%; padding: 14px; border-radius: 12px;
-            font-family: inherit; font-size: 15px; font-weight: 600;
-            cursor: pointer; transition: 0.2s; margin-top: 10px;
-        }
-        .btn-primary { background: var(--brand-orange); max-width: 550px;}
-        .btn-primary:hover:not(:disabled) { background: #c2410c; }
-        
-        .action-row {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 30px;
-            margin-bottom: 25px;
-        }
-        
-        .btn-corrected {
-            background: var(--brand-orange);
-            color: white;
-            flex: 1;
-            max-width: 250px;
-            padding: 14px;
-            border-radius: 12px;
-            font-family: inherit; font-size: 16px; font-weight: 600;
-            border: none; cursor: pointer; transition: 0.2s;
-        }
-        .btn-corrected:hover { background: #c2410c; }
+        .submit-btn {
+            color: #fff; border: none;
+            width: 100%; padding: 14px; border-radius: 12px;
+            font-family: inherit; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; margin-top: 10px;
+        }
+        .btn-primary { background: var(--brand-orange); max-width: 550px;}
+        .btn-primary:hover:not(:disabled) { background: #c2410c; }
+        
+        .action-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .btn-corrected {
+            background: var(--brand-orange);
+            color: white;
+            flex: 1;
+            max-width: 250px;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: inherit; font-size: 16px; font-weight: 600;
+            border: none; cursor: pointer; transition: 0.2s;
+        }
+        .btn-corrected:hover { background: #c2410c; }
 
-        .btn-not-required {
-            background: transparent;
-            color: var(--danger);
-            flex: 1;
-            max-width: 250px;
-            padding: 14px;
-            border-radius: 12px;
-            font-family: inherit; font-size: 16px; font-weight: 600;
-            border: 2px solid var(--danger); cursor: pointer; transition: 0.2s;
-        }
-        .btn-not-required:hover { background: rgba(239, 68, 68, 0.1); }
+        .btn-not-required {
+            background: transparent;
+            color: var(--danger);
+            flex: 1;
+            max-width: 250px;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: inherit; font-size: 16px; font-weight: 600;
+            border: 2px solid var(--danger); cursor: pointer; transition: 0.2s;
+        }
+        .btn-not-required:hover { background: rgba(239, 68, 68, 0.1); }
 
-        .back-btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: inherit;
-            transition: color 0.2s;
-            padding: 10px;
-        }
-        .back-btn:hover:not(:disabled) { color: #ffffff; }
+        .back-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: color 0.2s;
+            padding: 10px;
+        }
+        .back-btn:hover:not(:disabled) { color: #ffffff; }
 
-        .content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        
-        .text-section { 
-            text-align: center; 
-            max-width: 550px;
-            margin-bottom: 20px;
-        }
-        .text-section h2 { 
-            font-size: 24px; 
-            line-height: 1.4; 
-            color: #ffffff;
-        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .text-section { 
+            text-align: center; 
+            max-width: 550px;
+            margin-bottom: 20px;
+        }
+        .text-section h2 { 
+            font-size: 24px; 
+            line-height: 1.4; 
+            color: #ffffff;
+        }
 
-        .animation-section {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 90px;
-        }
+        .animation-section {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90px;
+        }
 
-        .clipboard-svg {
-            width: 90px;
-            height: 90px;
-            filter: drop-shadow(0 10px 15px rgba(232, 93, 34, 0.15));
-        }
+        .clipboard-svg {
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 10px 15px rgba(232, 93, 34, 0.15));
+        }
 
-        .cl-line {
-            stroke-dasharray: 60;
-            stroke-dashoffset: 60;
-            animation: drawLine 2s ease infinite;
-        }
-        .cl-line-1 { animation-delay: 0s; }
-        .cl-line-2 { animation-delay: 0.4s; }
-        .cl-line-3 { animation-delay: 0.8s; }
+        .cl-line {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawLine 2s ease infinite;
+        }
+        .cl-line-1 { animation-delay: 0s; }
+        .cl-line-2 { animation-delay: 0.4s; }
+        .cl-line-3 { animation-delay: 0.8s; }
 
-        .cl-check {
-            stroke-dasharray: 20;
-            stroke-dashoffset: 20;
-            animation: drawCheck 2s ease infinite;
-        }
-        .cl-check-1 { animation-delay: 0.2s; }
-        .cl-check-2 { animation-delay: 0.6s; }
-        .cl-check-3 { animation-delay: 1.0s; }
+        .cl-check {
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+            animation: drawCheck 2s ease infinite;
+        }
+        .cl-check-1 { animation-delay: 0.2s; }
+        .cl-check-2 { animation-delay: 0.6s; }
+        .cl-check-3 { animation-delay: 1.0s; }
 
-        @keyframes drawLine {
-            0% { stroke-dashoffset: 60; opacity: 0; }
-            30% { opacity: 1; }
-            70% { stroke-dashoffset: 0; opacity: 1; }
-            100% { stroke-dashoffset: 0; opacity: 0.4; }
-        }
+        @keyframes drawLine {
+            0% { stroke-dashoffset: 60; opacity: 0; }
+            30% { opacity: 1; }
+            70% { stroke-dashoffset: 0; opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 0.4; }
+        }
 
-        @keyframes drawCheck {
-            0% { stroke-dashoffset: 20; opacity: 0; }
-            30% { opacity: 1; }
-            70% { stroke-dashoffset: 0; opacity: 1; }
-            100% { stroke-dashoffset: 0; opacity: 0.4; }
-        }
+        @keyframes drawCheck {
+            0% { stroke-dashoffset: 20; opacity: 0; }
+            30% { opacity: 1; }
+            70% { stroke-dashoffset: 0; opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 0.4; }
+        }
 
-        .print-document {
-            background: #ffffff;
-            color: #000000;
-            width: 100%;
-            max-width: 800px;
-            padding: 20px 40px; 
-            box-sizing: border-box;
-            margin: 0 auto 30px;
-            text-align: center; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            font-family: Arial, sans-serif;
-        }
+        .print-document {
+            background: #ffffff;
+            color: #000000;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px 40px; 
+            box-sizing: border-box;
+            margin: 0 auto 30px;
+            text-align: center; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-family: Arial, sans-serif;
+        }
 
-        .print-header {
-            font-size: 20px; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            margin: 0 auto 12px auto; 
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e85d22;
-            display: inline-block; 
-        }
+        .print-header {
+            font-size: 20px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            margin: 0 auto 12px auto; 
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e85d22;
+            display: inline-block; 
+        }
 
-        .project-details-box {
-            background: #f8fafc; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 6px; 
-            padding: 10px 15px; 
-            margin: 0 auto 15px auto; 
-            font-size: 13px; 
-            line-height: 1.6;
-            color: #0f172a;
-            max-width: 600px; 
-        }
+        .project-details-box {
+            background: #f8fafc; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 6px; 
+            padding: 10px 15px; 
+            margin: 0 auto 15px auto; 
+            font-size: 13px; 
+            line-height: 1.6;
+            color: #0f172a;
+            max-width: 600px; 
+        }
 
-        .print-table {
-            width: 100%; 
-            table-layout: fixed; 
-            border-collapse: collapse; 
-            font-size: 12.5px;
-            text-align: left; 
-        }
+        .print-table {
+            width: 100%; 
+            table-layout: fixed; 
+            border-collapse: collapse; 
+            font-size: 12.5px;
+            text-align: left; 
+        }
 
-        /* 🔽 INFO ACCORDION STYLES 🔽 */
-        .info-accordion {
-            background: #1a1b20;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            text-align: left;
-            overflow: hidden;
-        }
-        .info-accordion details {
-            border-bottom: 1px solid var(--border);
-        }
-        .info-accordion details:last-child {
-            border-bottom: none;
-        }
-        .info-accordion summary {
-            padding: 16px 20px;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            list-style: none; /* Hide default arrow */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-        }
-        .info-accordion summary:hover {
-            background: #222329;
-        }
-        .info-accordion summary::-webkit-details-marker {
-            display: none;
-        }
-        .info-accordion summary::after {
-            content: '+';
-            color: var(--brand-orange);
-            font-size: 20px;
-            font-weight: 400;
-        }
-        .info-accordion details[open] summary::after {
-            content: '−';
-        }
-        .info-accordion .info-content {
-            padding: 15px 20px;
-            color: var(--text-muted);
-            font-size: 13.5px;
-            line-height: 1.6;
-            background: #141519;
-            border-top: 1px dashed #333;
-        }
+        /* 🔽 INFO ACCORDION STYLES 🔽 */
+        .info-accordion {
+            background: #1a1b20;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-align: left;
+            overflow: hidden;
+        }
+        .info-accordion details {
+            border-bottom: 1px solid var(--border);
+        }
+        .info-accordion details:last-child {
+            border-bottom: none;
+        }
+        .info-accordion summary {
+            padding: 16px 20px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none; /* Hide default arrow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .info-accordion summary:hover {
+            background: #222329;
+        }
+        .info-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        .info-accordion summary::after {
+            content: '+';
+            color: var(--brand-orange);
+            font-size: 20px;
+            font-weight: 400;
+        }
+        .info-accordion details[open] summary::after {
+            content: '−';
+        }
+        .info-accordion .info-content {
+            padding: 15px 20px;
+            color: var(--text-muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+            background: #141519;
+            border-top: 1px dashed #333;
+        }
 
-        .spinner {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid #333;
-            border-top: 3px solid var(--brand-orange);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px auto;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #333;
+            border-top: 3px solid var(--brand-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px auto;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        #status-container { margin-top: 20px; min-height: 40px; }
-        #status { font-size: 15px; font-weight: 500; }
-        .loading-text { animation: pulse 1.5s infinite; color: var(--brand-orange) !important;}
+        #status-container { margin-top: 20px; min-height: 40px; }
+        #status { font-size: 15px; font-weight: 500; }
+        .loading-text { animation: pulse 1.5s infinite; color: var(--brand-orange) !important;}
 
-        .tables-wrapper {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-right: 10px;
-            margin-bottom: 20px;
-        }
-        .tables-wrapper::-webkit-scrollbar { width: 8px; }
-        .tables-wrapper::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
-        .tables-wrapper::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .tables-wrapper {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 20px;
+        }
+        .tables-wrapper::-webkit-scrollbar { width: 8px; }
+        .tables-wrapper::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
+        .tables-wrapper::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
-        .room-section {
-            margin-bottom: 40px;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            background: #1a1b20;
-            text-align: left;
-        }
-        .room-header {
-            background-color: #0d0e11;
-            color: var(--brand-orange);
-            padding: 16px 20px;
-            margin: 0;
-            text-align: left;
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
-        }
-        th, td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-        }
-        th {
-            background-color: #1a1b20;
-            color: #94a3b8;
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        tr:hover { background-color: #222329; }
-        tr:last-child td { border-bottom: none; }
-        
-        .item-img {
-            width: 60px; height: 60px; object-fit: contain; border-radius: 8px;
-            border: 1px solid #333; display: block; margin: auto; background: #fff;
-        }
-        .image-cell { text-align: center; vertical-align: middle; }
-        .image-wrapper { display: flex; align-items: center; justify-content: center; min-height: 70px; }
+        .room-section {
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: #1a1b20;
+            text-align: left;
+        }
+        .room-header {
+            background-color: #0d0e11;
+            color: var(--brand-orange);
+            padding: 16px 20px;
+            margin: 0;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        th {
+            background-color: #1a1b20;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        tr:hover { background-color: #222329; }
+        tr:last-child td { border-bottom: none; }
+        
+        .item-img {
+            width: 60px; height: 60px; object-fit: contain; border-radius: 8px;
+            border: 1px solid #333; display: block; margin: auto; background: #fff;
+        }
+        .image-cell { text-align: center; vertical-align: middle; }
+        .image-wrapper { display: flex; align-items: center; justify-content: center; min-height: 70px; }
 
-        .spec-text { white-space: pre-wrap; color: #cbd5e1; font-size: 13px; line-height: 1.5; }
-        
-        .finish-cell-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
+        .spec-text { white-space: pre-wrap; color: #cbd5e1; font-size: 13px; line-height: 1.5; }
+        
+        .finish-cell-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
 
-        /* 🚨 MODALS & FORMS (REPORT ISSUE & ADMIN) */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999;
-        }
-        .report-modal-content, .admin-modal-content {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            padding: 35px; border-radius: 20px; width: 90%; max-width: 450px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s ease forwards;
-        }
-        .admin-modal-content {
-            max-width: 550px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .admin-modal-content::-webkit-scrollbar { width: 6px; }
-        .admin-modal-content::-webkit-scrollbar-track { background: transparent; }
-        .admin-modal-content::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+        /* 🚨 MODALS & FORMS (REPORT ISSUE & ADMIN) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .report-modal-content, .admin-modal-content {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            padding: 35px; border-radius: 20px; width: 90%; max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease forwards;
+        }
+        .admin-modal-content {
+            max-width: 550px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .admin-modal-content::-webkit-scrollbar { width: 6px; }
+        .admin-modal-content::-webkit-scrollbar-track { background: transparent; }
+        .admin-modal-content::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
 
-        .report-modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px;
-        }
-        .report-modal-header h3 {
-            margin: 0; font-size: 22px; color: var(--danger);
-        }
-        .report-modal-header .header-actions {
-            display: flex; align-items: center; gap: 15px;
-        }
-        
-        .admin-link-btn {
-            background: rgba(255,255,255,0.1); border: 1px solid #444;
-            color: #fff; padding: 6px 12px; border-radius: 6px;
-            font-size: 12px; cursor: pointer; transition: 0.2s;
-            font-family: inherit; font-weight: 500;
-        }
-        .admin-link-btn:hover { background: rgba(255,255,255,0.2); border-color: #666; }
+        .report-modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px;
+        }
+        .report-modal-header h3 {
+            margin: 0; font-size: 22px; color: var(--danger);
+        }
+        .report-modal-header .header-actions {
+            display: flex; align-items: center; gap: 15px;
+        }
+        
+        .admin-link-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid #444;
+            color: #fff; padding: 6px 12px; border-radius: 6px;
+            font-size: 12px; cursor: pointer; transition: 0.2s;
+            font-family: inherit; font-weight: 500;
+        }
+        .admin-link-btn:hover { background: rgba(255,255,255,0.2); border-color: #666; }
 
-        .close-modal-btn {
-            background: none; border: none; color: var(--text-muted);
-            font-size: 28px; cursor: pointer; line-height: 1; transition: 0.2s;
-        }
-        .close-modal-btn:hover { color: #fff; }
-        .input-group label {
-            display: block; font-size: 13px; color: var(--text-muted);
-            margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .report-input {
-            width: 100%; padding: 12px 15px; border-radius: 10px;
-            background: #0d0e11; border: 1px solid #333; color: #fff;
-            font-family: inherit; font-size: 14px; box-sizing: border-box;
-        }
-        
-        select.report-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px top 50%;
-            background-size: 12px auto;
-        }
-        
-        .report-input:focus { outline: none; border-color: var(--danger); }
-        .admin-input:focus { outline: none; border-color: var(--brand-orange); }
-        
-        .report-textarea { resize: vertical; min-height: 100px; }
-        
-        .media-upload-window {
-            width: 100%; padding: 30px 10px; background: #0d0e11; 
-            border: 2px dashed #444; border-radius: 12px; color: #94a3b8;
-            cursor: pointer; text-align: center; transition: all 0.2s ease;
-            box-sizing: border-box;
-        }
-        .media-upload-window:hover {
-            border-color: var(--brand-orange);
-            background: rgba(232, 93, 34, 0.05);
-            color: #fff;
-        }
-        .media-upload-window svg {
-            margin-bottom: 10px; stroke: var(--brand-orange);
-        }
+        .close-modal-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 28px; cursor: pointer; line-height: 1; transition: 0.2s;
+        }
+        .close-modal-btn:hover { color: #fff; }
+        .input-group label {
+            display: block; font-size: 13px; color: var(--text-muted);
+            margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .report-input {
+            width: 100%; padding: 12px 15px; border-radius: 10px;
+            background: #0d0e11; border: 1px solid #333; color: #fff;
+            font-family: inherit; font-size: 14px; box-sizing: border-box;
+        }
+        
+        select.report-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
+        }
+        
+        .report-input:focus { outline: none; border-color: var(--danger); }
+        .admin-input:focus { outline: none; border-color: var(--brand-orange); }
+        
+        .report-textarea { resize: vertical; min-height: 100px; }
+        
+        .media-upload-window {
+            width: 100%; padding: 30px 10px; background: #0d0e11; 
+            border: 2px dashed #444; border-radius: 12px; color: #94a3b8;
+            cursor: pointer; text-align: center; transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .media-upload-window:hover {
+            border-color: var(--brand-orange);
+            background: rgba(232, 93, 34, 0.05);
+            color: #fff;
+        }
+        .media-upload-window svg {
+            margin-bottom: 10px; stroke: var(--brand-orange);
+        }
 
-        .btn-danger { background: var(--danger); }
-        .btn-danger:hover:not(:disabled) { background: #dc2626; }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover:not(:disabled) { background: #dc2626; }
 
-        /* Admin Dashboard Lists */
-        .admin-section {
-            background: #0d0e11; border: 1px solid #222;
-            border-radius: 12px; padding: 20px; margin-bottom: 25px;
-        }
-        .admin-section h4 { margin: 0 0 15px 0; color: #fff; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 10px;}
-        .admin-list { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto;}
-        .admin-list li {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #16171b; padding: 10px 15px; border-radius: 8px; margin-bottom: 8px;
-            font-size: 14px; border: 1px solid #2a2b30;
-        }
-        .delete-btn {
-            background: transparent; border: none; color: var(--danger);
-            cursor: pointer; font-size: 12px; font-weight: 600; text-transform: uppercase;
-        }
-        .delete-btn:hover { text-decoration: underline; }
-        .add-flex { display: flex; gap: 10px; }
-        .add-flex input { flex: 1; margin-bottom: 0; }
-        .add-flex button { width: auto; padding: 10px 20px; margin-top: 0; border-radius: 10px; }
+        /* Admin Dashboard Lists */
+        .admin-section {
+            background: #0d0e11; border: 1px solid #222;
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .admin-section h4 { margin: 0 0 15px 0; color: #fff; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 10px;}
+        .admin-list { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto;}
+        .admin-list li {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #16171b; padding: 10px 15px; border-radius: 8px; margin-bottom: 8px;
+            font-size: 14px; border: 1px solid #2a2b30;
+        }
+        .delete-btn {
+            background: transparent; border: none; color: var(--danger);
+            cursor: pointer; font-size: 12px; font-weight: 600; text-transform: uppercase;
+        }
+        .delete-btn:hover { text-decoration: underline; }
+        .add-flex { display: flex; gap: 10px; }
+        .add-flex input { flex: 1; margin-bottom: 0; }
+        .add-flex button { width: auto; padding: 10px 20px; margin-top: 0; border-radius: 10px; }
 
-        /* 🔽 FIXED GLOSSY FOOTER TEXT 🔽 */
-        .glossy-footer-text {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            background: linear-gradient(110deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.1) 100%);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 3s linear infinite;
-            opacity: 1;
-            z-index: 1000;
-            pointer-events: none;
-        }
+        /* 🔽 FIXED GLOSSY FOOTER TEXT 🔽 */
+        .glossy-footer-text {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(110deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.1) 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+            opacity: 0.3;
+            z-index: 1000;
+            pointer-events: none;
+        }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
 
-        @media print {
-            @page { size: A4 landscape; margin: 8mm; }
-            body { background: #ffffff !important; padding: 0; margin: 0; align-items: flex-start; color: #000000 !important; }
-            body * { visibility: hidden; }
-            #preview-page, #preview-page * { visibility: visible; color: #000000 !important; }
-            #preview-page { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; background: #ffffff !important; border: none !important; }
-            .no-print, .tables-wrapper::-webkit-scrollbar, .glossy-footer-text { display: none !important; }
-            .tables-wrapper { max-height: none; overflow: visible; padding: 0; margin: 0;}
-            .room-section { break-inside: auto; page-break-inside: auto; break-before: page !important; page-break-before: always !important; border: 1px solid #000000 !important; margin-bottom: 20px !important; border-radius: 8px !important; background: #ffffff !important; }
-            .room-header { color: #000000 !important; background-color: #ffffff !important; border-bottom: 1px solid #000000 !important; }
-            table { border-collapse: collapse; font-size: 9.5pt !important; width: 100%; }
-            thead { display: table-header-group; }
-            tbody { display: table-row-group; }
-            th, td { border: 1px solid #000000 !important; padding: 8px 10px !important; color: #000000 !important; }
-            th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: 700 !important; font-size: 9pt !important; }
-            .summary-table th, .summary-table td { border: 1px solid #000000 !important; color: #000000 !important; }
-            .summary-table { background: #ffffff !important; }
-        }
-    </style>
+        @media print {
+            @page { size: A4 landscape; margin: 8mm; }
+            body { background: #ffffff !important; padding: 0; margin: 0; align-items: flex-start; color: #000000 !important; }
+            body * { visibility: hidden; }
+            #preview-page, #preview-page * { visibility: visible; color: #000000 !important; }
+            #preview-page { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; background: #ffffff !important; border: none !important; }
+            .no-print, .tables-wrapper::-webkit-scrollbar, .glossy-footer-text { display: none !important; }
+            .tables-wrapper { max-height: none; overflow: visible; padding: 0; margin: 0;}
+            .room-section { break-inside: auto; page-break-inside: auto; break-before: page !important; page-break-before: always !important; border: 1px solid #000000 !important; margin-bottom: 20px !important; border-radius: 8px !important; background: #ffffff !important; }
+            .room-header { color: #000000 !important; background-color: #ffffff !important; border-bottom: 1px solid #000000 !important; }
+            table { border-collapse: collapse; font-size: 9.5pt !important; width: 100%; }
+            thead { display: table-header-group; }
+            tbody { display: table-row-group; }
+            th, td { border: 1px solid #000000 !important; padding: 8px 10px !important; color: #000000 !important; }
+            th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: 700 !important; font-size: 9pt !important; }
+            .summary-table th, .summary-table td { border: 1px solid #000000 !important; color: #000000 !important; }
+            .summary-table { background: #ffffff !important; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- 🌟 TOP NAVIGATION -->
-    <header class="top-nav">
-        <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo">
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('designers')">For Designers</button>
-            <button class="tab-btn" onclick="switchTab('rsm')">For RSM</button>
-            <button class="tab-btn" style="border-color: var(--danger); color: var(--danger);" onclick="openReportModal()">Report Issue</button>
-        </div>
-    </header>
-
-    <!-- 🏠 HOME PAGE -->
-    <div id="home-page">
-        <!-- Designers Cards -->
-        <div class="cards-container" id="designers-cards">
-            <!-- Tool 01 -->
-            <div class="action-card">
-                <div class="card-icon-box">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                        <line x1="4" y1="12" x2="20" y2="12"></line>
-                        <line x1="10" y1="8" x2="14" y2="8"></line>
-                        <line x1="10" y1="16" x2="14" y2="16"></line>
-                    </svg>
-                </div>
-                <div class="tool-label">Tool 01</div>
-                <h3>Extract Accessories</h3>
-                <div class="card-divider"></div>
-                <ul class="custom-list">
-                    <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
-                    <li><span class="num">2</span> Upload the downloaded file.</li>
-                    <li><span class="num">3</span> Check all rooms and accessories.</li>
-                    <li><span class="num">4</span> Cross-check the count and quantity.</li>
-                </ul>
-                <div style="flex-grow: 1;"></div>
-                <button class="get-started-btn" onclick="selectTool('accessories')">
-                    Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-            
-            <!-- Tool 02 -->
-            <div class="action-card">
-                <div class="card-icon-box">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                        <polyline points="2 12 12 17 22 12"></polyline>
-                        <polyline points="2 17 12 22 22 17"></polyline>
-                    </svg>
-                </div>
-                <div class="tool-label">Tool 02</div>
-                <h3>Extract Materials</h3>
-                <div class="card-divider"></div>
-                <ul class="custom-list">
-                    <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
-                    <li><span class="num">2</span> Upload the file.</li>
-                    <li><span class="num">3</span> Check all rooms and finishes.</li>
-                </ul>
-                <div style="flex-grow: 1;"></div>
-                <button class="get-started-btn" onclick="selectTool('materials')">
-                    Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-
-            <!-- Tool 03 -->
-            <div class="action-card">
-                <div class="card-icon-box">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
-                        <line x1="8" y1="9" x2="16" y2="9"></line>
-                        <line x1="8" y1="13" x2="16" y2="13"></line>
-                        <line x1="8" y1="17" x2="12" y2="17"></line>
-                    </svg>
-                </div>
-                <div class="tool-label">Tool 03</div>
-                <h3>Get Summary</h3>
-                <div class="card-divider"></div>
-                <ul class="custom-list">
-                    <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
-                    <li><span class="num">2</span> Upload the file to generate the summary.</li>
-                    <li><span class="num">3</span> Review the overall project summary and metrics.</li>
-                </ul>
-                <div style="flex-grow: 1;"></div>
-                <button class="get-started-btn" onclick="selectTool('summary')">
-                    Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-            
-            <!-- Tool 04 -->
-            <div class="action-card">
-                <div class="card-icon-box">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M9 11l3 3L22 4"></path>
-                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
-                    </svg>
-                </div>
-                <div class="tool-label">Tool 04</div>
-                <h3>Project Checklist</h3>
-                <div class="card-divider"></div>
-                <ul class="custom-list">
-                    <li><span class="num">1</span> Select the project requirements and milestones.</li>
-                    <li><span class="num">2</span> Validate design elements across all required phases.</li>
-                    <li><span class="num">3</span> Perform final quality check before generation.</li>
-                </ul>
-                <div style="flex-grow: 1;"></div>
-                <button class="get-started-btn" onclick="selectTool('checklist')">
-                    Open Checklist 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- RSM Cards -->
-        <div class="cards-container" id="rsm-cards" style="display: none;">
-            <div class="action-card" style="max-width: 500px; margin: 0 auto;">
-                <div class="card-icon-box">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                </div>
-                <div class="tool-label">Tool 01</div>
-                <h3>Client Requirements</h3>
-                <div class="card-divider"></div>
-                <ul class="custom-list">
-                    <li><span class="num">1</span> Fill in the client details properly.</li>
-                    <li><span class="num">2</span> Select requirements from available options.</li>
-                    <li><span class="num">3</span> Submit to the dashboard.</li>
-                </ul>
-                <div style="flex-grow: 1;"></div>
-                <button class="get-started-btn" onclick="window.location.href='https://fabooluxinterior.github.io/requirement-collector/'">
-                    Get extracted details 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 📤 UPLOAD INTERFACE -->
-    <div id="upload-page" class="container">
-        <div class="brand-badge" id="upload-badge">Step 1</div>
-        <h3 id="upload-title" style="margin-bottom: 5px; font-size: 24px;">Upload Estimate</h3>
-        <p style="color: var(--text-muted); font-size: 15px; margin-top: 5px;">Select your Excel file to generate the list.</p>
-        
-        <div class="upload-area">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" style="margin-bottom: 15px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-            <br>
-            <label class="file-label">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                Choose .xlsx File
-                <input type="file" accept=".xlsx, .xls" onchange="handleFileUpload(event)">
-            </label>
-        </div>
-
-        <!-- 🔽 DYNAMIC MATERIALS INFORMATION ACCORDION 🔽 -->
-        <div id="materials-info-container" style="display: none;">
-            <div class="info-accordion">
-                <details>
-                    <summary>Showing Multiple Panels</summary>
-                    <div class="info-content">If a room has two end panels with different finishes, they will be displayed as separate panels.</div>
-                </details>
-                <details>
-                    <summary>Showing Error on Carcass Finish</summary>
-                    <div class="info-content">End panel carcass finishes are automatically inherited from the cabinet carcass in the same room. For example, if you select Light brown cambric for the cabinet, the end panel's carcass will automatically match that finish.</div>
-                </details>
-            </div>
-        </div>
-
-        <div id="status-container">
-            <div class="spinner" id="spinner"></div>
-            <div id="status"></div>
-        </div>
-        <button class="back-btn" onclick="showHomePage()">← Return to Dashboard</button>
-    </div>
-
-    <!-- 📋 CHECKLIST WIZARD & PREVIEW PAGE -->
-    <div id="checklist-page" class="container" style="max-width: 750px;">
-        <!-- View 0: Details Intake Form -->
-        <div id="intro-view">
-            <div class="brand-badge">Setup</div>
-            <h2 style="margin-bottom: 25px;">Project Details</h2>
-            
-            <div class="input-group">
-                <label for="input-project">Project Name</label>
-                <input type="text" id="input-project" class="report-input" placeholder="e.g. 0772-ASIF" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="input-designer">Designer Name</label>
-                <input type="text" id="input-designer" class="report-input" placeholder="e.g. SRUTHIL" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="input-date">Date</label>
-                <input type="date" id="input-date" class="report-input" required>
-            </div>
-            
-            <button class="submit-btn btn-primary" onclick="startChecklist()" style="max-width: 550px; margin: 10px auto; display: block;">Start Checklist</button>
-            <button class="back-btn" style="margin-top: 15px;" onclick="showHomePage()">← Return to Dashboard</button>
-        </div>
-
-        <!-- View 1: Question Wizard -->
-        <div id="question-view" style="display: none;">
-            <div class="brand-badge" id="progress-text">Question 1 of 20</div>
-            
-            <div class="content-wrapper">
-                <div class="animation-section">
-                    <svg class="clipboard-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="20" y="25" width="60" height="70" rx="6" fill="#1e2028" stroke="#2a2b30" stroke-width="3"/>
-                        <rect x="38" y="18" width="24" height="12" rx="3" fill="#e85d22"/>
-                        <circle cx="50" cy="24" r="3" fill="#0b0c10"/>
-                        
-                        <rect x="28" y="42" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
-                        <path class="cl-check cl-check-1" d="M30 47L33 50L38 43" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <line class="cl-line cl-line-1" x1="43" y1="47" x2="72" y2="47" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
-
-                        <rect x="28" y="60" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
-                        <path class="cl-check cl-check-2" d="M30 65L33 68L38 61" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <line class="cl-line cl-line-2" x1="43" y1="65" x2="68" y2="65" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
-
-                        <rect x="28" y="78" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
-                        <path class="cl-check cl-check-3" d="M30 83L33 86L38 79" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <line class="cl-line cl-line-3" x1="43" y1="83" x2="62" y2="83" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                </div>
-
-                <div class="text-section">
-                    <h2 id="question-text">Loading question...</h2>
-                </div>
-            </div>
-            
-            <div class="action-row">
-                <button class="btn-corrected" onclick="recordAnswer('Yes, Corrected')">Yes, Corrected</button>
-                <button class="btn-not-required" onclick="recordAnswer('Not Required')">Not Required</button>
-            </div>
-            
-            <button class="back-btn" id="back-btn" onclick="goBack()">← Back to Previous</button>
-        </div>
-
-        <!-- View 2: Summary / PDF Preview -->
-        <div id="summary-view" style="display: none; width: 100%;">
-            <div id="printable-area" class="print-document">
-                <h2 class="print-header">Faboolux Project checklist</h2>
-                
-                <div class="project-details-box">
-                    <div><strong>Project:</strong> <span id="out-project"></span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Designer:</strong> <span id="out-designer"></span></div>
-                    <div><strong>Date:</strong> <span id="out-date"></span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Report Time:</strong> <span id="out-time"></span></div>
-                </div>
-
-                <table class="print-table">
-                    <tbody id="summary-table-body">
-                        <!-- Rows injected by JS -->
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="max-width: 400px; margin: 0 auto; text-align: center;">
-                <div id="pdf-status-text" style="color: var(--brand-orange); font-size: 14px; font-weight: 500; margin-bottom: 12px;">Generating PDF automatically...</div>
-                <button class="back-btn" style="margin-top: 5px;" onclick="resetChecklist()">← Start Over</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 📄 PREVIEW & PRINT PAGE FOR OTHER TOOLS -->
-    <div id="preview-page" class="container preview-container">
-        <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <div style="text-align: left;">
-                <div class="brand-badge" style="margin-bottom: 10px; border-color: var(--success); color: var(--success);" id="preview-badge">Success</div>
-                <h2 style="margin: 0; font-size: 28px;" id="preview-title">Extracted Data</h2>
-            </div>
-            <div>
-                <button class="action-button" onclick="window.print()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                    Print PDF
-                </button>
-            </div>
-        </div>
-        <div class="tables-wrapper" id="tables-container"></div>
-        <div class="no-print" style="margin-top: 20px;">
-            <button class="back-btn" onclick="showHomePage()">← Process Another File</button>
-        </div>
-    </div>
-
-    <!-- 🚨 1. REPORT ISSUE MODAL -->
-    <div id="report-issue-modal" class="modal-overlay" style="display: none;">
-        <div class="report-modal-content">
-            <div class="report-modal-header">
-                <h3 style="color: var(--danger)">Report Issue</h3>
-                <div class="header-actions">
-                    <button class="admin-link-btn" onclick="openAdminLogin()">Admin</button>
-                    <button class="close-modal-btn" onclick="closeReportModal()">×</button>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label>Designer Name</label>
-                <select id="report-designer-name" class="report-input">
-                    <option value="">Select Designer</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label>Issue Description</label>
-                <textarea id="report-description" class="report-input report-textarea" placeholder="Describe the issue you are facing..."></textarea>
-            </div>
-            
-            <div class="input-group">
-                <label>Upload Media (Optional)</label>
-                <div class="media-upload-window" onclick="document.getElementById('report-media-file').click()">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                    <br>
-                    <span id="upload-file-name" style="font-weight: 500;">Click to browse and upload file</span>
-                </div>
-                <input type="file" id="report-media-file" style="display:none;" accept="image/*,video/*,application/pdf" onchange="updateFileName(this)">
-            </div>
-            
-            <button class="submit-btn btn-danger submit-report-btn" onclick="submitReport()">Submit Report</button>
-        </div>
-    </div>
-
-    <!-- 🔐 2. ADMIN LOGIN MODAL -->
-    <div id="admin-login-modal" class="modal-overlay" style="display: none;">
-        <div class="report-modal-content">
-            <div class="report-modal-header">
-                <h3 style="color: var(--brand-orange)">Admin Login</h3>
-                <button class="close-modal-btn" onclick="closeAdminLogin()">×</button>
-            </div>
-            <div class="input-group">
-                <label>Email Address</label>
-                <input type="email" id="admin-login-email" class="report-input admin-input" placeholder="admin@example.com">
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="admin-login-pass" class="report-input admin-input" placeholder="••••••••">
-            </div>
-            <button class="submit-btn btn-primary" onclick="handleAdminLogin()">Login</button>
-        </div>
-    </div>
-
-    <!-- 🛠️ 3. ADMIN DASHBOARD MODAL -->
-    <div id="admin-panel-modal" class="modal-overlay" style="display: none;">
-        <div class="admin-modal-content">
-            <div class="report-modal-header">
-                <h3 style="color: var(--brand-orange)">Admin Dashboard</h3>
-                <button class="close-modal-btn" onclick="closeAdminPanel()">×</button>
-            </div>
-            
-            <!-- Manage Designers -->
-            <div class="admin-section">
-                <h4>Manage Designers</h4>
-                <ul class="admin-list" id="admin-designer-list"></ul>
-                <div class="add-flex">
-                    <input type="text" id="new-designer-name" class="report-input admin-input" placeholder="New Designer Name">
-                    <button class="submit-btn btn-primary" onclick="addDesigner()">Add</button>
-                </div>
-            </div>
-
-            <!-- Manage Admins -->
-            <div class="admin-section">
-                <h4>Manage Admins</h4>
-                <ul class="admin-list" id="admin-users-list"></ul>
-                <div class="add-flex">
-                    <input type="email" id="new-admin-email" class="report-input admin-input" placeholder="Email">
-                    <input type="password" id="new-admin-pass" class="report-input admin-input" placeholder="Password">
-                </div>
-                <button class="submit-btn btn-primary" onclick="addAdmin()" style="margin-top: 10px;">Add New Admin</button>
-            </div>
-            
-            <div id="admin-sync-btn" style="text-align:center; color: var(--text-muted); font-size: 13px; margin-top: 15px;">
-                Connected to Google Sheets
-            </div>
-        </div>
-    </div>
-
-    <!-- 🌟 GLOSSY FOOTER TEXT -->
-    <div class="glossy-footer-text">All Tools Connected to Google Sheets</div>
-
-    <script>
-        // ✅ TAB SWITCH LOGIC
-        function switchTab(tab) {
-            const tabs = document.querySelectorAll('.tab-btn:not([onclick="openReportModal()"])');
-            if(tab === 'designers') {
-                document.getElementById('designers-cards').style.display = 'grid';
-                document.getElementById('rsm-cards').style.display = 'none';
-                tabs[0].classList.add('active');
-                tabs[1].classList.remove('active');
-            } else {
-                document.getElementById('designers-cards').style.display = 'none';
-                document.getElementById('rsm-cards').style.display = 'flex';
-                tabs[1].classList.add('active');
-                tabs[0].classList.remove('active');
-            }
-        }
-
-        // ✅ API URLS
-        const API_URLS = {
-            accessories: 'https://script.google.com/macros/s/AKfycbwUJQYU6Vqj1o-LAYwNXLQDo3Mrgpy4wDKeVfUrXhnfRmQccsly6kwMSm1k2vEUtLmz/exec',
-            materials: 'https://script.google.com/macros/s/AKfycbwMnjxvQfYmJHZo-RqQLdazYi_g9RCDUbHRFO5RzB9Ml5zewOIGH8EO9Y7qhIyr_OCl/exec',
-            summary: 'https://script.google.com/macros/s/AKfycbxD9p1Sli-T0Qlj_i5387AgWi1Of9e2Abgv_CtkginxvqK-HBDT6AbgAY8MpcsCJ5BhOg/exec' 
-        };
-
-        const REPORT_API_URL = 'https://script.google.com/macros/s/AKfycbwiiZHO5GBzzhYjy97Ku2XpshxtcwrEVUjDu_5ZR2123SFgClGdfWkRS15VrDA-gMf8/exec';
-
-        let currentTool = 'accessories'; 
-
-        function selectTool(toolName) {
-            currentTool = toolName;
-            
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('preview-page').style.display = 'none';
-            document.getElementById('upload-page').style.display = 'none';
-            document.getElementById('checklist-page').style.display = 'none';
-
-            if(toolName === 'checklist') {
-                document.getElementById('checklist-page').style.display = 'block';
-                resetChecklistState();
-                return;
-            }
-
-            document.getElementById('upload-page').style.display = 'block';
-            
-            if(toolName === 'accessories') {
-                document.getElementById('upload-badge').innerText = 'Accessories';
-                document.getElementById('upload-title').innerText = 'Extract Accessories';
-                document.getElementById('materials-info-container').style.display = 'none';
-            } else if (toolName === 'materials') {
-                document.getElementById('upload-badge').innerText = 'Materials';
-                document.getElementById('upload-title').innerText = 'Extract Materials';
-                document.getElementById('materials-info-container').style.display = 'block';
-            } else if (toolName === 'summary') {
-                document.getElementById('upload-badge').innerText = 'Summary';
-                document.getElementById('upload-title').innerText = 'Get Project Summary';
-                document.getElementById('materials-info-container').style.display = 'none';
-            }
-            
-            resetStatus();
-        }
-
-        function showHomePage() {
-            document.getElementById('upload-page').style.display = 'none';
-            document.getElementById('preview-page').style.display = 'none';
-            document.getElementById('checklist-page').style.display = 'none';
-            document.getElementById('home-page').style.display = 'flex';
-        }
-
-        function resetStatus() {
-            document.getElementById('status').innerText = '';
-            document.getElementById('status').className = '';
-            document.getElementById('spinner').style.display = 'none';
-        }
-
-        function parseImage(imgData) {
-            if (!imgData) return '';
-            imgData = String(imgData); 
-            let url = "";
-
-            if (imgData.includes('=IMAGE("')) {
-                const match = imgData.match(/=IMAGE\("([^"]+)"/i);
-                if (match && match[1]) url = match[1];
-            } else if (imgData.startsWith('http')) { url = imgData; }
-
-            if (url) {
-                if (url.includes('drive.google.com')) {
-                    const idMatch = url.match(/id=([a-zA-Z0-9-_]+)/);
-                    if (idMatch && idMatch[1]) url = `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
-                    else {
-                        const dMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-                        if (dMatch && dMatch[1]) url = `https://lh3.googleusercontent.com/d/${dMatch[1]}`;
-                    }
-                }
-                return `<img src="${url}" class="item-img" onerror="this.style.display='none'">`;
-            }
-            return '';
-        }
-
-        function showPreviewPage(dataRows) {
-            document.getElementById('upload-page').style.display = 'none';
-            
-            if (currentTool === 'accessories') {
-                document.getElementById('preview-title').innerText = 'Kitchen Accessories List'; 
-                document.getElementById('preview-badge').innerText = 'Accessories Data';
-            } else if (currentTool === 'materials') {
-                document.getElementById('preview-title').innerText = 'Extracted Materials';
-                document.getElementById('preview-badge').innerText = 'Materials Data';
-            } else if (currentTool === 'summary') {
-                document.getElementById('preview-title').innerText = 'Project Summary';
-                document.getElementById('preview-badge').innerText = 'Summary Data';
-            }
-            
-            const container = document.getElementById('tables-container');
-            container.innerHTML = ''; 
-            const groupedData = {};
-
-            if (!Array.isArray(dataRows) || dataRows.length === 0) {
-                document.getElementById('upload-page').style.display = 'block';
-                document.getElementById('status').style.color = 'var(--danger)';
-                document.getElementById('status').innerText = '❌ No items were found to extract.';
-                return;
-            }
-
-            if (currentTool === 'accessories') {
-                dataRows.forEach(row => {
-                    if (!row || (!row[0] && !row[1] && !row[2])) return; 
-                    const roomName = String(row[0] || 'General Area').trim();
-                    if (!groupedData[roomName]) groupedData[roomName] = [];
-                    groupedData[roomName].push(row);
-                });
-                for (const [room, items] of Object.entries(groupedData)) {
-                    let displayRoom = room.replace(/ESTIMATE FOR MODULAR KITCHEN/gi, 'KITCHEN ACCESSORIES LIST');
-                    let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${displayRoom}</h3><table class="acc-table"><thead><tr><th>Item Name</th><th>Specification</th><th style="text-align:center;">Qty</th><th style="text-align:center;">Image</th></tr></thead><tbody>`;
-                    items.forEach(row => {
-                        let imgTag = parseImage(row[4]) || '<span style="color:#475569; font-size:12px;">No Image</span>';
-                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[1] || ''}</strong></td><td class="spec-text">${row[2] || ''}</td><td style="text-align:center; font-weight:600; color:#fff;">${row[3] || ''}</td><td style="image-cell"><div class="image-wrapper">${imgTag}</div></td></tr>`;
-                    });
-                    container.innerHTML += tableHTML + `</tbody></table></div>`;
-                }
-            } else if (currentTool === 'materials') {
-                let currentRoom = 'General Area';
-                dataRows.forEach(row => {
-                    if (!row) return;
-                    let col0 = String(row[0] || '').trim(), col1 = String(row[1] || '').trim(), col2 = String(row[2] || '').trim(), col3 = String(row[3] || '').trim();
-                    if (col0 && !col1 && !col2 && !col3 && col0 !== "Product") currentRoom = col0;
-                    else if (col0 === "Product" || (!col0 && !col1 && !col2 && !col3)) return;
-                    else { if (!groupedData[currentRoom]) groupedData[currentRoom] = []; groupedData[currentRoom].push(row); }
-                });
-                for (const [room, items] of Object.entries(groupedData)) {
-                    let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${room}</h3><table class="mat-table"><thead><tr><th>Product</th><th>Carcass Mat</th><th>Shutter Mat</th><th>Carcass Finish</th><th>Shutter Finish</th></tr></thead><tbody>`;
-                    items.forEach(row => {
-                        let cFinHtml = `<div class="finish-cell-content"><span class="spec-text">${row[3] || '-'}</span><div class="image-wrapper">${parseImage(row[4])}</div></div>`;
-                        let sFinHtml = `<div class="finish-cell-content"><span class="spec-text">${row[5] || '-'}</span><div class="image-wrapper">${parseImage(row[6])}</div></div>`;
-                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[0] || ''}</strong></td><td style="color:#cbd5e1;">${row[1] || '-'}</td><td style="color:#cbd5e1;">${row[2] || '-'}</td><td>${cFinHtml}</td><td>${sFinHtml}</td></tr>`;
-                    });
-                    container.innerHTML += tableHTML + `</tbody></table></div>`;
-                }
-            } else if (currentTool === 'summary') {
-                let tableHTML = `<div class="room-section fade-in" style="background: #ffffff; padding: 25px; border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6);"><table class="summary-table" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; color: #000000;"><tbody>`;
-                dataRows.forEach((row, index) => {
-                    if (!row || row.length === 0) return;
-                    tableHTML += `<tr>`;
-                    if (index === 0) {
-                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
-                    } else if (index === 1) {
-                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td><td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; vertical-align: middle; background: #ffffff; width: 160px;"><img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 140px; height: auto;"></td>`;
-                    } else if (index === 2) {
-                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
-                    } else if (index === 3) {
-                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
-                    } else if (index === 4) {
-                        if (row[0] === "Category") {
-                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[0]}</th>`;
-                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[4]}</th>`;
-                        } else {
-                            row.forEach(cell => { tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`; });
-                        }
-                    } else {
-                        let isFooter = (String(row[0]).toLowerCase().includes('selling price') || String(row[0]).toLowerCase().includes('discount') || String(row[0]).toLowerCase().includes('grand total'));
-                        if (isFooter) {
-                            let val = parseFloat(row[4]); val = isNaN(val) ? row[4] : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${row[0]}</th><th style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${val}</th>`;
-                        } else {
-                            let isKitchenData = (dataRows[4] && dataRows[4][0] === "Category");
-                            if (isKitchenData) {
-                                tableHTML += `<td colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: left; background: #ffffff; font-weight: bold; color: #000000;">${row[0]}</td>`;
-                                let val = parseFloat(row[4]); val = isNaN(val) ? (row[4] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                                tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff; color: #000000;">${val}</td>`;
-                            } else {
-                                tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
-                                for(let i=1; i<5; i++) {
-                                    let val = parseFloat(row[i]); val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                                    tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff;">${val}</td>`;
-                                }
-                            }
-                        }
-                    }
-                    tableHTML += `</tr>`;
-                });
-                tableHTML += `</tbody></table></div>`;
-                container.innerHTML += tableHTML;
-            }
-            document.getElementById('preview-page').style.display = 'block';
-        }
-
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
-            spinner.style.display = 'block'; statusEl.innerText = 'Uploading...'; statusEl.className = 'loading-text'; 
-
-            const reader = new FileReader();
-            reader.onerror = function() { spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Failed to read the Excel file from your computer.'; };
-            reader.onload = function(e) { statusEl.innerText = 'Extracting and processing data...'; const base64Data = e.target.result.split(',')[1]; sendToGoogleScript(base64Data, file.name); };
-            reader.readAsDataURL(file);
-        }
-
-        function sendToGoogleScript(base64Data, fileName) {
-            fetch(API_URLS[currentTool], { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fileName: fileName, base64Data: base64Data }) })
-            .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
-            .then(responseObj => {
-                const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
-                spinner.style.display = 'none'; statusEl.className = ''; 
-                if(responseObj.status === "error") { statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Server Error: ' + responseObj.message; } 
-                else { statusEl.style.color = 'var(--success)'; statusEl.innerText = '✅ ' + responseObj.message; if(responseObj.data) setTimeout(() => { showPreviewPage(responseObj.data); }, 600); }
-            })
-            .catch(error => {
-                document.getElementById('spinner').style.display = 'none'; const statusEl = document.getElementById('status'); statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ ${error.message}`;
-            });
-        }
-
-
-        // ==========================================
-        // ✅ CHECKLIST LOGIC & QUESTIONS
-        // ==========================================
-        const questions = [
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>SENSYS W90 Corner Hinges</mark> for blind corner units" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>TH-52 hinges</mark> for L corner units" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>16 Crank</mark> for inset shutters" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>9.5 Crank</mark> for half overlay shutters" },
-            { text: "Match <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Shutters and Drawers fascia</mark> properly" },
-            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Core materials</mark> properly (Eg:-12 For 12mm thickness, 16 for 16mm thickness)" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter finish laminats</mark> only for shutter or shutter finish panels" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish lamiantes</mark> only for carcass and carcass panels" },
-            { text: "Check <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter opening direction</mark>" },
-            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Grooved bottom panels for profile lights</mark> (Replace defualt bottom panel to grooved panel)" },
-            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>20MM Gap</mark> between shutter and inside shlef" },
-            { text: "Use proper shutters (<mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Lift up, Flap down, G profile-bottom top</mark>)" },
-            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Counter top support panel</mark> above the cabinets (Kitchen)" },
-            { text: "Don't match finishes with <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>OSL panels</mark>" },
-            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>80MM Gap</mark> between shutter and shelf in wardrobe with drawer unit" },
-            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>130MM Gap</mark> between sliding door and shlef (Aristo and Hettich)" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>BWP</mark> For all vanity units" },
-            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Drawer channels</mark> properly" },
-            { text: "Make <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition</mark> using <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition panels</mark>" },
-            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish</mark> for wardrobe internal drawer fascia" }
-        ];
-
-        let currentIndex = 0;
-        let answers = []; 
-        let projectDetails = {};
-
-        function resetChecklistState() {
-            currentIndex = 0;
-            answers = [];
-            document.getElementById('input-date').valueAsDate = new Date();
-            document.getElementById('intro-view').style.display = 'block';
-            document.getElementById('question-view').style.display = 'none';
-            document.getElementById('summary-view').style.display = 'none';
-        }
-
-        function resetChecklist() {
-            resetChecklistState();
-        }
-
-        function startChecklist() {
-            const proj = document.getElementById('input-project').value.trim();
-            const des = document.getElementById('input-designer').value.trim();
-            const date = document.getElementById('input-date').value;
-
-            if(!proj || !des || !date) {
-                alert("Please fill in all project details before starting.");
-                return;
-            }
-
-            projectDetails = { project: proj, designer: des, date: date };
-            document.getElementById('intro-view').style.display = 'none';
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            document.getElementById('question-text').innerHTML = questions[currentIndex].text;
-            document.getElementById('progress-text').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
-            document.getElementById('back-btn').disabled = (currentIndex === 0);
-            document.getElementById('question-view').style.display = 'block';
-        }
-
-        function recordAnswer(answer) {
-            answers[currentIndex] = answer;
-            currentIndex++;
-            if (currentIndex < questions.length) {
-                loadQuestion();
-            } else {
-                showSummary();
-            }
-        }
-
-        function goBack() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                loadQuestion();
-            }
-        }
-
-        function showSummary() {
-            document.getElementById('question-view').style.display = 'none';
-            document.getElementById('summary-view').style.display = 'block';
-            
-            document.getElementById('out-project').innerText = projectDetails.project;
-            document.getElementById('out-designer').innerText = projectDetails.designer;
-            document.getElementById('out-date').innerText = projectDetails.date;
-            
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('out-time').innerText = timeString;
-
-            const summaryTable = document.getElementById('summary-table-body');
-            summaryTable.innerHTML = ''; 
-
-            questions.forEach((q, index) => {
-                const tr = document.createElement('tr');
-                const ans = answers[index];
-                
-                let iconHtml = '';
-                let tdStyle = 'padding: 6.5px 0; border-bottom: 1px solid #f1f5f9; vertical-align: top; line-height: 1.4;';
-                let textStyle = 'color: #0f172a;';
-
-                if (ans === 'Yes, Corrected') {
-                    iconHtml = `<td style="width: 30px; text-align: left; color: #10b981; font-size: 16px; font-weight: bold; ${tdStyle}">&#10003;</td>`;
-                } else if (ans === 'Not Required') {
-                    iconHtml = `<td style="width: 30px; text-align: left; color: #ef4444; font-size: 16px; font-weight: bold; ${tdStyle}">&#10007;</td>`;
-                    textStyle = 'color: #333; text-decoration: line-through; background-color: #fef08a; padding: 2px 4px; border-radius: 3px;';
-                }
-
-                let cleanText = q.text.replace(/<mark[^>]*>/g, '').replace(/<\/mark>/g, '');
-                tr.innerHTML = `${iconHtml}<td style="${tdStyle}"><span style="${textStyle}">${cleanText}</span></td>`;
-                summaryTable.appendChild(tr);
-            });
-
-            // Automatically trigger PDF download as soon as summary opens
-            setTimeout(() => {
-                triggerAutoDownloadPDF();
-            }, 400);
-        }
-
-        function triggerAutoDownloadPDF() {
-            const statusText = document.getElementById('pdf-status-text');
-            if(statusText) statusText.innerText = "Generating and downloading PDF automatically...";
-
-            const element = document.getElementById('printable-area');
-            const opt = {
-                margin:       [8, 10, 0, 10], 
-                filename:     `${projectDetails.project.replace(/\s+/g, '_')}_Checklist.pdf`,
-                image:        { type: 'jpeg', quality: 0.95 },
-                html2canvas:  { scale: 1.5, logging: false }, 
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save().then(() => {
-                if(statusText) statusText.innerText = "✅ PDF downloaded successfully!";
-            }).catch(err => {
-                console.error("PDF auto-download failed:", err);
-                if(statusText) statusText.innerText = "❌ Auto-download failed. Please check permissions.";
-            });
-        }
-
-
-        // ==========================================
-        // ✅ GOOGLE SHEET DATA FETCHING & SYNCING
-        // ==========================================
-        
-        let globalDesigners = [];
-        let globalAdmins = [];
-
-        function initStorage() {
-            fetch(REPORT_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action: "getData" })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    globalDesigners = data.designers;
-                    globalAdmins = data.admins;
-                    populateDesignerDropdown();
-                }
-            })
-            .catch(err => {
-                console.error("Failed to load data from sheet. Using safe defaults.", err);
-                globalDesigners = ['Anjana', 'Santosh Etan'];
-                globalAdmins = [{ email: 'designer8fab@gmail.com', pass: 'Faboolux@999' }];
-                populateDesignerDropdown();
-            });
-        }
-
-        function syncDataToSheet() {
-            const btn = document.getElementById('admin-sync-btn');
-            if(btn) { btn.innerText = "Syncing to Google Sheets..."; btn.style.color = "var(--brand-orange)"; }
-            
-            fetch(REPORT_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action: "updateData", designers: globalDesigners, admins: globalAdmins })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(btn) { btn.innerText = "✅ Saved to Google Sheets"; btn.style.color = "var(--success)"; }
-            })
-            .catch(err => {
-                if(btn) { btn.innerText = "❌ Sync Failed! Check connection."; btn.style.color = "var(--danger)"; }
-            });
-        }
-
-        function populateDesignerDropdown() {
-            const select = document.getElementById('report-designer-name');
-            select.innerHTML = '<option value="">Select Designer</option>';
-            globalDesigners.forEach(d => {
-                const opt = document.createElement('option');
-                opt.value = d;
-                opt.textContent = d;
-                select.appendChild(opt);
-            });
-        }
-
-        initStorage();
-
-
-        // ==========================================
-        // ✅ REPORT ISSUE & ADMIN LOGIC
-        // ==========================================
-
-        function openReportModal() { document.getElementById('report-issue-modal').style.display = 'flex'; }
-        function closeReportModal() { document.getElementById('report-issue-modal').style.display = 'none'; }
-
-        function updateFileName(input) {
-            const fileNameDisplay = document.getElementById('upload-file-name');
-            if(input.files && input.files.length > 0) {
-                fileNameDisplay.innerText = "Selected: " + input.files[0].name;
-                fileNameDisplay.style.color = "var(--success)";
-            } else {
-                fileNameDisplay.innerText = "Click to browse and upload file";
-                fileNameDisplay.style.color = "var(--text-muted)";
-            }
-        }
-
-        function submitReport() {
-            const name = document.getElementById('report-designer-name').value;
-            const desc = document.getElementById('report-description').value;
-            const fileInput = document.getElementById('report-media-file');
-            const submitBtn = document.querySelector('.submit-report-btn');
-            
-            if(!name || !desc) {
-                alert("Please select your Designer Name and enter an Issue Description.");
-                return;
-            }
-
-            submitBtn.innerText = 'Submitting...'; submitBtn.disabled = true;
-            const file = fileInput.files[0];
-            
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { sendReportToScript(name, desc, e.target.result.split(',')[1], file.type, file.name); };
-                reader.readAsDataURL(file);
-            } else { sendReportToScript(name, desc, null, null, null); }
-        }
-
-        function sendReportToScript(name, desc, base64Data, mimeType, fileName) {
-            fetch(REPORT_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ name: name, description: desc, mediaBase64: base64Data, mimeType: mimeType, fileName: fileName })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') alert("Report submitted successfully! Thank you.");
-                else alert("Error: " + data.message);
-                resetReportForm();
-            })
-            .catch(err => { alert("Error submitting report."); resetReportForm(); });
-        }
-
-        function resetReportForm() {
-            document.getElementById('report-designer-name').value = '';
-            document.getElementById('report-description').value = '';
-            const fileInput = document.getElementById('report-media-file');
-            fileInput.value = ''; updateFileName(fileInput); 
-            const submitBtn = document.querySelector('.submit-report-btn');
-            submitBtn.innerText = 'Submit Report'; submitBtn.disabled = false;
-            closeReportModal();
-        }
-
-        function openAdminLogin() { closeReportModal(); document.getElementById('admin-login-modal').style.display = 'flex'; }
-        function closeAdminLogin() { document.getElementById('admin-login-modal').style.display = 'none'; }
-
-        function handleAdminLogin() {
-            const email = document.getElementById('admin-login-email').value;
-            const pass = document.getElementById('admin-login-pass').value;
-            const isValid = globalAdmins.some(a => a.email === email && a.pass === pass);
-            
-            if (isValid) {
-                document.getElementById('admin-login-email').value = ''; document.getElementById('admin-login-pass').value = '';
-                closeAdminLogin(); openAdminPanel();
-            } else { alert("Invalid Admin Email or Password."); }
-        }
-
-        function openAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'flex'; renderAdminPanel(); }
-        function closeAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'none'; }
-
-        function renderAdminPanel() {
-            const dList = document.getElementById('admin-designer-list'); dList.innerHTML = '';
-            globalDesigners.forEach((d, index) => {
-                dList.innerHTML += `<li>${d} <button class="delete-btn" onclick="removeDesigner(${index})">Remove</button></li>`;
-            });
-            const aList = document.getElementById('admin-users-list'); aList.innerHTML = '';
-            globalAdmins.forEach((a, index) => {
-                let removeBtn = index === 0 ? `<span style="color:#666; font-size:11px;">Primary (Locked)</span>` : `<button class="delete-btn" onclick="removeAdmin(${index})">Remove</button>`;
-                aList.innerHTML += `<li>${a.email} ${removeBtn}</li>`;
-            });
-        }
-
-        function addDesigner() {
-            const nameInput = document.getElementById('new-designer-name'); const newName = nameInput.value.trim();
-            if(!newName) return;
-            globalDesigners.push(newName);
-            nameInput.value = '';
-            populateDesignerDropdown(); renderAdminPanel(); syncDataToSheet();
-        }
-        
-        function removeDesigner(index) {
-            globalDesigners.splice(index, 1);
-            populateDesignerDropdown(); renderAdminPanel(); syncDataToSheet();
-        }
-
-        function addAdmin() {
-            const emailInput = document.getElementById('new-admin-email'), passInput = document.getElementById('new-admin-pass');
-            const email = emailInput.value.trim(), pass = passInput.value.trim();
-            if(!email || !pass) { alert("Provide both email and password."); return; }
-            globalAdmins.push({ email: email, pass: pass });
-            emailInput.value = ''; passInput.value = '';
-            renderAdminPanel(); syncDataToSheet();
-        }
-        
-        function removeAdmin(index) {
-            if(index === 0) return; 
-            globalAdmins.splice(index, 1);
-            renderAdminPanel(); syncDataToSheet();
-        }
-    </script>
+    <!-- 🌟 TOP NAVIGATION -->
+    <header class="top-nav">
+        <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('designers')">For Designers</button>
+            <button class="tab-btn" onclick="switchTab('rsm')">For RSM</button>
+            <button class="tab-btn" style="border-color: var(--danger); color: var(--danger);" onclick="openReportModal()">Report Issue</button>
+        </div>
+    </header>
+
+    <!-- 🏠 HOME PAGE -->
+    <div id="home-page">
+        <!-- Designers Cards -->
+        <div class="cards-container" id="designers-cards">
+            <!-- Tool 01 -->
+            <div class="action-card">
+                <div class="card-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="10" y1="8" x2="14" y2="8"></line>
+                        <line x1="10" y1="16" x2="14" y2="16"></line>
+                    </svg>
+                </div>
+                <div class="tool-label">Tool 01</div>
+                <h3>Extract Accessories</h3>
+                <div class="card-divider"></div>
+                <ul class="custom-list">
+                    <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
+                    <li><span class="num">2</span> Upload the downloaded file.</li>
+                    <li><span class="num">3</span> Check all rooms and accessories.</li>
+                    <li><span class="num">4</span> Cross-check the count and quantity.</li>
+                </ul>
+                <div style="flex-grow: 1;"></div>
+                <button class="get-started-btn" onclick="selectTool('accessories')">
+                    Get extracted details 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+            
+            <!-- Tool 02 -->
+            <div class="action-card">
+                <div class="card-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                    </svg>
+                </div>
+                <div class="tool-label">Tool 02</div>
+                <h3>Extract Materials</h3>
+                <div class="card-divider"></div>
+                <ul class="custom-list">
+                    <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
+                    <li><span class="num">2</span> Upload the file.</li>
+                    <li><span class="num">3</span> Check all rooms and finishes.</li>
+                </ul>
+                <div style="flex-grow: 1;"></div>
+                <button class="get-started-btn" onclick="selectTool('materials')">
+                    Get extracted details 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+
+            <!-- Tool 03 -->
+            <div class="action-card">
+                <div class="card-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+                        <line x1="8" y1="9" x2="16" y2="9"></line>
+                        <line x1="8" y1="13" x2="16" y2="13"></line>
+                        <line x1="8" y1="17" x2="12" y2="17"></line>
+                    </svg>
+                </div>
+                <div class="tool-label">Tool 03</div>
+                <h3>Get Summary</h3>
+                <div class="card-divider"></div>
+                <ul class="custom-list">
+                    <li><span class="num">1</span> Download the final estimate from Fabsketch in Excel format.</li>
+                    <li><span class="num">2</span> Upload the file to generate the summary.</li>
+                    <li><span class="num">3</span> Review the overall project summary and metrics.</li>
+                </ul>
+                <div style="flex-grow: 1;"></div>
+                <button class="get-started-btn" onclick="selectTool('summary')">
+                    Get extracted details 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+            
+            <!-- Tool 04 -->
+            <div class="action-card">
+                <div class="card-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                    </svg>
+                </div>
+                <div class="tool-label">Tool 04</div>
+                <h3>Project Checklist</h3>
+                <div class="card-divider"></div>
+                <ul class="custom-list">
+                    <li><span class="num">1</span> Select the project requirements and milestones.</li>
+                    <li><span class="num">2</span> Validate design elements across all required phases.</li>
+                    <li><span class="num">3</span> Perform final quality check before generation.</li>
+                </ul>
+                <div style="flex-grow: 1;"></div>
+                <button class="get-started-btn" onclick="selectTool('checklist')">
+                    Open Checklist 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- RSM Cards -->
+        <div class="cards-container" id="rsm-cards" style="display: none;">
+            <div class="action-card" style="max-width: 500px; margin: 0 auto;">
+                <div class="card-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <div class="tool-label">Tool 01</div>
+                <h3>Client Requirements</h3>
+                <div class="card-divider"></div>
+                <ul class="custom-list">
+                    <li><span class="num">1</span> Fill in the client details properly.</li>
+                    <li><span class="num">2</span> Select requirements from available options.</li>
+                    <li><span class="num">3</span> Submit to the dashboard.</li>
+                </ul>
+                <div style="flex-grow: 1;"></div>
+                <button class="get-started-btn" onclick="window.location.href='https://fabooluxinterior.github.io/requirement-collector/'">
+                    Get extracted details 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📤 UPLOAD INTERFACE -->
+    <div id="upload-page" class="container">
+        <div class="brand-badge" id="upload-badge">Step 1</div>
+        <h3 id="upload-title" style="margin-bottom: 5px; font-size: 24px;">Upload Estimate</h3>
+        <p style="color: var(--text-muted); font-size: 15px; margin-top: 5px;">Select your Excel file to generate the list.</p>
+        
+        <div class="upload-area">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" style="margin-bottom: 15px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            <br>
+            <label class="file-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                Choose .xlsx File
+                <input type="file" accept=".xlsx, .xls" onchange="handleFileUpload(event)">
+            </label>
+        </div>
+
+        <!-- 🔽 DYNAMIC MATERIALS INFORMATION ACCORDION 🔽 -->
+        <div id="materials-info-container" style="display: none;">
+            <div class="info-accordion">
+                <details>
+                    <summary>Showing Multiple Panels</summary>
+                    <div class="info-content">If a room has two end panels with different finishes, they will be displayed as separate panels.</div>
+                </details>
+                <details>
+                    <summary>Showing Error on Carcass Finish</summary>
+                    <div class="info-content">End panel carcass finishes are automatically inherited from the cabinet carcass in the same room. For example, if you select Light brown cambric for the cabinet, the end panel's carcass will automatically match that finish.</div>
+                </details>
+            </div>
+        </div>
+
+        <div id="status-container">
+            <div class="spinner" id="spinner"></div>
+            <div id="status"></div>
+        </div>
+        <button class="back-btn" onclick="showHomePage()">← Return to Dashboard</button>
+    </div>
+
+    <!-- 📋 CHECKLIST WIZARD & PREVIEW PAGE -->
+    <div id="checklist-page" class="container" style="max-width: 750px;">
+        <!-- View 0: Details Intake Form -->
+        <div id="intro-view">
+            <div class="brand-badge">Setup</div>
+            <h2 style="margin-bottom: 25px;">Project Details</h2>
+            
+            <div class="input-group">
+                <label for="input-project">Project Name</label>
+                <input type="text" id="input-project" class="report-input" placeholder="e.g. 0772-ASIF" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="input-designer">Designer Name</label>
+                <input type="text" id="input-designer" class="report-input" placeholder="e.g. SRUTHIL" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="input-date">Date</label>
+                <input type="date" id="input-date" class="report-input" required>
+            </div>
+            
+            <button class="submit-btn btn-primary" onclick="startChecklist()" style="max-width: 550px; margin: 10px auto; display: block;">Start Checklist</button>
+            <button class="back-btn" style="margin-top: 15px;" onclick="showHomePage()">← Return to Dashboard</button>
+        </div>
+
+        <!-- View 1: Question Wizard -->
+        <div id="question-view" style="display: none;">
+            <div class="brand-badge" id="progress-text">Question 1 of 20</div>
+            
+            <div class="content-wrapper">
+                <div class="animation-section">
+                    <svg class="clipboard-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="25" width="60" height="70" rx="6" fill="#1e2028" stroke="#2a2b30" stroke-width="3"/>
+                        <rect x="38" y="18" width="24" height="12" rx="3" fill="#e85d22"/>
+                        <circle cx="50" cy="24" r="3" fill="#0b0c10"/>
+                        
+                        <rect x="28" y="42" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
+                        <path class="cl-check cl-check-1" d="M30 47L33 50L38 43" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line class="cl-line cl-line-1" x1="43" y1="47" x2="72" y2="47" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+
+                        <rect x="28" y="60" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
+                        <path class="cl-check cl-check-2" d="M30 65L33 68L38 61" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line class="cl-line cl-line-2" x1="43" y1="65" x2="68" y2="65" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+
+                        <rect x="28" y="78" width="10" height="10" rx="2" fill="none" stroke="#2a2b30" stroke-width="2"/>
+                        <path class="cl-check cl-check-3" d="M30 83L33 86L38 79" stroke="#e85d22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line class="cl-line cl-line-3" x1="43" y1="83" x2="62" y2="83" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="text-section">
+                    <h2 id="question-text">Loading question...</h2>
+                </div>
+            </div>
+            
+            <div class="action-row">
+                <button class="btn-corrected" onclick="recordAnswer('Yes, Corrected')">Yes, Corrected</button>
+                <button class="btn-not-required" onclick="recordAnswer('Not Required')">Not Required</button>
+            </div>
+            
+            <button class="back-btn" id="back-btn" onclick="goBack()">← Back to Previous</button>
+        </div>
+
+        <!-- View 2: Summary / PDF Preview -->
+        <div id="summary-view" style="display: none; width: 100%;">
+            <div id="printable-area" class="print-document">
+                <h2 class="print-header">Faboolux Project checklist</h2>
+                
+                <div class="project-details-box">
+                    <div><strong>Project:</strong> <span id="out-project"></span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Designer:</strong> <span id="out-designer"></span></div>
+                    <div><strong>Date:</strong> <span id="out-date"></span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Report Time:</strong> <span id="out-time"></span></div>
+                </div>
+
+                <table class="print-table">
+                    <tbody id="summary-table-body">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="max-width: 400px; margin: 0 auto; text-align: center;">
+                <div id="pdf-status-text" style="color: var(--brand-orange); font-size: 14px; font-weight: 500; margin-bottom: 12px;">Generating PDF automatically...</div>
+                <button class="back-btn" style="margin-top: 5px;" onclick="resetChecklist()">← Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📄 PREVIEW & PRINT PAGE FOR OTHER TOOLS -->
+    <div id="preview-page" class="container preview-container">
+        <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div style="text-align: left;">
+                <div class="brand-badge" style="margin-bottom: 10px; border-color: var(--success); color: var(--success);" id="preview-badge">Success</div>
+                <h2 style="margin: 0; font-size: 28px;" id="preview-title">Extracted Data</h2>
+            </div>
+            <div>
+                <button class="action-button" onclick="window.print()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print PDF
+                </button>
+            </div>
+        </div>
+        <div class="tables-wrapper" id="tables-container"></div>
+        <div class="no-print" style="margin-top: 20px;">
+            <button class="back-btn" onclick="showHomePage()">← Process Another File</button>
+        </div>
+    </div>
+
+    <!-- 🚨 1. REPORT ISSUE MODAL -->
+    <div id="report-issue-modal" class="modal-overlay" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3 style="color: var(--danger)">Report Issue</h3>
+                <div class="header-actions">
+                    <button class="admin-link-btn" onclick="openAdminLogin()">Admin</button>
+                    <button class="close-modal-btn" onclick="closeReportModal()">×</button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Designer Name</label>
+                <select id="report-designer-name" class="report-input">
+                    <option value="">Select Designer</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label>Issue Description</label>
+                <textarea id="report-description" class="report-input report-textarea" placeholder="Describe the issue you are facing..."></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Upload Media (Optional)</label>
+                <div class="media-upload-window" onclick="document.getElementById('report-media-file').click()">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <br>
+                    <span id="upload-file-name" style="font-weight: 500;">Click to browse and upload file</span>
+                </div>
+                <input type="file" id="report-media-file" style="display:none;" accept="image/*,video/*,application/pdf" onchange="updateFileName(this)">
+            </div>
+            
+            <button class="submit-btn btn-danger submit-report-btn" onclick="submitReport()">Submit Report</button>
+        </div>
+    </div>
+
+    <!-- 🔐 2. ADMIN LOGIN MODAL -->
+    <div id="admin-login-modal" class="modal-overlay" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3 style="color: var(--brand-orange)">Admin Login</h3>
+                <button class="close-modal-btn" onclick="closeAdminLogin()">×</button>
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="admin-login-email" class="report-input admin-input" placeholder="admin@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="admin-login-pass" class="report-input admin-input" placeholder="••••••••">
+            </div>
+            <button class="submit-btn btn-primary" onclick="handleAdminLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- 🛠️ 3. ADMIN DASHBOARD MODAL -->
+    <div id="admin-panel-modal" class="modal-overlay" style="display: none;">
+        <div class="admin-modal-content">
+            <div class="report-modal-header">
+                <h3 style="color: var(--brand-orange)">Admin Dashboard</h3>
+                <button class="close-modal-btn" onclick="closeAdminPanel()">×</button>
+            </div>
+            
+            <!-- Manage Designers -->
+            <div class="admin-section">
+                <h4>Manage Designers</h4>
+                <ul class="admin-list" id="admin-designer-list"></ul>
+                <div class="add-flex">
+                    <input type="text" id="new-designer-name" class="report-input admin-input" placeholder="New Designer Name">
+                    <button class="submit-btn btn-primary" onclick="addDesigner()">Add</button>
+                </div>
+            </div>
+
+            <!-- Manage Admins -->
+            <div class="admin-section">
+                <h4>Manage Admins</h4>
+                <ul class="admin-list" id="admin-users-list"></ul>
+                <div class="add-flex">
+                    <input type="email" id="new-admin-email" class="report-input admin-input" placeholder="Email">
+                    <input type="password" id="new-admin-pass" class="report-input admin-input" placeholder="Password">
+                </div>
+                <button class="submit-btn btn-primary" onclick="addAdmin()" style="margin-top: 10px;">Add New Admin</button>
+            </div>
+            
+            <div id="admin-sync-btn" style="text-align:center; color: var(--text-muted); font-size: 13px; margin-top: 15px;">
+                Connected to Google Sheets
+            </div>
+        </div>
+    </div>
+
+    <!-- 🌟 GLOSSY FOOTER TEXT -->
+    <div class="glossy-footer-text">All Tools Connected to Google Sheets</div>
+
+    <script>
+        // ✅ TAB SWITCH LOGIC
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn:not([onclick="openReportModal()"])');
+            if(tab === 'designers') {
+                document.getElementById('designers-cards').style.display = 'grid';
+                document.getElementById('rsm-cards').style.display = 'none';
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                document.getElementById('designers-cards').style.display = 'none';
+                document.getElementById('rsm-cards').style.display = 'flex';
+                tabs[1].classList.add('active');
+                tabs[0].classList.remove('active');
+            }
+        }
+
+        // ✅ API URLS
+        const API_URLS = {
+            accessories: 'https://script.google.com/macros/s/AKfycbwUJQYU6Vqj1o-LAYwNXLQDo3Mrgpy4wDKeVfUrXhnfRmQccsly6kwMSm1k2vEUtLmz/exec',
+            materials: 'https://script.google.com/macros/s/AKfycbwMnjxvQfYmJHZo-RqQLdazYi_g9RCDUbHRFO5RzB9Ml5zewOIGH8EO9Y7qhIyr_OCl/exec',
+            summary: 'https://script.google.com/macros/s/AKfycbxD9p1Sli-T0Qlj_i5387AgWi1Of9e2Abgv_CtkginxvqK-HBDT6AbgAY8MpcsCJ5BhOg/exec' 
+        };
+
+        const REPORT_API_URL = 'https://script.google.com/macros/s/AKfycbwiiZHO5GBzzhYjy97Ku2XpshxtcwrEVUjDu_5ZR2123SFgClGdfWkRS15VrDA-gMf8/exec';
+
+        let currentTool = 'accessories'; 
+
+        function selectTool(toolName) {
+            currentTool = toolName;
+            
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('preview-page').style.display = 'none';
+            document.getElementById('upload-page').style.display = 'none';
+            document.getElementById('checklist-page').style.display = 'none';
+
+            if(toolName === 'checklist') {
+                document.getElementById('checklist-page').style.display = 'block';
+                resetChecklistState();
+                return;
+            }
+
+            document.getElementById('upload-page').style.display = 'block';
+            
+            if(toolName === 'accessories') {
+                document.getElementById('upload-badge').innerText = 'Accessories';
+                document.getElementById('upload-title').innerText = 'Extract Accessories';
+                document.getElementById('materials-info-container').style.display = 'none';
+            } else if (toolName === 'materials') {
+                document.getElementById('upload-badge').innerText = 'Materials';
+                document.getElementById('upload-title').innerText = 'Extract Materials';
+                document.getElementById('materials-info-container').style.display = 'block';
+            } else if (toolName === 'summary') {
+                document.getElementById('upload-badge').innerText = 'Summary';
+                document.getElementById('upload-title').innerText = 'Get Project Summary';
+                document.getElementById('materials-info-container').style.display = 'none';
+            }
+            
+            resetStatus();
+        }
+
+        function showHomePage() {
+            document.getElementById('upload-page').style.display = 'none';
+            document.getElementById('preview-page').style.display = 'none';
+            document.getElementById('checklist-page').style.display = 'none';
+            document.getElementById('home-page').style.display = 'flex';
+        }
+
+        function resetStatus() {
+            document.getElementById('status').innerText = '';
+            document.getElementById('status').className = '';
+            document.getElementById('spinner').style.display = 'none';
+        }
+
+        function parseImage(imgData) {
+            if (!imgData) return '';
+            imgData = String(imgData); 
+            let url = "";
+
+            if (imgData.includes('=IMAGE("')) {
+                const match = imgData.match(/=IMAGE\("([^"]+)"/i);
+                if (match && match[1]) url = match[1];
+            } else if (imgData.startsWith('http')) { url = imgData; }
+
+            if (url) {
+                if (url.includes('drive.google.com')) {
+                    const idMatch = url.match(/id=([a-zA-Z0-9-_]+)/);
+                    if (idMatch && idMatch[1]) url = `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+                    else {
+                        const dMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                        if (dMatch && dMatch[1]) url = `https://lh3.googleusercontent.com/d/${dMatch[1]}`;
+                    }
+                }
+                return `<img src="${url}" class="item-img" onerror="this.style.display='none'">`;
+            }
+            return '';
+        }
+
+        function showPreviewPage(dataRows) {
+            document.getElementById('upload-page').style.display = 'none';
+            
+            if (currentTool === 'accessories') {
+                document.getElementById('preview-title').innerText = 'Kitchen Accessories List'; 
+                document.getElementById('preview-badge').innerText = 'Accessories Data';
+            } else if (currentTool === 'materials') {
+                document.getElementById('preview-title').innerText = 'Extracted Materials';
+                document.getElementById('preview-badge').innerText = 'Materials Data';
+            } else if (currentTool === 'summary') {
+                document.getElementById('preview-title').innerText = 'Project Summary';
+                document.getElementById('preview-badge').innerText = 'Summary Data';
+            }
+            
+            const container = document.getElementById('tables-container');
+            container.innerHTML = ''; 
+            const groupedData = {};
+
+            if (!Array.isArray(dataRows) || dataRows.length === 0) {
+                document.getElementById('upload-page').style.display = 'block';
+                document.getElementById('status').style.color = 'var(--danger)';
+                document.getElementById('status').innerText = '❌ No items were found to extract.';
+                return;
+            }
+
+            if (currentTool === 'accessories') {
+                dataRows.forEach(row => {
+                    if (!row || (!row[0] && !row[1] && !row[2])) return; 
+                    const roomName = String(row[0] || 'General Area').trim();
+                    if (!groupedData[roomName]) groupedData[roomName] = [];
+                    groupedData[roomName].push(row);
+                });
+                for (const [room, items] of Object.entries(groupedData)) {
+                    let displayRoom = room.replace(/ESTIMATE FOR MODULAR KITCHEN/gi, 'KITCHEN ACCESSORIES LIST');
+                    let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${displayRoom}</h3><table class="acc-table"><thead><tr><th>Item Name</th><th>Specification</th><th style="text-align:center;">Qty</th><th style="text-align:center;">Image</th></tr></thead><tbody>`;
+                    items.forEach(row => {
+                        let imgTag = parseImage(row[4]) || '<span style="color:#475569; font-size:12px;">No Image</span>';
+                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[1] || ''}</strong></td><td class="spec-text">${row[2] || ''}</td><td style="text-align:center; font-weight:600; color:#fff;">${row[3] || ''}</td><td style="image-cell"><div class="image-wrapper">${imgTag}</div></td></tr>`;
+                    });
+                    container.innerHTML += tableHTML + `</tbody></table></div>`;
+                }
+            } else if (currentTool === 'materials') {
+                let currentRoom = 'General Area';
+                dataRows.forEach(row => {
+                    if (!row) return;
+                    let col0 = String(row[0] || '').trim(), col1 = String(row[1] || '').trim(), col2 = String(row[2] || '').trim(), col3 = String(row[3] || '').trim();
+                    if (col0 && !col1 && !col2 && !col3 && col0 !== "Product") currentRoom = col0;
+                    else if (col0 === "Product" || (!col0 && !col1 && !col2 && !col3)) return;
+                    else { if (!groupedData[currentRoom]) groupedData[currentRoom] = []; groupedData[currentRoom].push(row); }
+                });
+                for (const [room, items] of Object.entries(groupedData)) {
+                    let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${room}</h3><table class="mat-table"><thead><tr><th>Product</th><th>Carcass Mat</th><th>Shutter Mat</th><th>Carcass Finish</th><th>Shutter Finish</th></tr></thead><tbody>`;
+                    items.forEach(row => {
+                        let cFinHtml = `<div class="finish-cell-content"><span class="spec-text">${row[3] || '-'}</span><div class="image-wrapper">${parseImage(row[4])}</div></div>`;
+                        let sFinHtml = `<div class="finish-cell-content"><span class="spec-text">${row[5] || '-'}</span><div class="image-wrapper">${parseImage(row[6])}</div></div>`;
+                        tableHTML += `<tr><td style="color:#fff;"><strong>${row[0] || ''}</strong></td><td style="color:#cbd5e1;">${row[1] || '-'}</td><td style="color:#cbd5e1;">${row[2] || '-'}</td><td>${cFinHtml}</td><td>${sFinHtml}</td></tr>`;
+                    });
+                    container.innerHTML += tableHTML + `</tbody></table></div>`;
+                }
+            } else if (currentTool === 'summary') {
+                let tableHTML = `<div class="room-section fade-in" style="background: #ffffff; padding: 25px; border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6);"><table class="summary-table" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; color: #000000;"><tbody>`;
+                dataRows.forEach((row, index) => {
+                    if (!row || row.length === 0) return;
+                    tableHTML += `<tr>`;
+                    if (index === 0) {
+                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
+                    } else if (index === 1) {
+                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td><td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; vertical-align: middle; background: #ffffff; width: 160px;"><img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 140px; height: auto;"></td>`;
+                    } else if (index === 2) {
+                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
+                    } else if (index === 3) {
+                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
+                    } else if (index === 4) {
+                        if (row[0] === "Category") {
+                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[0]}</th>`;
+                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[4]}</th>`;
+                        } else {
+                            row.forEach(cell => { tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`; });
+                        }
+                    } else {
+                        let isFooter = (String(row[0]).toLowerCase().includes('selling price') || String(row[0]).toLowerCase().includes('discount') || String(row[0]).toLowerCase().includes('grand total'));
+                        if (isFooter) {
+                            let val = parseFloat(row[4]); val = isNaN(val) ? row[4] : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${row[0]}</th><th style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${val}</th>`;
+                        } else {
+                            let isKitchenData = (dataRows[4] && dataRows[4][0] === "Category");
+                            if (isKitchenData) {
+                                tableHTML += `<td colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: left; background: #ffffff; font-weight: bold; color: #000000;">${row[0]}</td>`;
+                                let val = parseFloat(row[4]); val = isNaN(val) ? (row[4] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff; color: #000000;">${val}</td>`;
+                            } else {
+                                tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
+                                for(let i=1; i<5; i++) {
+                                    let val = parseFloat(row[i]); val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                    tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff;">${val}</td>`;
+                                }
+                            }
+                        }
+                    }
+                    tableHTML += `</tr>`;
+                });
+                tableHTML += `</tbody></table></div>`;
+                container.innerHTML += tableHTML;
+            }
+            document.getElementById('preview-page').style.display = 'block';
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
+            spinner.style.display = 'block'; statusEl.innerText = 'Uploading...'; statusEl.className = 'loading-text'; 
+
+            const reader = new FileReader();
+            reader.onerror = function() { spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Failed to read the Excel file from your computer.'; };
+            reader.onload = function(e) { statusEl.innerText = 'Extracting and processing data...'; const base64Data = e.target.result.split(',')[1]; sendToGoogleScript(base64Data, file.name); };
+            reader.readAsDataURL(file);
+        }
+
+        function sendToGoogleScript(base64Data, fileName) {
+            fetch(API_URLS[currentTool], { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fileName: fileName, base64Data: base64Data }) })
+            .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
+            .then(responseObj => {
+                const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
+                spinner.style.display = 'none'; statusEl.className = ''; 
+                if(responseObj.status === "error") { statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Server Error: ' + responseObj.message; } 
+                else { statusEl.style.color = 'var(--success)'; statusEl.innerText = '✅ ' + responseObj.message; if(responseObj.data) setTimeout(() => { showPreviewPage(responseObj.data); }, 600); }
+            })
+            .catch(error => {
+                document.getElementById('spinner').style.display = 'none'; const statusEl = document.getElementById('status'); statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ ${error.message}`;
+            });
+        }
+
+
+        // ==========================================
+        // ✅ CHECKLIST LOGIC & QUESTIONS
+        // ==========================================
+        const questions = [
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>SENSYS W90 Corner Hinges</mark> for blind corner units" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>TH-52 hinges</mark> for L corner units" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>16 Crank</mark> for inset shutters" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>9.5 Crank</mark> for half overlay shutters" },
+            { text: "Match <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Shutters and Drawers fascia</mark> properly" },
+            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Core materials</mark> properly (Eg:-12 For 12mm thickness, 16 for 16mm thickness)" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter finish laminats</mark> only for shutter or shutter finish panels" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish lamiantes</mark> only for carcass and carcass panels" },
+            { text: "Check <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter opening direction</mark>" },
+            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Grooved bottom panels for profile lights</mark> (Replace defualt bottom panel to grooved panel)" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>20MM Gap</mark> between shutter and inside shlef" },
+            { text: "Use proper shutters (<mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Lift up, Flap down, G profile-bottom top</mark>)" },
+            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Counter top support panel</mark> above the cabinets (Kitchen)" },
+            { text: "Don't match finishes with <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>OSL panels</mark>" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>80MM Gap</mark> between shutter and shelf in wardrobe with drawer unit" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>130MM Gap</mark> between sliding door and shlef (Aristo and Hettich)" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>BWP</mark> For all vanity units" },
+            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Drawer channels</mark> properly" },
+            { text: "Make <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition</mark> using <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition panels</mark>" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish</mark> for wardrobe internal drawer fascia" }
+        ];
+
+        let currentIndex = 0;
+        let answers = []; 
+        let projectDetails = {};
+
+        function resetChecklistState() {
+            currentIndex = 0;
+            answers = [];
+            document.getElementById('input-date').valueAsDate = new Date();
+            document.getElementById('intro-view').style.display = 'block';
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('summary-view').style.display = 'none';
+        }
+
+        function resetChecklist() {
+            resetChecklistState();
+        }
+
+        function startChecklist() {
+            const proj = document.getElementById('input-project').value.trim();
+            const des = document.getElementById('input-designer').value.trim();
+            const date = document.getElementById('input-date').value;
+
+            if(!proj || !des || !date) {
+                alert("Please fill in all project details before starting.");
+                return;
+            }
+
+            projectDetails = { project: proj, designer: des, date: date };
+            document.getElementById('intro-view').style.display = 'none';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            document.getElementById('question-text').innerHTML = questions[currentIndex].text;
+            document.getElementById('progress-text').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('back-btn').disabled = (currentIndex === 0);
+            document.getElementById('question-view').style.display = 'block';
+        }
+
+        function recordAnswer(answer) {
+            answers[currentIndex] = answer;
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showSummary();
+            }
+        }
+
+        function goBack() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function showSummary() {
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('summary-view').style.display = 'block';
+            
+            document.getElementById('out-project').innerText = projectDetails.project;
+            document.getElementById('out-designer').innerText = projectDetails.designer;
+            document.getElementById('out-date').innerText = projectDetails.date;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('out-time').innerText = timeString;
+
+            const summaryTable = document.getElementById('summary-table-body');
+            summaryTable.innerHTML = ''; 
+
+            questions.forEach((q, index) => {
+                const tr = document.createElement('tr');
+                const ans = answers[index];
+                
+                let iconHtml = '';
+                let tdStyle = 'padding: 6.5px 0; border-bottom: 1px solid #f1f5f9; vertical-align: top; line-height: 1.4;';
+                let textStyle = 'color: #0f172a;';
+
+                if (ans === 'Yes, Corrected') {
+                    iconHtml = `<td style="width: 30px; text-align: left; color: #10b981; font-size: 16px; font-weight: bold; ${tdStyle}">&#10003;</td>`;
+                } else if (ans === 'Not Required') {
+                    iconHtml = `<td style="width: 30px; text-align: left; color: #ef4444; font-size: 16px; font-weight: bold; ${tdStyle}">&#10007;</td>`;
+                    textStyle = 'color: #333; text-decoration: line-through; background-color: #fef08a; padding: 2px 4px; border-radius: 3px;';
+                }
+
+                let cleanText = q.text.replace(/<mark[^>]*>/g, '').replace(/<\/mark>/g, '');
+                tr.innerHTML = `${iconHtml}<td style="${tdStyle}"><span style="${textStyle}">${cleanText}</span></td>`;
+                summaryTable.appendChild(tr);
+            });
+
+            // Automatically trigger PDF download as soon as summary opens
+            setTimeout(() => {
+                triggerAutoDownloadPDF();
+            }, 400);
+        }
+
+        function triggerAutoDownloadPDF() {
+            const statusText = document.getElementById('pdf-status-text');
+            if(statusText) statusText.innerText = "Generating and downloading PDF automatically...";
+
+            const element = document.getElementById('printable-area');
+            const opt = {
+                margin:       [8, 10, 0, 10], 
+                filename:     `${projectDetails.project.replace(/\s+/g, '_')}_Checklist.pdf`,
+                image:        { type: 'jpeg', quality: 0.95 },
+                html2canvas:  { scale: 1.5, logging: false }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                if(statusText) statusText.innerText = "✅ PDF downloaded successfully!";
+            }).catch(err => {
+                console.error("PDF auto-download failed:", err);
+                if(statusText) statusText.innerText = "❌ Auto-download failed. Please check permissions.";
+            });
+        }
+
+
+        // ==========================================
+        // ✅ GOOGLE SHEET DATA FETCHING & SYNCING
+        // ==========================================
+        
+        let globalDesigners = [];
+        let globalAdmins = [];
+
+        function initStorage() {
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: "getData" })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    globalDesigners = data.designers;
+                    globalAdmins = data.admins;
+                    populateDesignerDropdown();
+                }
+            })
+            .catch(err => {
+                console.error("Failed to load data from sheet. Using safe defaults.", err);
+                globalDesigners = ['Anjana', 'Santosh Etan'];
+                globalAdmins = [{ email: 'designer8fab@gmail.com', pass: 'Faboolux@999' }];
+                populateDesignerDropdown();
+            });
+        }
+
+        function syncDataToSheet() {
+            const btn = document.getElementById('admin-sync-btn');
+            if(btn) { btn.innerText = "Syncing to Google Sheets..."; btn.style.color = "var(--brand-orange)"; }
+            
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: "updateData", designers: globalDesigners, admins: globalAdmins })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(btn) { btn.innerText = "✅ Saved to Google Sheets"; btn.style.color = "var(--success)"; }
+            })
+            .catch(err => {
+                if(btn) { btn.innerText = "❌ Sync Failed! Check connection."; btn.style.color = "var(--danger)"; }
+            });
+        }
+
+        function populateDesignerDropdown() {
+            const select = document.getElementById('report-designer-name');
+            select.innerHTML = '<option value="">Select Designer</option>';
+            globalDesigners.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                select.appendChild(opt);
+            });
+        }
+
+        initStorage();
+
+
+        // ==========================================
+        // ✅ REPORT ISSUE & ADMIN LOGIC
+        // ==========================================
+
+        function openReportModal() { document.getElementById('report-issue-modal').style.display = 'flex'; }
+        function closeReportModal() { document.getElementById('report-issue-modal').style.display = 'none'; }
+
+        function updateFileName(input) {
+            const fileNameDisplay = document.getElementById('upload-file-name');
+            if(input.files && input.files.length > 0) {
+                fileNameDisplay.innerText = "Selected: " + input.files[0].name;
+                fileNameDisplay.style.color = "var(--success)";
+            } else {
+                fileNameDisplay.innerText = "Click to browse and upload file";
+                fileNameDisplay.style.color = "var(--text-muted)";
+            }
+        }
+
+        function submitReport() {
+            const name = document.getElementById('report-designer-name').value;
+            const desc = document.getElementById('report-description').value;
+            const fileInput = document.getElementById('report-media-file');
+            const submitBtn = document.querySelector('.submit-report-btn');
+            
+            if(!name || !desc) {
+                alert("Please select your Designer Name and enter an Issue Description.");
+                return;
+            }
+
+            submitBtn.innerText = 'Submitting...'; submitBtn.disabled = true;
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { sendReportToScript(name, desc, e.target.result.split(',')[1], file.type, file.name); };
+                reader.readAsDataURL(file);
+            } else { sendReportToScript(name, desc, null, null, null); }
+        }
+
+        function sendReportToScript(name, desc, base64Data, mimeType, fileName) {
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ name: name, description: desc, mediaBase64: base64Data, mimeType: mimeType, fileName: fileName })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') alert("Report submitted successfully! Thank you.");
+                else alert("Error: " + data.message);
+                resetReportForm();
+            })
+            .catch(err => { alert("Error submitting report."); resetReportForm(); });
+        }
+
+        function resetReportForm() {
+            document.getElementById('report-designer-name').value = '';
+            document.getElementById('report-description').value = '';
+            const fileInput = document.getElementById('report-media-file');
+            fileInput.value = ''; updateFileName(fileInput); 
+            const submitBtn = document.querySelector('.submit-report-btn');
+            submitBtn.innerText = 'Submit Report'; submitBtn.disabled = false;
+            closeReportModal();
+        }
+
+        function openAdminLogin() { closeReportModal(); document.getElementById('admin-login-modal').style.display = 'flex'; }
+        function closeAdminLogin() { document.getElementById('admin-login-modal').style.display = 'none'; }
+
+        function handleAdminLogin() {
+            const email = document.getElementById('admin-login-email').value;
+            const pass = document.getElementById('admin-login-pass').value;
+            const isValid = globalAdmins.some(a => a.email === email && a.pass === pass);
+            
+            if (isValid) {
+                document.getElementById('admin-login-email').value = ''; document.getElementById('admin-login-pass').value = '';
+                closeAdminLogin(); openAdminPanel();
+            } else { alert("Invalid Admin Email or Password."); }
+        }
+
+        function openAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'flex'; renderAdminPanel(); }
+        function closeAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'none'; }
+
+        function renderAdminPanel() {
+            const dList = document.getElementById('admin-designer-list'); dList.innerHTML = '';
+            globalDesigners.forEach((d, index) => {
+                dList.innerHTML += `<li>${d} <button class="delete-btn" onclick="removeDesigner(${index})">Remove</button></li>`;
+            });
+            const aList = document.getElementById('admin-users-list'); aList.innerHTML = '';
+            globalAdmins.forEach((a, index) => {
+                let removeBtn = index === 0 ? `<span style="color:#666; font-size:11px;">Primary (Locked)</span>` : `<button class="delete-btn" onclick="removeAdmin(${index})">Remove</button>`;
+                aList.innerHTML += `<li>${a.email} ${removeBtn}</li>`;
+            });
+        }
+
+        function addDesigner() {
+            const nameInput = document.getElementById('new-designer-name'); const newName = nameInput.value.trim();
+            if(!newName) return;
+            globalDesigners.push(newName);
+            nameInput.value = '';
+            populateDesignerDropdown(); renderAdminPanel(); syncDataToSheet();
+        }
+        
+        function removeDesigner(index) {
+            globalDesigners.splice(index, 1);
+            populateDesignerDropdown(); renderAdminPanel(); syncDataToSheet();
+        }
+
+        function addAdmin() {
+            const emailInput = document.getElementById('new-admin-email'), passInput = document.getElementById('new-admin-pass');
+            const email = emailInput.value.trim(), pass = passInput.value.trim();
+            if(!email || !pass) { alert("Provide both email and password."); return; }
+            globalAdmins.push({ email: email, pass: pass });
+            emailInput.value = ''; passInput.value = '';
+            renderAdminPanel(); syncDataToSheet();
+        }
+        
+        function removeAdmin(index) {
+            if(index === 0) return; 
+            globalAdmins.splice(index, 1);
+            renderAdminPanel(); syncDataToSheet();
+        }
+    </script>
 </body>
-</html>
+</html> i want to add a favicon forthis web and the favicon image should visble prplry and do not stretch that https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp
