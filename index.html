@@ -6,7 +6,11 @@
     <title>Faboolux Production Tool</title>
     
     <link rel="icon" type="image/webp" href="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp">
+    
+    <!-- PDF & EXCEL PARSER ENGINES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -1197,8 +1201,8 @@
         // 🔗 API CONFIGURATION: UPDATE WEB APP URLS HERE
         // ============================================================================
         const API_URLS = {
-            accessories: 'https://script.google.com/macros/s/AKfycbxUOOh9E3R349e70sbP-reD8Dk7awLgmCj-5pl-70ituwPs0RCEVl57pHr-xepNV6kx/exec',
-            materials: 'https://script.google.com/macros/s/AKfycbwE5oCSQwE_XDh6wjrJWSkzrRFNbJrR_PMBNBXLejE513XVkJasWdvWj87hl4O3UqEo/exec',
+            accessories: 'https://script.google.com/macros/s/AKfycbwznmhfbIcxzoDUmm9OLbaMOuFLPiJeoinAKgLI5SC9ZFBC32ol4mKIuXiI5f5fFH0g/exec',
+            materials: 'https://script.google.com/macros/s/AKfycbxCPyS7jIfT8H8wmNv7Hg2UDFu2NYbKMxB_CwdGB-N6fG7TCTy1J__4ermAxDUVpNYx/exec',
             summary: 'https://script.google.com/macros/s/AKfycbxD9p1Sli-T0Qlj_i5387AgWi1Of9e2Abgv_CtkginxvqK-HBDT6AbgAY8MpcsCJ5BhOg/exec' 
         };
 
@@ -1507,22 +1511,51 @@
             btn.style.display = 'none';
         }
 
-
+        // 🔥 ZERO LOADING TIME / INTERNAL ERROR BYPASS (Instant Client-Side Parsing)
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
-            spinner.style.display = 'block'; statusEl.innerText = 'Uploading...'; statusEl.className = 'loading-text'; 
+            spinner.style.display = 'block'; statusEl.innerText = 'Extracting data...'; statusEl.className = 'loading-text'; 
 
-            const reader = new FileReader();
-            reader.onerror = function() { spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Failed to read the Excel file from your computer.'; };
-            reader.onload = function(e) { statusEl.innerText = 'Extracting and processing data...'; const base64Data = e.target.result.split(',')[1]; sendToGoogleScript(base64Data, file.name); };
-            reader.readAsDataURL(file);
+            if (currentTool === 'summary') {
+                // Summary Tool relies on legacy base64 format API
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    const base64Data = e.target.result.split(',')[1]; 
+                    sendToGoogleScriptBase64(base64Data, file.name); 
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Materials and Accessories bypass Google Server Conversion entirely
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, {type: 'array'});
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        
+                        // Converts to standard 2D Array exactly like Google's backend format
+                        const parsedDataMatrix = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ""});
+                        
+                        statusEl.innerText = 'Formatting and displaying...'; 
+                        sendToGoogleScriptParsed(parsedDataMatrix, file.name);
+                    } catch(error) {
+                        spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ Error: Unreadable file format.`;
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            }
         }
 
-        function sendToGoogleScript(base64Data, fileName) {
-            fetch(API_URLS[currentTool], { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: "extract", fileName: fileName, base64Data: base64Data }) })
+        function sendToGoogleScriptParsed(dataMatrix, fileName) {
+            fetch(API_URLS[currentTool], { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                body: JSON.stringify({ action: "extract", fileName: fileName, dataMatrix: dataMatrix }) 
+            })
             .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
             .then(responseObj => {
                 const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
@@ -1531,8 +1564,31 @@
                 else { 
                     statusEl.style.color = 'var(--success)'; 
                     statusEl.innerText = '✅ ' + responseObj.message; 
-                    currentGeneratedTabName = responseObj.tabName; // Saves Tab Name for Syncing
-                    if(responseObj.data) setTimeout(() => { showPreviewPage(responseObj.data); }, 600); 
+                    currentGeneratedTabName = responseObj.tabName; 
+                    if(responseObj.data) showPreviewPage(responseObj.data); // Instant display, no sleep delay!
+                }
+            })
+            .catch(error => {
+                document.getElementById('spinner').style.display = 'none'; const statusEl = document.getElementById('status'); statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ ${error.message}`;
+            });
+        }
+        
+        function sendToGoogleScriptBase64(base64Data, fileName) {
+            fetch(API_URLS[currentTool], { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                body: JSON.stringify({ action: "extract", fileName: fileName, base64Data: base64Data }) 
+            })
+            .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
+            .then(responseObj => {
+                const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
+                spinner.style.display = 'none'; statusEl.className = ''; 
+                if(responseObj.status === "error") { statusEl.style.color = 'var(--danger)'; statusEl.innerText = '❌ Server Error: ' + responseObj.message; } 
+                else { 
+                    statusEl.style.color = 'var(--success)'; 
+                    statusEl.innerText = '✅ ' + responseObj.message; 
+                    currentGeneratedTabName = responseObj.tabName; 
+                    if(responseObj.data) showPreviewPage(responseObj.data);
                 }
             })
             .catch(error => {
