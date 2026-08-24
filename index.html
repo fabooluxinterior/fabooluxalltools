@@ -71,6 +71,20 @@
             object-fit: contain;
         }
 
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .event-banner {
+            height: 65px;
+            width: auto;
+            max-width: 250px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
         .nav-tabs {
             display: flex;
             gap: 12px;
@@ -825,7 +839,10 @@
 
     <!-- 🌟 TOP NAVIGATION -->
     <header class="top-nav">
-        <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo">
+        <div class="brand-container">
+            <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo">
+           <img src="https://lh3.googleusercontent.com/d/1I1s314NNKhsXtzyHbjpek4i4i3jiyJeH" alt="Event Banner" class="event-banner">
+        </div>
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('designers')">For Designers</button>
             <button class="tab-btn" onclick="switchTab('rsm')">For RSM</button>
