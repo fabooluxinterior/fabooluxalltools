@@ -1215,7 +1215,7 @@
         // ============================================================================
         const API_URLS = {
             accessories: 'https://script.google.com/macros/s/AKfycbyrB19W3biEP8yQ2ZGAw3z2Gp5TDApdNacbGmK4pswKjn_XVf1y3ZstoczuDjm-5pTH/exec',
-            materials: 'https://script.google.com/macros/s/AKfycbxCPyS7jIfT8H8wmNv7Hg2UDFu2NYbKMxB_CwdGB-N6fG7TCTy1J__4ermAxDUVpNYx/exec',
+            materials: 'https://script.google.com/macros/s/AKfycbyZkqqkR_O2zm9QrDX-N3-E2nSFyvLrhO1OfVOu6WbmBkC6S9LIU-LxL-oefNecuUt9/exec',
             summary: 'https://script.google.com/macros/s/AKfycbxD9p1Sli-T0Qlj_i5387AgWi1Of9e2Abgv_CtkginxvqK-HBDT6AbgAY8MpcsCJ5BhOg/exec' 
         };
 
@@ -1238,7 +1238,7 @@
         }
 
         let currentTool = 'accessories'; 
-        let currentGeneratedTabName = ""; // NEW: Tracks the sheet tab to sync to
+        let currentGeneratedTabName = ""; 
 
         function selectTool(toolName) {
             currentTool = toolName;
@@ -1304,6 +1304,26 @@
             return '<span style="color:#ef4444; font-size:11px; font-weight:600; text-align:center;">Invalid<br>Link</span>';
         }
 
+        // ==========================================
+        // 🔧 FORMATTER: Split the stacked Lam Codes perfectly
+        // ==========================================
+        function formatStackedText(text) {
+            if (!text) return '-';
+            let parts = text.split('\n');
+            
+            // Bold the column E data, which is appended in parentheses at the end of the name
+            let res = parts[0].replace(/\s*\(([^)]+)\)$/, ' <strong>($1)</strong>');
+
+            if (parts.length > 1 && parts[1].trim() !== '') {
+                // Changed from var(--brand-orange) to normal inherited text color
+                res += `<br><span style="color: inherit; font-size: 11.5px; font-weight: 500;">Lam: ${parts[1]}</span>`;
+            }
+            if (parts.length > 2 && parts[2].trim() !== '') {
+                res += `<br><span style="color: var(--text-muted); font-size: 11.5px; font-weight: 500;">${parts[2]}</span>`;
+            }
+            return res;
+        }
+
         function showPreviewPage(dataRows) {
             document.getElementById('upload-page').style.display = 'none';
             
@@ -1361,9 +1381,11 @@
                 });
                 for (const [room, items] of Object.entries(groupedData)) {
                     let tableHTML = `<div class="room-section fade-in"><h3 class="room-header">${room}</h3><table class="mat-table"><thead><tr><th>Product</th><th>Carcass Mat</th><th>Shutter Mat</th><th>Carcass Finish</th><th>Shutter Finish</th></tr></thead><tbody>`;
+                    
                     items.forEach(row => {
-                        let cFinHtml = `<div class="finish-cell-content"><div class="spec-text">${row[3] || '-'}</div><div class="image-wrapper">${parseImage(row[4])}</div></div>`;
-                        let sFinHtml = `<div class="finish-cell-content"><div class="spec-text">${row[5] || '-'}</div><div class="image-wrapper">${parseImage(row[6])}</div></div>`;
+                        let cFinHtml = `<div class="finish-cell-content"><div class="spec-text">${formatStackedText(row[3])}</div><div class="image-wrapper">${parseImage(row[4])}</div></div>`;
+                        let sFinHtml = `<div class="finish-cell-content"><div class="spec-text">${formatStackedText(row[5])}</div><div class="image-wrapper">${parseImage(row[6])}</div></div>`;
+                        
                         tableHTML += `<tr><td style="color:#fff;"><strong>${row[0] || ''}</strong></td><td style="color:#cbd5e1;">${row[1] || '-'}</td><td style="color:#cbd5e1;">${row[2] || '-'}</td><td>${cFinHtml}</td><td>${sFinHtml}</td></tr>`;
                     });
                     
@@ -1421,10 +1443,6 @@
             document.getElementById('preview-page').style.display = 'block';
         }
 
-        // ==========================================
-        // ✅ UPDATED: MANUAL ROW ADDITION (UI LOCK ONLY + DELETE ROW)
-        // ==========================================
-        
         function addManualRow(btn, tool) {
             const tableBody = btn.parentElement.previousElementSibling.querySelector('tbody');
             const roomName = btn.parentElement.parentElement.querySelector('.room-header').innerText;
@@ -1478,7 +1496,6 @@
             }
             tableBody.appendChild(tr);
 
-            // Show the Done button
             const doneBtn = btn.parentElement.querySelector('.section-done-btn');
             if (doneBtn) {
                 doneBtn.style.display = 'inline-flex';
@@ -1499,7 +1516,6 @@
             }
         }
 
-        // Apply formatting changes visually across the entire section and hide the button again
         function finishEditingSection(btn) {
             const section = btn.closest('.room-section');
             const inputs = section.querySelectorAll('.manual-input');
@@ -1510,21 +1526,17 @@
                inp.contentEditable = "false";
             });
             
-            // Optionally, remove the ability to add images when the section is done
             const imgLabels = section.querySelectorAll('.image-wrapper label.no-print');
             imgLabels.forEach(lbl => lbl.style.display = 'none');
             const deleteImgBtns = section.querySelectorAll('.image-wrapper button.no-print');
             deleteImgBtns.forEach(b => b.style.display = 'none');
 
-            // Hide the row delete buttons
             const rowDeleteBtns = section.querySelectorAll('.row-delete-btn');
             rowDeleteBtns.forEach(b => b.style.display = 'none');
 
-            // Hide the Done button to return to normal
             btn.style.display = 'none';
         }
 
-        // 🔥 ZERO LOADING TIME / INTERNAL ERROR BYPASS (Instant Client-Side Parsing)
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1533,7 +1545,6 @@
             spinner.style.display = 'block'; statusEl.innerText = 'Extracting data...'; statusEl.className = 'loading-text'; 
 
             if (currentTool === 'summary') {
-                // Summary Tool relies on legacy base64 format API
                 const reader = new FileReader();
                 reader.onload = function(e) { 
                     const base64Data = e.target.result.split(',')[1]; 
@@ -1541,7 +1552,6 @@
                 };
                 reader.readAsDataURL(file);
             } else {
-                // Materials and Accessories bypass Google Server Conversion entirely
                 const reader = new FileReader();
                 reader.onload = function(e) { 
                     try {
@@ -1549,8 +1559,6 @@
                         const workbook = XLSX.read(data, {type: 'array'});
                         const firstSheetName = workbook.SheetNames[0];
                         const worksheet = workbook.Sheets[firstSheetName];
-                        
-                        // Converts to standard 2D Array exactly like Google's backend format
                         const parsedDataMatrix = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ""});
                         
                         statusEl.innerText = 'Formatting and displaying...'; 
@@ -1569,7 +1577,15 @@
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                 body: JSON.stringify({ action: "extract", fileName: fileName, dataMatrix: dataMatrix }) 
             })
-            .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
+            .then(async response => { 
+                const rawText = await response.text();
+                try { 
+                    return JSON.parse(rawText); 
+                } catch(err) { 
+                    console.error("RAW GOOGLE RESPONSE:", rawText);
+                    throw new Error("Invalid response from Google. Ensure Apps Script is deployed as 'Me' and 'Anyone'."); 
+                } 
+            })
             .then(responseObj => {
                 const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
                 spinner.style.display = 'none'; statusEl.className = ''; 
@@ -1578,7 +1594,7 @@
                     statusEl.style.color = 'var(--success)'; 
                     statusEl.innerText = '✅ ' + responseObj.message; 
                     currentGeneratedTabName = responseObj.tabName; 
-                    if(responseObj.data) showPreviewPage(responseObj.data); // Instant display, no sleep delay!
+                    if(responseObj.data) showPreviewPage(responseObj.data); 
                 }
             })
             .catch(error => {
@@ -1592,7 +1608,15 @@
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                 body: JSON.stringify({ action: "extract", fileName: fileName, base64Data: base64Data }) 
             })
-            .then(async response => { try { return JSON.parse(await response.text()); } catch(err) { throw new Error("Invalid response from Google."); } })
+            .then(async response => { 
+                const rawText = await response.text();
+                try { 
+                    return JSON.parse(rawText); 
+                } catch(err) { 
+                    console.error("RAW GOOGLE RESPONSE:", rawText);
+                    throw new Error("Invalid response from Google. Ensure Apps Script is deployed as 'Me' and 'Anyone'."); 
+                } 
+            })
             .then(responseObj => {
                 const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
                 spinner.style.display = 'none'; statusEl.className = ''; 
@@ -1608,7 +1632,6 @@
                 document.getElementById('spinner').style.display = 'none'; const statusEl = document.getElementById('status'); statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ ${error.message}`;
             });
         }
-
 
         const questions = [
             { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>SENSYS W90 Corner Hinges</mark> for blind corner units" },
