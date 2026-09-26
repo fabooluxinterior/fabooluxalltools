@@ -51,18 +51,6 @@
             100% { opacity: 0.6; }
         }
 
-        /* Message Bell Glow Animation */
-        @keyframes bellPulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); border-color: var(--danger); color: var(--danger); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); border-color: var(--danger); color: var(--danger); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); border-color: var(--danger); color: var(--danger); }
-        }
-        .bell-glow {
-            animation: bellPulse 1.5s infinite !important;
-            border-color: var(--danger) !important;
-            color: var(--danger) !important;
-        }
-
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -77,7 +65,6 @@
             height: 80px;
             width: auto;
             object-fit: contain;
-            cursor: pointer;
         }
 
         .brand-container {
@@ -97,7 +84,6 @@
         .nav-tabs {
             display: flex;
             gap: 12px;
-            align-items: center;
         }
 
         .tab-btn {
@@ -732,7 +718,7 @@
             margin-bottom: 25px;
         }
         .report-modal-header h3 {
-            margin: 0; font-size: 22px; color: var(--brand-orange);
+            margin: 0; font-size: 22px; color: var(--danger);
         }
         .report-modal-header .header-actions {
             display: flex; align-items: center; gap: 15px;
@@ -762,6 +748,21 @@
         
         .report-textarea { resize: vertical; min-height: 100px; }
         
+        .media-upload-window {
+            width: 100%; padding: 30px 10px; background: #0d0e11; 
+            border: 2px dashed #444; border-radius: 12px; color: #94a3b8;
+            cursor: pointer; text-align: center; transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .media-upload-window:hover {
+            border-color: var(--brand-orange);
+            background: rgba(232, 93, 34, 0.05);
+            color: #fff;
+        }
+        .media-upload-window svg {
+            margin-bottom: 10px; stroke: var(--brand-orange);
+        }
+
         .btn-danger { background: var(--danger); }
         .btn-danger:hover:not(:disabled) { background: #dc2626; }
 
@@ -809,38 +810,24 @@
             to { background-position: 200% center; }
         }
 
-        /* Enforce pure white background for PDF preview area */
-        .pdf-preview-table {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-        }
-        
-        .pdf-preview-table * {
-            color: #000000;
-        }
-
         @media print {
-            @page { size: A4 portrait; margin: 8mm; }
+            @page { size: A4 landscape; margin: 8mm; }
             body { background: #ffffff !important; padding: 0; margin: 0; align-items: flex-start; color: #000000 !important; }
             body * { visibility: hidden; }
             #preview-page, #preview-page * { visibility: visible; color: #000000 !important; }
             #preview-page { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; background: #ffffff !important; border: none !important; }
             .no-print, .tables-wrapper::-webkit-scrollbar, .glossy-footer-text { display: none !important; }
             .tables-wrapper { max-height: none; overflow: visible; padding: 0; margin: 0;}
-            
-            /* Print Specific PDF layout protections */
-            .pdf-preview-table { box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; background-color: #ffffff !important; color: #000000 !important; }
-            table { border-collapse: collapse; font-size: 10pt !important; width: 100%; }
+            .room-section { break-inside: auto; page-break-inside: auto; break-before: page !important; page-break-before: always !important; border: 1px solid #000000 !important; margin-bottom: 20px !important; border-radius: 8px !important; background: #ffffff !important; padding-bottom: 0 !important; }
+            .room-header { color: #000000 !important; background-color: #ffffff !important; border-bottom: 1px solid #000000 !important; }
+            table { border-collapse: collapse; font-size: 9.5pt !important; width: 100%; }
             thead { display: table-header-group; }
-            tbody { display: table-row-group; page-break-inside: avoid; }
-            tr { page-break-inside: avoid; }
-            th, td { border: 1px solid #000000 !important; padding: 8px 10px !important; color: #000000 !important; vertical-align: middle !important; background-color: #ffffff !important; }
-            
-            /* Suppress manual input visual cues during print */
-            .manual-input { border: none !important; padding: 0 !important; background: transparent !important; min-width: auto !important; display: inline !important;}
+            tbody { display: table-row-group; }
+            th, td { border: 1px solid #000000 !important; padding: 8px 10px !important; color: #000000 !important; vertical-align: top !important; }
+            th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: 700 !important; font-size: 9pt !important; }
+            .summary-table th, .summary-table td { border: 1px solid #000000 !important; color: #000000 !important; }
+            .summary-table { background: #ffffff !important; }
+            .manual-input { border: none !important; padding: 0 !important; background: transparent !important; }
         }
     </style>
 </head>
@@ -849,21 +836,13 @@
     <!-- 🌟 TOP NAVIGATION -->
     <header class="top-nav">
         <div class="brand-container">
-            <!-- Hidden Admin Login Trigger (Click 4 times) -->
-            <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo" onclick="handleLogoClick()">
-            <img src="https://lh3.googleusercontent.com/d/1I1s314NNKhsXtzyHbjpek4i4i3jiyJeH" alt="Event Banner" class="event-banner">
+            <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" alt="Faboolux Logo" class="brand-logo" id="main-logo">
+           <img src="https://lh3.googleusercontent.com/d/1I1s314NNKhsXtzyHbjpek4i4i3jiyJeH" alt="Event Banner" class="event-banner">
         </div>
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('designers')">For Designers</button>
             <button class="tab-btn" onclick="switchTab('rsm')">For RSM</button>
-            
-            <!-- Message Notification Bell -->
-            <div style="position: relative; margin-left: 10px;">
-                <button id="bell-btn" class="tab-btn" onclick="openMessagesModal()" style="display: flex; align-items: center; justify-content: center; padding: 10px; border-radius: 50%; width: 40px; height: 40px; border-color: var(--brand-orange); color: var(--brand-orange);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                </button>
-                <span id="msg-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: bold; align-items: center; justify-content: center; box-shadow: 0 0 5px rgba(0,0,0,0.5);">0</span>
-            </div>
+            <button class="tab-btn" style="border-color: var(--danger); color: var(--danger);" onclick="openReportModal()">Report Issue</button>
         </div>
     </header>
 
@@ -1139,16 +1118,40 @@
         </div>
     </div>
 
-    <!-- 💬 MESSAGES MODAL -->
-    <div id="messages-modal" class="modal-overlay" style="display: none;">
+    <!-- 🚨 1. REPORT ISSUE MODAL -->
+    <div id="report-issue-modal" class="modal-overlay" style="display: none;">
         <div class="report-modal-content">
             <div class="report-modal-header">
-                <h3 style="color: var(--brand-orange)">Notifications</h3>
-                <button class="close-modal-btn" onclick="closeMessagesModal()">×</button>
+                <h3 style="color: var(--danger)">Report Issue</h3>
+                <div class="header-actions">
+                    <button class="admin-link-btn" onclick="openAdminLogin()">Admin</button>
+                    <button class="close-modal-btn" onclick="closeReportModal()">×</button>
+                </div>
             </div>
-            <div id="messages-container" style="max-height: 350px; overflow-y: auto;">
-                <!-- Rendered msgs go here -->
+            
+            <div class="input-group">
+                <label>Designer Name</label>
+                <select id="report-designer-name" class="report-input">
+                    <option value="">Select Designer</option>
+                </select>
             </div>
+            
+            <div class="input-group">
+                <label>Issue Description</label>
+                <textarea id="report-description" class="report-input report-textarea" placeholder="Describe the issue you are facing..."></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Upload Media (Optional)</label>
+                <div class="media-upload-window" onclick="document.getElementById('report-media-file').click()">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <br>
+                    <span id="upload-file-name" style="font-weight: 500;">Click to browse and upload file</span>
+                </div>
+                <input type="file" id="report-media-file" style="display:none;" accept="image/*,video/*,application/pdf" onchange="updateFileName(this)">
+            </div>
+            
+            <button class="submit-btn btn-danger submit-report-btn" onclick="submitReport()">Submit Report</button>
         </div>
     </div>
 
@@ -1180,19 +1183,6 @@
             </div>
             
             <div class="admin-section">
-                <h4>Send Notification</h4>
-                <div class="input-group" style="margin-bottom: 10px;">
-                    <textarea id="new-notification-text" class="report-input report-textarea" placeholder="Type message to all designers..."></textarea>
-                </div>
-                <button class="submit-btn btn-primary" onclick="sendNotification()">Send Message</button>
-            </div>
-
-            <div class="admin-section">
-                <h4>Manage Notifications</h4>
-                <ul class="admin-list" id="admin-notification-list" style="max-height: 200px;"></ul>
-            </div>
-
-            <div class="admin-section">
                 <h4>Manage Designers</h4>
                 <ul class="admin-list" id="admin-designer-list"></ul>
                 <div class="add-flex">
@@ -1221,103 +1211,6 @@
 
     <script>
         // ============================================================================
-        // 🔗 NOTIFICATION SYSTEM LOGIC
-        // ============================================================================
-        let notifications = JSON.parse(localStorage.getItem('faboolux_notifications')) || [];
-        let lastReadCount = parseInt(localStorage.getItem('faboolux_last_read')) || 0;
-
-        window.onload = function() {
-            updateMessageBadge();
-        };
-
-        function updateMessageBadge() {
-            const badge = document.getElementById('msg-badge');
-            const bellBtn = document.getElementById('bell-btn');
-            
-            // Adjust if deleted
-            if (lastReadCount > notifications.length) {
-                lastReadCount = notifications.length;
-                localStorage.setItem('faboolux_last_read', lastReadCount);
-            }
-            
-            const unread = notifications.length - lastReadCount;
-            if (unread > 0) {
-                badge.innerText = unread;
-                badge.style.display = 'flex';
-                bellBtn.classList.add('bell-glow');
-            } else {
-                badge.style.display = 'none';
-                bellBtn.classList.remove('bell-glow');
-            }
-        }
-
-        function openMessagesModal() {
-            lastReadCount = notifications.length;
-            localStorage.setItem('faboolux_last_read', lastReadCount);
-            updateMessageBadge();
-            renderMessages();
-            document.getElementById('messages-modal').style.display = 'flex';
-        }
-
-        function closeMessagesModal() {
-            document.getElementById('messages-modal').style.display = 'none';
-        }
-
-        function renderMessages() {
-            const container = document.getElementById('messages-container');
-            if (notifications.length === 0) {
-                container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No new messages.</div>';
-                return;
-            }
-            container.innerHTML = [...notifications].reverse().map(n => `
-                <div style="background: #16171b; border: 1px solid #2a2b30; padding: 15px; border-radius: 8px; margin-bottom: 10px; text-align: left;">
-                    <div style="font-size: 11px; color: var(--brand-orange); margin-bottom: 5px; font-weight: bold;">${n.date}</div>
-                    <div style="font-size: 14px; color: #fff; line-height: 1.5;">${n.text}</div>
-                </div>
-            `).join('');
-        }
-
-        function sendNotification() {
-            const text = document.getElementById('new-notification-text').value.trim();
-            if(!text) return;
-            const date = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
-            notifications.push({ text: text, date: date });
-            localStorage.setItem('faboolux_notifications', JSON.stringify(notifications));
-            document.getElementById('new-notification-text').value = '';
-            
-            updateMessageBadge();
-            renderAdminPanel();
-            alert("Notification sent to all designers!");
-        }
-
-        function deleteNotification(index) {
-            notifications.splice(index, 1);
-            if (lastReadCount > notifications.length) {
-                lastReadCount = notifications.length;
-            }
-            localStorage.setItem('faboolux_notifications', JSON.stringify(notifications));
-            localStorage.setItem('faboolux_last_read', lastReadCount);
-            renderAdminPanel();
-            updateMessageBadge();
-        }
-
-        // ============================================================================
-        // 🔗 EASTER EGG LOGO LOGIN LOGIC
-        // ============================================================================
-        let logoClicks = 0;
-        let logoClickTimer;
-        function handleLogoClick() {
-            logoClicks++;
-            clearTimeout(logoClickTimer);
-            if (logoClicks >= 4) {
-                logoClicks = 0;
-                openAdminLogin();
-            } else {
-                logoClickTimer = setTimeout(() => { logoClicks = 0; }, 1000); 
-            }
-        }
-
-        // ============================================================================
         // 🔗 API CONFIGURATION: UPDATE WEB APP URLS HERE
         // ============================================================================
         const API_URLS = {
@@ -1330,7 +1223,7 @@
         // ============================================================================
 
         function switchTab(tab) {
-            const tabs = document.querySelectorAll('.tab-btn:not(#bell-btn)');
+            const tabs = document.querySelectorAll('.tab-btn:not([onclick="openReportModal()"])');
             if(tab === 'designers') {
                 document.getElementById('designers-cards').style.display = 'grid';
                 document.getElementById('rsm-cards').style.display = 'none';
@@ -1411,13 +1304,18 @@
             return '<span style="color:#ef4444; font-size:11px; font-weight:600; text-align:center;">Invalid<br>Link</span>';
         }
 
+        // ==========================================
+        // 🔧 FORMATTER: Split the stacked Lam Codes perfectly
+        // ==========================================
         function formatStackedText(text) {
             if (!text) return '-';
             let parts = text.split('\n');
             
+            // Bold the column E data, which is appended in parentheses at the end of the name
             let res = parts[0].replace(/\s*\(([^)]+)\)$/, ' <strong>($1)</strong>');
 
             if (parts.length > 1 && parts[1].trim() !== '') {
+                // Changed from var(--brand-orange) to normal inherited text color
                 res += `<br><span style="color: inherit; font-size: 11.5px; font-weight: 500;">Code: ${parts[1]}</span>`;
             }
             if (parts.length > 2 && parts[2].trim() !== '') {
@@ -1498,260 +1396,48 @@
                     </div></div>`;
                 }
             } else if (currentTool === 'summary') {
-                let rooms = {};
-                let currentRoom = 'UNNAMED';
-                let currentSection = 'Modular';
-                let currentCategory = 'General';
-
-                // Helpers
-                const extractNum = (arr) => {
-                    let val = parseFloat(String(arr[15] || '').replace(/,/g, ''));
-                    if (!isNaN(val) && val !== 0) return val;
-                    let rev = arr.slice().reverse();
-                    for (let x of rev) {
-                        let parsed = parseFloat(String(x).replace(/,/g, ''));
-                        if (!isNaN(parsed) && parsed !== 0) return parsed;
-                    }
-                    return 0;
-                };
-
-                // Footer Variables
-                let finalSellingPrice = 0;
-                let finalDiscountLabel = "DISCOUNT";
-                let finalDiscountValue = 0;
-                let finalSpecialDiscountValue = 0;
-                let hasSpecialDiscount = false;
-                let finalGrandTotal = 0;
-
-                // Header Variables
-                let customerName = "Insert Customer Name";
-                let projectId = "Untitled";
-                let estDate = new Date().toLocaleDateString('en-GB'); 
-
-                // 1. Scan Data Dynamically
+                let tableHTML = `<div class="room-section fade-in" style="background: #ffffff; padding: 25px; border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6);"><table class="summary-table" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; color: #000000;"><tbody>`;
                 dataRows.forEach((row, index) => {
                     if (!row || row.length === 0) return;
-                    
-                    let colA = String(row[0] || '').trim();
-                    let colALower = colA.toLowerCase();
-                    let joinedRow = row.join(" ").toLowerCase();
-
-                    // Extract Headers (first 30 rows)
-                    if (index < 30) {
-                        for (let j = 0; j < row.length; j++) {
-                            let cellStr = String(row[j]).trim().toLowerCase();
-                            if (cellStr === "project id") projectId = String(row[j+1] || row[j+2] || "").trim();
-                            if (cellStr === "customer name" || cellStr === "client name") {
-                                let val = String(row[j+1] || row[j+2] || "").trim();
-                                if (val) customerName = val;
-                            }
-                            if (cellStr === "date" && estDate === new Date().toLocaleDateString('en-GB')) {
-                                let dVal = String(row[j+1] || row[j+2] || "").trim();
-                                if (dVal && !dVal.includes('valid')) estDate = dVal;
-                            }
-                        }
-                    }
-
-                    // Extract final financial metrics
-                    if (joinedRow.includes('selling price')) { finalSellingPrice = extractNum(row); return; }
-                    if (joinedRow.includes('special discount')) { hasSpecialDiscount = true; finalSpecialDiscountValue = extractNum(row); return; }
-                    if (joinedRow.includes('discount')) { finalDiscountLabel = colA || row.find(x => String(x).toLowerCase().includes('discount')) || "DISCOUNT"; finalDiscountValue = extractNum(row); return; }
-                    if (joinedRow.includes('grand total')) { finalGrandTotal = extractNum(row); return; }
-
-                    // Track sections
-                    if (colALower === 'accessories') { currentSection = 'Accessories'; return; }
-                    if (colALower === 'others') { currentSection = 'Others'; return; }
-                    if (colALower === 'carcass finish' || colALower === 'shutters' || colALower === 'modular') { currentSection = 'Modular'; return; }
-
-                    // Track Room change
-                    if (colA !== '' && !/^\d+$/.test(colA) && colALower !== 'sl no' && colA.length > 2 && !colALower.includes("inclusive") && !colALower.includes("above price") && !colALower.includes("terms") && !colALower.includes("estimate for")) {
-                        currentRoom = colA.toUpperCase();
-                        currentSection = 'Modular';
-                        currentCategory = 'General'; // Reset category active state for new room
-                        return;
-                    }
-
-                    // Item processing
-                    if (row.length < 15) return;
-                    
-                    let itemName = String(row[1] || '').trim();
-                    let priceVal = parseFloat(String(row[15] || '').replace(/,/g, '')) || extractNum(row);
-
-                    if (itemName && !isNaN(priceVal) && priceVal > 0 && itemName.toLowerCase() !== 'item') {
-                        
-                        if (!rooms[currentRoom]) {
-                            rooms[currentRoom] = { categories: {}, Accessories: 0, Others: 0 };
-                        }
-
-                        if (currentSection === 'Accessories') {
-                            rooms[currentRoom].Accessories += priceVal;
-                        } else if (currentSection === 'Others') {
-                            rooms[currentRoom].Others += priceVal;
+                    tableHTML += `<tr>`;
+                    if (index === 0) {
+                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; background: #ffffff;">${row[0]}</th>`;
+                    } else if (index === 1) {
+                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td><td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; vertical-align: middle; background: #ffffff; width: 160px;"><img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 140px; height: auto;"></td>`;
+                    } else if (index === 2) {
+                        tableHTML += `<th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[0]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[1]}</td><th style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff; font-weight: bold;">${row[2]}</th><td style="border: 1px solid #000; padding: 12px; text-align: left; background: #ffffff;">${row[3]}</td>`;
+                    } else if (index === 3) {
+                        tableHTML += `<th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 16px; background: #cccccc; font-weight: bold;">${row[0]}</th>`;
+                    } else if (index === 4) {
+                        if (row[0] === "Category") {
+                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[0]}</th>`;
+                            tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${row[4]}</th>`;
                         } else {
-                            // It's modular
-                            let nameLower = itemName.toLowerCase();
-                            let itemCategory = 'General';
-
-                            if (nameLower.includes('aristo') || nameLower.includes('slide line 18') || nameLower.includes('slidline')) itemCategory = 'Wardrobe';
-                            else if (nameLower.includes('wardrobe loft')) itemCategory = 'Wardrobe';
-                            else if (nameLower.includes('study loft')) itemCategory = 'Study';
-                            else if (nameLower.includes('crockery loft') || nameLower.replace(/\s/g, '').includes('crockeryloft') || nameLower.includes('corckery loft')) itemCategory = 'Crockery';
-                            else if (nameLower.includes('loft')) itemCategory = 'Loft';
-                            else if (nameLower.includes('tv') || nameLower.includes('t v')) itemCategory = 'TV Unit';
-                            else if (nameLower.includes('crockery') || nameLower.includes('corckery')) itemCategory = 'Crockery';
-                            else if (nameLower.includes('prayer') || nameLower.includes('pooja')) itemCategory = 'Prayer';
-                            else if (nameLower.includes('wardrobe') || nameLower.includes('closet')) itemCategory = 'Wardrobe';
-                            else if (nameLower.includes('shoe rack') || nameLower.replace(/\s/g, '').includes('shoerack')) itemCategory = 'Shoe Rack';
-                            else if (nameLower.includes('kitchen')) itemCategory = 'Kitchen';
-                            else if (nameLower.includes('bedside') || nameLower.includes('bed side')) itemCategory = 'Bedside';
-                            else if (nameLower.includes('headboard')) itemCategory = 'Headboard';
-                            else if (nameLower.includes('cot') || nameLower.includes('bed')) itemCategory = 'Cot';
-                            else if (nameLower.includes('study')) itemCategory = 'Study';
-                            else if (nameLower.includes('vanity')) itemCategory = 'Vanity';
-                            else if (nameLower.includes('dresser')) itemCategory = 'Dresser';
-                            else if (nameLower.includes('bay window') || nameLower.replace(/\s/g, '').includes('baywindow')) itemCategory = 'Bay Window';
-                            else if (nameLower.includes('partition')) itemCategory = 'Partition';
-
-                            if (!rooms[currentRoom].categories[itemCategory]) {
-                                rooms[currentRoom].categories[itemCategory] = 0;
-                            }
-                            rooms[currentRoom].categories[itemCategory] += priceVal;
+                            row.forEach(cell => { tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; font-weight: bold; background: #e6e6e6;">${cell}</th>`; });
                         }
-                    }
-                });
-
-                // 2. Generate the Rendered Table
-                let timestamp = new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' });
-                
-                let tableHTML = `<div class="pdf-preview-table fade-in" style="background-color: #ffffff !important;">
-                    <table class="summary-table" style="width: 100%; border-collapse: collapse; font-family: 'Outfit', Arial, sans-serif; font-size: 12px; color: #000000; text-align: left; background-color: #ffffff !important;">
-                    <thead>
-                        <tr>
-                            <th colspan="6" style="border: 1px solid #000; padding: 15px; text-align: center; font-size: 18px; color: #334155 !important; background-color: #f8fafc !important; letter-spacing: 1px; text-transform: uppercase;">FABOOLUX INTERIORS</th>
-                        </tr>
-                        <tr>
-                            <th style="border: 1px solid #000; padding: 12px; color: #334155 !important; background-color: #f8fafc !important; text-transform: uppercase; width: 15%;">CUSTOMER NAME</th>
-                            <td colspan="2" style="border: 1px solid #000; padding: 12px; width: 35%; font-weight: 500; background-color: #ffffff !important; color: #000 !important;">
-                                <div contenteditable="true" class="manual-input" style="min-width: 150px; font-weight: bold; border-color: #cbd5e1; outline: none; border-style: dashed; padding: 4px; border-radius: 4px;">${customerName}</div>
-                            </td>
-                            <th style="border: 1px solid #000; padding: 12px; color: #334155 !important; background-color: #f8fafc !important; text-transform: uppercase; width: 15%;">DATE</th>
-                            <td style="border: 1px solid #000; padding: 12px; width: 15%; font-weight: 500; background-color: #ffffff !important; color: #000 !important;">${estDate}</td>
-                            <td rowspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; width: 20%; vertical-align: middle; background-color: #ffffff !important;">
-                                <img src="https://faboolux.com/wp-content/uploads/2022/03/logo-1536x921-1.webp" style="max-width: 120px; height: auto;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="border: 1px solid #000; padding: 12px; color: #334155 !important; background-color: #f8fafc !important; text-transform: uppercase;">PROJECT ID</th>
-                            <td colspan="2" style="border: 1px solid #000; padding: 12px; font-weight: 500; background-color: #ffffff !important; color: #000 !important;">${projectId}</td>
-                            <th style="border: 1px solid #000; padding: 12px; color: #334155 !important; background-color: #f8fafc !important; text-transform: uppercase;">REPORT GENERATED</th>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: 500; background-color: #ffffff !important; color: #000 !important;">${timestamp}</td>
-                        </tr>
-                        <tr>
-                            <th colspan="6" style="border: 1px solid #000; padding: 12px; text-align: center; font-size: 15px; background-color: #e2e8f0 !important; color: #334155 !important; text-transform: uppercase;">PROJECT TOTAL SUMMARY</th>
-                        </tr>
-                        <tr>
-                            <th style="border: 1px solid #000; padding: 12px; text-align: center; background-color: #f1f5f9 !important; color: #334155 !important; text-transform: uppercase; width: 20%;">ROOM NAME</th>
-                            <th style="border: 1px solid #000; padding: 12px; text-align: center; background-color: #f1f5f9 !important; color: #334155 !important; text-transform: uppercase; width: 20%;">CATEGORY</th>
-                            <th style="border: 1px solid #000; padding: 12px; text-align: center; background-color: #f1f5f9 !important; color: #334155 !important; text-transform: uppercase; width: 15%;">MODULAR PRICE</th>
-                            <th style="border: 1px solid #000; padding: 12px; text-align: center; background-color: #f1f5f9 !important; color: #334155 !important; text-transform: uppercase; width: 15%;">ACCESSORIES PRICE</th>
-                            <th style="border: 1px solid #000; padding: 12px; text-align: center; background-color: #f1f5f9 !important; color: #334155 !important; text-transform: uppercase; width: 15%;">OTHERS PRICE</th>
-                            <th style="border: 1px solid #000; padding: 12px; text-align: center; background-color: #f1f5f9 !important; color: #334155 !important; text-transform: uppercase; width: 15%;">TOTAL AMOUNT</th>
-                        </tr>
-                    </thead>`;
-
-                let sortedRoomKeys = Object.keys(rooms).sort();
-
-                if (sortedRoomKeys.length === 0) {
-                    tableHTML += `<tbody><tr><td colspan="6" style="text-align: center; padding: 20px; color: #000 !important; background-color: #ffffff !important;">No priced items found in the estimate.</td></tr></tbody>`;
-                }
-
-                // Render Each Room dynamically
-                sortedRoomKeys.forEach(roomName => {
-                    let roomObj = rooms[roomName];
-                    let categories = Object.keys(roomObj.categories).sort();
-                    
-                    // If room has accessories/others but NO modular, add a 'GENERAL' category so it prints
-                    if (categories.length === 0) {
-                        if (roomObj.Accessories > 0 || roomObj.Others > 0) {
-                            categories = ['GENERAL'];
-                            roomObj.categories['GENERAL'] = 0;
+                    } else {
+                        let isFooter = (String(row[0]).toLowerCase().includes('selling price') || String(row[0]).toLowerCase().includes('discount') || String(row[0]).toLowerCase().includes('grand total'));
+                        if (isFooter) {
+                            let val = parseFloat(row[4]); val = isNaN(val) ? row[4] : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            tableHTML += `<th colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${row[0]}</th><th style="border: 1px solid #000; padding: 14px 15px; text-align: right; font-style: italic; background: #fff5eb; color: #000000;">${val}</th>`;
                         } else {
-                            return; // empty room
+                            let isKitchenData = (dataRows[4] && dataRows[4][0] === "Category");
+                            if (isKitchenData) {
+                                tableHTML += `<td colspan="4" style="border: 1px solid #000; padding: 14px 15px; text-align: left; background: #ffffff; font-weight: bold; color: #000000;">${row[0]}</td>`;
+                                let val = parseFloat(row[4]); val = isNaN(val) ? (row[4] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff; color: #000000;">${val}</td>`;
+                            } else {
+                                tableHTML += `<th style="border: 1px solid #000; padding: 14px 10px; text-align: center; background: #ffffff; font-weight: bold;">${row[0]}</th>`;
+                                for(let i=1; i<5; i++) {
+                                    let val = parseFloat(row[i]); val = isNaN(val) ? (row[i] || '-') : val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                    tableHTML += `<td style="border: 1px solid #000; padding: 14px 15px; text-align: right; background: #ffffff;">${val}</td>`;
+                                }
+                            }
                         }
                     }
-
-                    let catCount = categories.length;
-                    
-                    let roomModularTotal = 0;
-                    categories.forEach(c => roomModularTotal += roomObj.categories[c]);
-                    
-                    let roomTotal = roomModularTotal + roomObj.Accessories + roomObj.Others;
-                    if (roomTotal <= 0) return; // don't print empty room
-
-                    // Prevent splitting a single room across two pages
-                    tableHTML += `<tbody style="page-break-inside: avoid; background-color: #ffffff !important;">`;
-
-                    categories.forEach((cat, index) => {
-                        let modPrice = roomObj.categories[cat] || 0;
-
-                        tableHTML += `<tr style="background-color: #ffffff !important;">`;
-                        
-                        // Room Name (merged vertically across categories)
-                        if (index === 0) {
-                            tableHTML += `<td rowspan="${catCount}" style="border: 1px solid #000; padding: 12px; font-weight: bold; color: #000 !important; text-transform: uppercase; vertical-align: middle; text-align: center; background-color: #ffffff !important;">${roomName}</td>`;
-                        }
-                        
-                        // Row data (Category & Modular Price)
-                        tableHTML += `<td style="border: 1px solid #000; padding: 12px; color: #000 !important; font-weight: 500; background-color: #ffffff !important;">${cat}</td>`;
-                        tableHTML += `<td style="border: 1px solid #000; padding: 12px; text-align: right; color: #000 !important; background-color: #ffffff !important;">${modPrice > 0 ? modPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}</td>`;
-                        
-                        // Accessories, Others, Total (merged)
-                        if (index === 0) {
-                            tableHTML += `<td rowspan="${catCount}" style="border: 1px solid #000; padding: 12px; text-align: right; vertical-align: middle; color: #000 !important; background-color: #ffffff !important;">${roomObj.Accessories > 0 ? roomObj.Accessories.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}</td>`;
-                            tableHTML += `<td rowspan="${catCount}" style="border: 1px solid #000; padding: 12px; text-align: right; vertical-align: middle; color: #000 !important; background-color: #ffffff !important;">${roomObj.Others > 0 ? roomObj.Others.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}</td>`;
-                            tableHTML += `<td rowspan="${catCount}" style="border: 1px solid #000; padding: 12px; text-align: right; vertical-align: middle; font-weight: bold; color: #000 !important; background-color: #ffffff !important;">${roomTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
-                        }
-                        tableHTML += `</tr>`;
-                    });
-
-                    tableHTML += `</tbody>`;
+                    tableHTML += `</tr>`;
                 });
-
-                // Render Financial Footer
-                tableHTML += `<tbody style="page-break-inside: avoid; background-color: #ffffff !important;">`;
-                
-                let formattedSellingPrice = finalSellingPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                let formattedDiscount = finalDiscountValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                let formattedGrandTotal = finalGrandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-
-                tableHTML += `<tr>
-                        <th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: right; color: #334155 !important; background-color: #ffffff !important; text-transform: uppercase;">SELLING PRICE</th>
-                        <th style="border: 1px solid #000; padding: 12px; text-align: right; color: #000 !important; background-color: #ffffff !important;">${formattedSellingPrice}</th>
-                    </tr>`;
-
-                if (finalDiscountValue > 0) {
-                    tableHTML += `<tr>
-                        <th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: right; color: #334155 !important; background-color: #ffffff !important; text-transform: uppercase;">${finalDiscountLabel}</th>
-                        <th style="border: 1px solid #000; padding: 12px; text-align: right; color: #000 !important; background-color: #ffffff !important;">${formattedDiscount}</th>
-                    </tr>`;
-                }
-
-                if (hasSpecialDiscount) {
-                    let formattedSpecial = finalSpecialDiscountValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    tableHTML += `<tr>
-                        <th colspan="5" style="border: 1px solid #000; padding: 12px; text-align: right; color: #334155 !important; background-color: #ffffff !important; text-transform: uppercase;">SPECIAL DISCOUNT</th>
-                        <th style="border: 1px solid #000; padding: 12px; text-align: right; color: #000 !important; background-color: #ffffff !important;">${formattedSpecial}</th>
-                    </tr>`;
-                }
-
-                tableHTML += `<tr>
-                        <th colspan="5" style="border: 1px solid #000; padding: 16px 15px; text-align: right; background-color: #e2e8f0 !important; color: #334155 !important; font-size: 14px; text-transform: uppercase;">GRAND TOTAL (INCLUDING GST)</th>
-                        <th style="border: 1px solid #000; padding: 16px 15px; text-align: right; background-color: #e2e8f0 !important; color: #000 !important; font-size: 15px; font-weight: bold;">${formattedGrandTotal}</th>
-                    </tr>`;
-
-                tableHTML += `</tbody></table>`;
-                tableHTML += `</div>`;
-                
+                tableHTML += `</tbody></table></div>`;
                 container.innerHTML += tableHTML;
             }
             document.getElementById('preview-page').style.display = 'block';
@@ -1858,33 +1544,31 @@
             const statusEl = document.getElementById('status'), spinner = document.getElementById('spinner');
             spinner.style.display = 'block'; statusEl.innerText = 'Extracting data...'; statusEl.className = 'loading-text'; 
 
-            const reader = new FileReader();
-            reader.onload = function(e) { 
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const parsedDataMatrix = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ""});
-                    
-                    statusEl.innerText = 'Formatting and displaying...'; 
-                    
-                    if (currentTool === 'summary') {
-                        // Generate dynamic summary instantly on the client-side
-                        spinner.style.display = 'none'; 
-                        statusEl.className = ''; 
-                        statusEl.style.color = 'var(--success)'; 
-                        statusEl.innerText = '✅ Summary generated successfully'; 
-                        showPreviewPage(parsedDataMatrix);
-                    } else {
-                        // Accessories and Materials continue using the API
+            if (currentTool === 'summary') {
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    const base64Data = e.target.result.split(',')[1]; 
+                    sendToGoogleScriptBase64(base64Data, file.name); 
+                };
+                reader.readAsDataURL(file);
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, {type: 'array'});
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        const parsedDataMatrix = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ""});
+                        
+                        statusEl.innerText = 'Formatting and displaying...'; 
                         sendToGoogleScriptParsed(parsedDataMatrix, file.name);
+                    } catch(error) {
+                        spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ Error: Unreadable file format.`;
                     }
-                } catch(error) {
-                    spinner.style.display = 'none'; statusEl.className = ''; statusEl.style.color = 'var(--danger)'; statusEl.innerText = `❌ Error: Unreadable file format.`;
-                }
-            };
-            reader.readAsArrayBuffer(file);
+                };
+                reader.readAsArrayBuffer(file);
+            }
         }
 
         function sendToGoogleScriptParsed(dataMatrix, fileName) {
@@ -1949,23 +1633,267 @@
             });
         }
 
-        function openAdminLogin() { closeMessagesModal(); document.getElementById('admin-login-modal').style.display = 'flex'; }
+        const questions = [
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>SENSYS W90 Corner Hinges</mark> for blind corner units" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>TH-52 hinges</mark> for L corner units" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>16 Crank</mark> for inset shutters" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>9.5 Crank</mark> for half overlay shutters" },
+            { text: "Match <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Shutters and Drawers fascia</mark> properly" },
+            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Core materials</mark> properly (Eg:-12 For 12mm thickness, 16 for 16mm thickness)" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter finish laminats</mark> only for shutter or shutter finish panels" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish lamiantes</mark> only for carcass and carcass panels" },
+            { text: "Check <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>shutter opening direction</mark>" },
+            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Grooved bottom panels for profile lights</mark> (Replace defualt bottom panel to grooved panel)" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>20MM Gap</mark> between shutter and inside shlef" },
+            { text: "Use proper shutters (<mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Lift up, Flap down, G profile-bottom top</mark>)" },
+            { text: "Add <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Counter top support panel</mark> above the cabinets (Kitchen)" },
+            { text: "Don't match finishes with <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>OSL panels</mark>" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>80MM Gap</mark> between shutter and shelf in wardrobe with drawer unit" },
+            { text: "Provide <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>130MM Gap</mark> between sliding door and shlef (Aristo and Hettich)" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>BWP</mark> For all vanity units" },
+            { text: "Select <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>Drawer channels</mark> properly" },
+            { text: "Make <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition</mark> using <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>partition panels</mark>" },
+            { text: "Use <mark style='background-color: #FFEB3B; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 600;'>carcass finish</mark> for wardrobe internal drawer fascia" }
+        ];
+
+        let currentIndex = 0;
+        let answers = []; 
+        let projectDetails = {};
+
+        function resetChecklistState() {
+            currentIndex = 0;
+            answers = [];
+            document.getElementById('input-date').valueAsDate = new Date();
+            document.getElementById('intro-view').style.display = 'block';
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('summary-view').style.display = 'none';
+        }
+
+        function resetChecklist() {
+            resetChecklistState();
+        }
+
+        function startChecklist() {
+            const proj = document.getElementById('input-project').value.trim();
+            const des = document.getElementById('input-designer').value.trim();
+            const date = document.getElementById('input-date').value;
+
+            if(!proj || !des || !date) {
+                alert("Please fill in all project details before starting.");
+                return;
+            }
+
+            projectDetails = { project: proj, designer: des, date: date };
+            document.getElementById('intro-view').style.display = 'none';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            document.getElementById('question-text').innerHTML = questions[currentIndex].text;
+            document.getElementById('progress-text').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('back-btn').disabled = (currentIndex === 0);
+            document.getElementById('question-view').style.display = 'block';
+        }
+
+        function recordAnswer(answer) {
+            answers[currentIndex] = answer;
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showSummary();
+            }
+        }
+
+        function goBack() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function showSummary() {
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('summary-view').style.display = 'block';
+            
+            document.getElementById('out-project').innerText = projectDetails.project;
+            document.getElementById('out-designer').innerText = projectDetails.designer;
+            document.getElementById('out-date').innerText = projectDetails.date;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('out-time').innerText = timeString;
+
+            const summaryTable = document.getElementById('summary-table-body');
+            summaryTable.innerHTML = ''; 
+
+            questions.forEach((q, index) => {
+                const tr = document.createElement('tr');
+                const ans = answers[index];
+                
+                let iconHtml = '';
+                let tdStyle = 'padding: 6.5px 0; border-bottom: 1px solid #f1f5f9; vertical-align: top; line-height: 1.4;';
+                let textStyle = 'color: #0f172a;';
+
+                if (ans === 'Yes, Corrected') {
+                    iconHtml = `<td style="width: 30px; text-align: left; color: #10b981; font-size: 16px; font-weight: bold; ${tdStyle}">&#10003;</td>`;
+                } else if (ans === 'Not Required') {
+                    iconHtml = `<td style="width: 30px; text-align: left; color: #ef4444; font-size: 16px; font-weight: bold; ${tdStyle}">&#10007;</td>`;
+                    textStyle = 'color: #333; text-decoration: line-through; background-color: #fef08a; padding: 2px 4px; border-radius: 3px;';
+                }
+
+                let cleanText = q.text.replace(/<mark[^>]*>/g, '').replace(/<\/mark>/g, '');
+                tr.innerHTML = `${iconHtml}<td style="${tdStyle}"><span style="${textStyle}">${cleanText}</span></td>`;
+                summaryTable.appendChild(tr);
+            });
+
+            setTimeout(() => {
+                triggerAutoDownloadPDF();
+            }, 400);
+        }
+
+        function triggerAutoDownloadPDF() {
+            const statusText = document.getElementById('pdf-status-text');
+            if(statusText) statusText.innerText = "Generating and downloading PDF automatically...";
+
+            const element = document.getElementById('printable-area');
+            const opt = {
+                margin:       [8, 10, 0, 10], 
+                filename:     `${projectDetails.project.replace(/\s+/g, '_')}_Checklist.pdf`,
+                image:        { type: 'jpeg', quality: 0.95 },
+                html2canvas:  { scale: 1.5, logging: false }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                if(statusText) statusText.innerText = "✅ PDF downloaded successfully!";
+            }).catch(err => {
+                console.error("PDF auto-download failed:", err);
+                if(statusText) statusText.innerText = "❌ Auto-download failed. Please check permissions.";
+            });
+        }
+
+        let globalDesigners = [];
+        let globalAdmins = [];
+
+        function initStorage() {
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: "getData" })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    globalDesigners = data.designers;
+                    globalAdmins = data.admins;
+                    populateDesignerDropdown();
+                }
+            })
+            .catch(err => {
+                console.error("Failed to load data from sheet.", err);
+            });
+        }
+
+        function syncDataToSheet() {
+            const btn = document.getElementById('admin-sync-btn');
+            if(btn) { btn.innerText = "Syncing to Google Sheets..."; btn.style.color = "var(--brand-orange)"; }
+            
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: "updateData", designers: globalDesigners, admins: globalAdmins })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(btn) { btn.innerText = "✅ Saved to Google Sheets"; btn.style.color = "var(--success)"; }
+            })
+            .catch(err => {
+                if(btn) { btn.innerText = "❌ Sync Failed! Check connection."; btn.style.color = "var(--danger)"; }
+            });
+        }
+
+        function populateDesignerDropdown() {
+            const select = document.getElementById('report-designer-name');
+            select.innerHTML = '<option value="">Select Designer</option>';
+            globalDesigners.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                select.appendChild(opt);
+            });
+        }
+
+        initStorage();
+
+        function openReportModal() { document.getElementById('report-issue-modal').style.display = 'flex'; }
+        function closeReportModal() { document.getElementById('report-issue-modal').style.display = 'none'; }
+
+        function updateFileName(input) {
+            const fileNameDisplay = document.getElementById('upload-file-name');
+            if(input.files && input.files.length > 0) {
+                fileNameDisplay.innerText = "Selected: " + input.files[0].name;
+                fileNameDisplay.style.color = "var(--success)";
+            } else {
+                fileNameDisplay.innerText = "Click to browse and upload file";
+                fileNameDisplay.style.color = "var(--text-muted)";
+            }
+        }
+
+        function submitReport() {
+            const name = document.getElementById('report-designer-name').value;
+            const desc = document.getElementById('report-description').value;
+            const fileInput = document.getElementById('report-media-file');
+            const submitBtn = document.querySelector('.submit-report-btn');
+            
+            if(!name || !desc) {
+                alert("Please select your Designer Name and enter an Issue Description.");
+                return;
+            }
+
+            submitBtn.innerText = 'Submitting...'; submitBtn.disabled = true;
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { sendReportToScript(name, desc, e.target.result.split(',')[1], file.type, file.name); };
+                reader.readAsDataURL(file);
+            } else { sendReportToScript(name, desc, null, null, null); }
+        }
+
+        function sendReportToScript(name, desc, base64Data, mimeType, fileName) {
+            fetch(REPORT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ name: name, description: desc, mediaBase64: base64Data, mimeType: mimeType, fileName: fileName })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') alert("Report submitted successfully! Thank you.");
+                else alert("Error: " + data.message);
+                resetReportForm();
+            })
+            .catch(err => { alert("Error submitting report."); resetReportForm(); });
+        }
+
+        function resetReportForm() {
+            document.getElementById('report-designer-name').value = '';
+            document.getElementById('report-description').value = '';
+            const fileInput = document.getElementById('report-media-file');
+            fileInput.value = ''; updateFileName(fileInput); 
+            const submitBtn = document.querySelector('.submit-report-btn');
+            submitBtn.innerText = 'Submit Report'; submitBtn.disabled = false;
+            closeReportModal();
+        }
+
+        function openAdminLogin() { closeReportModal(); document.getElementById('admin-login-modal').style.display = 'flex'; }
         function closeAdminLogin() { document.getElementById('admin-login-modal').style.display = 'none'; }
 
         function handleAdminLogin() {
             const email = document.getElementById('admin-login-email').value;
             const pass = document.getElementById('admin-login-pass').value;
-            
-            // Hardcoded Credentials as requested
-            if (email === 'designer8fab@gmail.com' && pass === 'Faboolux@999') {
-                document.getElementById('admin-login-email').value = ''; 
-                document.getElementById('admin-login-pass').value = '';
-                closeAdminLogin(); 
-                openAdminPanel();
-                return;
-            }
-
             const isValid = globalAdmins.some(a => a.email === email && a.pass === pass);
+            
             if (isValid) {
                 document.getElementById('admin-login-email').value = ''; document.getElementById('admin-login-pass').value = '';
                 closeAdminLogin(); openAdminPanel();
@@ -1976,18 +1904,6 @@
         function closeAdminPanel() { document.getElementById('admin-panel-modal').style.display = 'none'; }
 
         function renderAdminPanel() {
-            const nList = document.getElementById('admin-notification-list'); nList.innerHTML = '';
-            [...notifications].reverse().forEach((n, idx) => {
-                let actualIndex = notifications.length - 1 - idx;
-                nList.innerHTML += `<li>
-                    <div style="flex-grow:1; margin-right:10px; overflow:hidden;">
-                        <div style="font-size:11px;color:var(--brand-orange);">${n.date}</div>
-                        <div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:250px;">${n.text}</div>
-                    </div> 
-                    <button class="delete-btn" onclick="deleteNotification(${actualIndex})">Remove</button>
-                </li>`;
-            });
-
             const dList = document.getElementById('admin-designer-list'); dList.innerHTML = '';
             globalDesigners.forEach((d, index) => {
                 dList.innerHTML += `<li>${d} <button class="delete-btn" onclick="removeDesigner(${index})">Remove</button></li>`;
